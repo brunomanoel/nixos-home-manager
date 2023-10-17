@@ -4,7 +4,7 @@
     userName = "Bruno Manoel";
     userEmail = "26349861+brunomanoel@users.noreply.github.com";
     signing.signByDefault = true;
-    signing.key = "DFAF2902BD774DC0";
+    signing.key = "86B002F60764A739";
     delta = {
       enable = true;
       options = {
@@ -18,6 +18,7 @@
   programs.jujutsu = {
     enable = true;
     enableZshIntegration = true;
+    enableBashIntegration = true;
     settings = {
       user = {
         name = "Bruno Manoel";

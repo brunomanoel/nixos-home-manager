@@ -3,7 +3,6 @@
   programs.vscode = {
 	enable = true;
 	package = pkgs.vscode.fhs;
-	mutableExtensionsDir = false;
   };
 
   programs.neovim = {

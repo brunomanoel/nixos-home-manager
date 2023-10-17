@@ -46,4 +46,7 @@
       };
     };
   };
+
+  # SSD support
+  services.fstrim.enable = true;
 }

@@ -79,11 +79,6 @@
   boot.loader.grub.device = "nodev";
   boot.loader.grub.useOSProber = true;
   boot.loader.grub.configurationLimit = 5;
-  boot.loader.grub.extraEntries = ''
-    menuentry "Windows 10" {
-      chainloader (hd1,1)+1
-    }
-  '';
 
   boot.kernelParams = [
     "i915.enable_fbc=1"
@@ -92,7 +87,7 @@
   ];
 
   boot.kernel.sysctl = { "vm.swappiness" = 10;};
-
+  boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback # OBS Studio virtual camera requirement https://nixos.wiki/wiki/OBS_Studio
     lenovo-legion-module
@@ -229,6 +224,10 @@
     listenOptions = [
       "/var/run/docker.sock"
     ];
+    autoPrune = {
+      enable = true;
+      dates = "weekly";
+    };
   };
 
   # List packages installed in system profile. To search, run:

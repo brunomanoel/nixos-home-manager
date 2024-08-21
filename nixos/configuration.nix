@@ -162,14 +162,6 @@
       extraGroups = [ "networkmanager" "wheel" "docker" "vboxusers" ];
       shell = pkgs.zsh;
     };
-    gazeus = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-      ];
-      extraGroups = [ "networkmanager" "wheel" "docker" ];
-      shell = pkgs.zsh;
-    };
   };
 
   environment.shells = [ pkgs.zsh ];

@@ -17,8 +17,6 @@
 
   programs.jujutsu = {
     enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
     settings = {
       user = {
         name = "Bruno Manoel";

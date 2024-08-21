@@ -42,7 +42,7 @@
     initExtra = ''
       bindkey '^f' autosuggest-accept
 
-      neofetch
+      fastfetch
     '';
     dirHashes = {
       docs  = "$HOME/Documents";

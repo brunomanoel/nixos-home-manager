@@ -124,7 +124,7 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -170,7 +170,7 @@
 
   environment.pathsToLink = [ "/share/zsh" ]; # https://mynixos.com/home-manager/option/programs.zsh.enableCompletion
 
-  powerManagement.enable = true;
+  # powerManagement.enable = true;
 
   services.auto-cpufreq.enable = true;
   services.auto-cpufreq.settings = {

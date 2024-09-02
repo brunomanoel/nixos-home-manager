@@ -18,12 +18,12 @@
   programs.firefox = {
     enable = true;
       # package = pkgs.firefox-wayland.override {
-    package = pkgs.firefox.override {
-      cfg = {
-        nativeMessagingHosts.gsconnect = true;
-        enableGnomeExtensions = true;
-      };
-    };
+    # package = pkgs.firefox.override {
+    #   cfg = {
+    #     # nativeMessagingHosts.gsconnect = true;
+    #     enableGnomeExtensions = true;
+    #   };
+    # };
   };
 
   programs.micro = {

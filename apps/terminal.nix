@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     wl-clipboard
+    tree
   ];
 
   programs = {
@@ -19,20 +20,24 @@
   programs.zsh = {
     enable = true;
     autocd = true;
-    defaultKeymap = "emacs";
+    # defaultKeymap = "emacs";
     enableCompletion = true;
-    enableAutosuggestions = true;
+    autosuggestion = {
+      enable = true;
+    };
     syntaxHighlighting = {
       enable = true;
       # package = pkgs.zsh-fast-syntax-highlighting;
     };
     history = {
       expireDuplicatesFirst = true;
-    #   extended = true
       ignoreDups = true;
+      ignoreAllDups = true;
+      ignoreSpace = true;
+      share = true;
       ignorePatterns = [
         # "sudo *"
-        "cd *"
+        # "cd *"
         "ls *"
         "ll *"
         "l *"
@@ -61,16 +66,6 @@
           sha256 = "149zh2rm59blr2q458a5irkfh82y3dwdich60s9670kl3cl5h2m1";
         };
       }
-      # {
-      #   name = "enhancd";
-      #   file = "init.sh";
-      #   src = pkgs.fetchFromGitHub {
-      #     owner = "b4b4r07";
-      #     repo = "enhancd";
-      #     rev = "v2.2.1";
-      #     sha256 = "0iqa9j09fwm6nj5rpip87x3hnvbbz9w9ajgm6wkrd5fls8fn8i5g";
-      #   };
-      # }
     ];
     shellAliases = {
       switch = "sudo nixos-rebuild switch --flake ~/Documents/NixOS/#predabook";
@@ -86,6 +81,8 @@
       gpull = "git pull";
       gl = "git log --oneline --decorate --graph";
       diff = "git diff";
+      cat = "bat";
+      cd = "z";
     };
   };
 
@@ -99,6 +96,13 @@
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
+    fileWidgetOptions = [
+      "--preview 'head {}'"
+    ];
+    fileWidgetCommand = "fd --type f";
+    changeDirWidgetOptions = [
+      "--preview 'tree -C {} | head -200'"
+    ];
   };
 
   programs.starship = {
@@ -154,6 +158,16 @@
   };
 
   programs.dircolors = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
+
+  programs.fd = {
+    enable = true;
+  };
+
+  programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;

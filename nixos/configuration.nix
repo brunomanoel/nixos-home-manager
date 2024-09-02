@@ -170,19 +170,19 @@
 
   environment.pathsToLink = [ "/share/zsh" ]; # https://mynixos.com/home-manager/option/programs.zsh.enableCompletion
 
-  powerManagement.enable = false;
+  powerManagement.enable = true;
 
-  services.auto-cpufreq.enable = true;
-  services.auto-cpufreq.settings = {
-    battery = {
-       governor = "powersave";
-       turbo = "never";
-    };
-    charger = {
-       governor = "performance";
-       turbo = "auto";
-    };
-  };
+  # services.auto-cpufreq.enable = true;
+  # services.auto-cpufreq.settings = {
+  #   battery = {
+  #      governor = "powersave";
+  #      turbo = "never";
+  #   };
+  #   charger = {
+  #      governor = "performance";
+  #      turbo = "auto";
+  #   };
+  # };
 
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.

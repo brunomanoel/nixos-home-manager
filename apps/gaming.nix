@@ -12,6 +12,7 @@
     # wine-wayland
     # wine
     heroic
+    prismlauncher
   ];
 
   programs.mangohud = {

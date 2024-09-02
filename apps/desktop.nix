@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   home.packages = with pkgs; [
-    gnome.gnome-tweaks
+    gnome-tweaks
     # gnomeExtensions.tray-icons-reloaded
     gnomeExtensions.vitals
     # gnomeExtensions.sound-output-device-chooser
@@ -18,6 +18,5 @@
     gnomeExtensions.dash-to-panel
     gnomeExtensions.wireless-hid
     gnomeExtensions.no-overview
-    gnomeExtensions.system-action-hibernate
   ];
 }

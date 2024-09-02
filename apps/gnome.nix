@@ -18,5 +18,6 @@
     gnomeExtensions.dash-to-panel
     gnomeExtensions.wireless-hid
     gnomeExtensions.no-overview
+    gnomeExtensions.caffeine
   ];
 }

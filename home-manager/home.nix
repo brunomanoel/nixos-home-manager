@@ -17,7 +17,7 @@
   	../apps/utils.nix
   	../apps/dev-essentials.nix
     ../apps/gaming.nix
-    ../apps/desktop.nix
+    ../apps/gnome.nix
   ];
 
   nixpkgs = {

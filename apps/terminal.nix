@@ -47,6 +47,8 @@
     initExtra = ''
       bindkey '^f' autosuggest-accept
 
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
       fastfetch
     '';
     dirHashes = {

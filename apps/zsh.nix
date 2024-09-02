@@ -46,8 +46,18 @@
         src = pkgs.fetchFromGitHub {
           owner = "chisui";
           repo = "zsh-nix-shell";
-          rev = "v0.7.0";
-          sha256 = "149zh2rm59blr2q458a5irkfh82y3dwdich60s9670kl3cl5h2m1";
+          rev = "v0.8.0";
+          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
+        };
+      }
+      {
+        name = "zsh-interactive-cd";
+        file = "zsh-interactive-cd.plugin.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "mrjohannchang";
+          repo = "zsh-interactive-cd";
+          rev = "e7d4802aa526ec069dafec6709549f4344ce9d4a";
+          hash = "sha256-j23Ew18o7i/7dLlrTu0/54+6mbY8srsptfrDP/9BI/Q=";
         };
       }
     ];

@@ -10,6 +10,7 @@
   home.packages = with pkgs; [
     wl-clipboard
     unzip
+    tldr
   ];
 
   programs = {
@@ -18,6 +19,7 @@
     btop.enable = true;
     bat.enable = true;
     ripgrep.enable = true;
+    bash.enable = true;
   };
 
   programs.ssh = {
@@ -36,10 +38,24 @@
     enableBashIntegration = true;
   };
 
+  # Better cd
   programs.zoxide = {
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
+  };
+
+  # Better ls
+  programs.eza = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+    icons = true;
+    extraOptions = [
+      "--color=always"
+      "--long"
+      "--icons=always"
+    ];
   };
 
   programs.alacritty = {

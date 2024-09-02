@@ -17,6 +17,7 @@
         "$fill"
         "$cmd_duration $jobs"
         "$nodejs"
+        "\${custom.typescript}"
         "$bun"
         "$java"
         "$go"
@@ -47,7 +48,7 @@
         "Downloads" = "Downloads  ";
         "Music" = "Music  ";
         "Pictures" = "Pictures  ";
-        "workspaces" = "workspaces  󰡢 ";
+        "workspaces" = "workspaces ";
       };
       hostname = {
         ssh_symbol = " ";
@@ -143,6 +144,15 @@
       nodejs = {
         symbol = " ";
         format = "[$symbol($version )]($style)";
+      };
+      custom.typescript = {
+        disabled = false;
+        symbol = " ";
+        style = "bold blue";
+        format = "[$symbol]($style)";
+        detect_extensions = ["ts" "tsx"];
+        detect_files = ["tsconfig.json" "tsconfig.build.json"];
+        description = "Custom module for TypeScript";
       };
       bun = {
         format = "[$symbol($version )]($style)";

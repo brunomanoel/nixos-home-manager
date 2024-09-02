@@ -28,6 +28,8 @@
     };
     initExtra = ''
       bindkey '^f' autosuggest-accept
+      bindkey '^[[A' history-search-backward
+      bindkey '^[[B' history-search-forward
 
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
@@ -60,6 +62,16 @@
           hash = "sha256-j23Ew18o7i/7dLlrTu0/54+6mbY8srsptfrDP/9BI/Q=";
         };
       }
+      {
+        name = "fzf-git";
+        file = "fzf-git.zsh";
+        src = pkgs.fetchFromGitHub {
+          owner = "junegunn";
+          repo = "fzf-git.sh";
+          rev = "6a5d4a923b86908abd9545c8646ae5dd44dff607";
+          hash = "sha256-Hn28aoXBKE63hNbKfIKdXqhjVf8meBdoE2no5iv0fBQ=";
+        };
+      }
     ];
     shellAliases = {
       switch = "sudo nixos-rebuild switch --flake ~/Documents/NixOS/#predabook";
@@ -77,6 +89,7 @@
       diff = "git diff";
       cat = "bat";
       cd = "z";
+      ls = "eza";
     };
   };
 }

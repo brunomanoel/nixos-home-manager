@@ -65,7 +65,6 @@
         format = "[$symbol$number]($style) ";
       };
       cmd_duration = {
-        symbol = "⏱ ";
         # style = "bold yellow";
         format = "([$duration]($style))";
       };
@@ -237,7 +236,7 @@
         yellow = "#f1fa8c";
       };
 
-      palletes.catpuccin_macchiato = {
+      palettes.catpuccin_macchiato = {
         rosewater = "#f4dbd6";
         flamingo = "#f0c6c6";
         pink = "#f5bde6";

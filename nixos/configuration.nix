@@ -148,9 +148,9 @@
   services.xserver.excludePackages = [ pkgs.xterm ];
 
   # Configure keymap in X11
-  services.xserver = {
+  services.xserver.xkb = {
     layout = "br";
-    xkbVariant = "";
+    variant = "";
   };
 
   users.users = {

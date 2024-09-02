@@ -9,6 +9,7 @@
     spotify
     libgtop
     noisetorch
+    qalculate-gtk
   ];
 
   programs.chromium = {

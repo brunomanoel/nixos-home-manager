@@ -15,7 +15,6 @@
       geary # email reader
       evince # document viewer
       totem # video player
-    ]) ++ (with pkgs.gnome; [
       gnome-music
       gnome-characters
       tali # poker game
@@ -25,6 +24,9 @@
       gnome-maps
       gnome-contacts
       gnome-weather
+      gnome-connections
+      simple-scan
+      gnome-calculator
     ]);
   services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 

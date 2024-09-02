@@ -12,12 +12,24 @@
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    fileWidgetOptions = [
-      "--preview 'head {}'"
+    defaultOptions = [
+
     ];
-    fileWidgetCommand = "fd --type f";
+    fileWidgetOptions = [
+      "--walker-skip .git,node_modules,target"
+      "--preview 'bat -n --color=always {}'"
+      "--bind 'ctrl-/:change-preview-window(down|hidden|)'"
+    ];
+    fileWidgetCommand = "fd --type f --strip-cwd-prefix --hidden --follow --exclude .git";
     changeDirWidgetOptions = [
-      "--preview 'tree -C {} | head -200'"
+      "--walker-skip .git,node_modules,target"
+      "--preview 'tree -C {}'"
+    #   "--preview 'tree -C {} | head -200'"
+    ];
+    historyWidgetOptions = [
+      "--bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'"
+      "--color header:italic"
+      "--header 'Press CTRL-Y to copy command into clipboard'"
     ];
   };
 }

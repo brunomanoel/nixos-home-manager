@@ -11,6 +11,11 @@
     wl-clipboard
     unzip
     tldr
+
+    # Nix Tools
+    nvd # Nix version manager
+    nix-output-monitor # Monitor nix builds
+    nh # Nice wrapper for NixOS and Home Manager
   ];
 
   programs = {
@@ -53,7 +58,6 @@
     icons = true;
     extraOptions = [
       "--color=always"
-      "--long"
       "--icons=always"
     ];
   };
@@ -63,7 +67,7 @@
     settings = {
       window.opacity = 0.8;
       font.size = 16.0;
-      # font.normal.family = 'Fira Code';
+      font.normal.family = "FiraCode Nerd Font";
     };
   };
 }

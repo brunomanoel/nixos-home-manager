@@ -3,6 +3,9 @@
     NIX_CONFIG = "extra-experimental-features = nix-command flakes ca-derivations";
     FLAKE = "$HOME/dotfiles";
     nativeBuildInputs = with pkgs; [
+      fastfetch
+      pfetch
+      micro
       nix
       home-manager
       git

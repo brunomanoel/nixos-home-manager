@@ -13,21 +13,30 @@
     tldr
     fastfetch
     pfetch
-    cowsay
 
     # Nix Tools
+    comma # Runs software withouth installing it
     nvd # Nix version manager
     nix-output-monitor # Monitor nix builds
     nh # Nice wrapper for NixOS and Home Manager
   ];
 
   programs = {
-    htop.enable = true;
-    command-not-found.enable = true;
-    btop.enable = true;
-    bat.enable = true;
-    ripgrep.enable = true;
     bash.enable = true;
+    command-not-found.enable = true;
+    htop.enable = true;
+    btop.enable = true;
+    ripgrep.enable = true; # Better grep
+    zoxide.enable = true; # Better cd
+    thefuck.enable = true;
+    dircolors.enable = true;
+  };
+
+  programs.bat = {
+    enable = true;
+    config = {
+      theme = "Dracula";
+    };
   };
 
   programs.ssh = {
@@ -42,25 +51,6 @@
     };
   };
 
-  programs.thefuck = {
-    enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
-  };
-
-  programs.dircolors = {
-    enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
-  };
-
-  # Better cd
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-    enableBashIntegration = true;
-  };
-
   # Better ls
   programs.eza = {
     enable = true;
@@ -68,8 +58,8 @@
     enableBashIntegration = true;
     icons = true;
     extraOptions = [
+      "--group-directories-first"
       "--color=always"
-      "--icons=always"
     ];
   };
 

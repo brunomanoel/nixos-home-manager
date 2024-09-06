@@ -21,54 +21,12 @@
     ./custom-hardware-configuration.nix
 
     ../common/users/bruno
-    ./gnome.nix
+    ../common/global
+    ../common/optional/gnome.nix
+    ../common/optional/docker.nix
+    ../common/optional/virtualbox.nix
+    ../common/optional/gaming.nix
   ];
-
-  nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # If you want to use overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
-    config = {
-      # Disable if you don't want unfree packages
-      allowUnfree = true;
-    };
-  };
-
-  nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
-    settings = {
-      # Enable flakes and new 'nix' command
-      experimental-features = "nix-command flakes";
-      # Deduplicate and optimize nix store
-      auto-optimise-store = true;
-    };
-
-    optimise.automatic = true;
-
-    # Gargabe Collector
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
-  };
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "23.05";
@@ -101,27 +59,6 @@
   networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Set your time zone.
-  time.timeZone = "America/Sao_Paulo";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_BR.UTF-8";
-    LC_IDENTIFICATION = "pt_BR.UTF-8";
-    LC_MEASUREMENT = "pt_BR.UTF-8";
-    LC_MONETARY = "pt_BR.UTF-8";
-    LC_NAME = "pt_BR.UTF-8";
-    LC_NUMERIC = "pt_BR.UTF-8";
-    LC_PAPER = "pt_BR.UTF-8";
-    LC_TELEPHONE = "pt_BR.UTF-8";
-    LC_TIME = "pt_BR.UTF-8";
-  };
-
-  # Configure console keymap
-  console.keyMap = "br-abnt2";
-
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -149,69 +86,10 @@
   services.xserver.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "br";
-    variant = "";
-  };
-
-  environment.shells = [ pkgs.zsh ];
-  users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
-
-  environment.pathsToLink = [ "/share/zsh" ]; # https://mynixos.com/home-manager/option/programs.zsh.enableCompletion
-
   powerManagement.enable = true;
-
-  # services.auto-cpufreq.enable = true;
-  # services.auto-cpufreq.settings = {
-  #   battery = {
-  #      governor = "powersave";
-  #      turbo = "never";
-  #   };
-  #   charger = {
-  #      governor = "performance";
-  #      turbo = "auto";
-  #   };
-  # };
-
-  # This setups a SSH server. Very important if you're setting up a headless system.
-  # Feel free to remove if you don't need it.
-  # services.openssh = {
-  #   enable = true;
-  #   # Forbid root login through SSH.
-  #   permitRootLogin = "no";
-  #   # Use keys only. Remove if you want to SSH using password (not recommended)
-  #   passwordAuthentication = false;
-  # };
-
-  # Auto system update
-#   system.autoUpgrade = {
-#       enable = true;
-#   };
 
   # For electron apps to work on wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
-    ];
-    fontDir.enable = true;
-  };
-
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.docker = {
-    enable = true;
-    listenOptions = [
-      "/var/run/docker.sock"
-    ];
-    autoPrune = {
-      enable = true;
-      dates = "weekly";
-    };
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

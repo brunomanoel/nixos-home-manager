@@ -9,7 +9,7 @@
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO: Add any other flake you might need
     # hardware.url = "github:nixos/nixos-hardware";
@@ -43,17 +43,11 @@
       predabook = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
-        modules = [
-          ./hosts/predabook
-          # home-manager.nixosModules.home-manager
-        ];
+        modules = [./hosts/predabook];
       };
       wsl = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
-        modules = [
-          ./hosts/wsl
-          # home-manager.nixosModules.home-manager
-        ];
+        modules = [./hosts/wsl];
       };
     };
 

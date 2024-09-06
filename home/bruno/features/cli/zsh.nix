@@ -74,8 +74,6 @@
       }
     ];
     shellAliases = {
-      switch = "sudo nixos-rebuild switch --flake ~/Documents/NixOS/#predabook";
-      boot = "sudo nixos-rebuild boot --flake ~/Documents/NixOS/#predabook";
       ".." = "cd ..";
       g = "git";
       gst = "git status";

@@ -11,6 +11,9 @@
     wl-clipboard
     unzip
     tldr
+    fastfetch
+    pfetch
+    cowsay
 
     # Nix Tools
     nvd # Nix version manager
@@ -29,6 +32,14 @@
 
   programs.ssh = {
     enable = true;
+  };
+
+  programs.micro = {
+    enable = true;
+    settings = {
+      autosu = true;
+      tabstospaces = true;
+    };
   };
 
   programs.thefuck = {

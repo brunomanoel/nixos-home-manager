@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 {
   home.packages = with pkgs; [
-    fastfetch
-    cowsay
     variety
     discord
     obsidian
@@ -25,31 +23,6 @@
     #     enableGnomeExtensions = true;
     #   };
     # };
-  };
-
-  programs.micro = {
-  	enable = true;
-  	settings = {
-  	  autosu = true;
-  	  tabstospaces = true;
-  	};
-  };
-
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-vkcapture
-      obs-source-clone
-      obs-pipewire-audio-capture
-      obs-move-transition
-      obs-backgroundremoval
-      obs-3d-effect
-      looking-glass-obs
-      input-overlay
-      advanced-scene-switcher
-      obs-shaderfilter
-    ];
   };
 
   services.easyeffects.enable = true;

@@ -13,11 +13,11 @@ nix-shell
 To build system configuration
 
 ```shell
-nh os switch
+nh os switch . --ask
 ```
 
 To build user configuration
 
 ```shell
-nh home switch
+nh home switch . --ask
 ```

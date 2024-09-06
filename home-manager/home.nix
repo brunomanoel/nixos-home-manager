@@ -57,6 +57,7 @@
   systemd.user.startServices = "sd-switch";
 
   home.sessionVariables = {
+    FLAKE = "$HOME/dotfiles";
     # BROWSER = "firefox";
     # TERMINAL = "alacritty";
   };

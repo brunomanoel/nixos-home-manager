@@ -100,7 +100,7 @@
         conflicted = "=$count";
         deleted = "✘$count'";
         renamed = "»$count";
-        stashed = "\$$count";
+        stashed =  ''\$$count'';
         untracked = "?$count";
         # up_to_date = "✓";
         # stashed = "📦";

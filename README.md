@@ -24,5 +24,5 @@ FLAKE=/home/bruno/dotfiles nh os switch --ask
 ### Build user configuration
 
 ```shell
-nh home switch . --ask
+nh home switch --configuration=bruno@wsl .  --ask
 ```

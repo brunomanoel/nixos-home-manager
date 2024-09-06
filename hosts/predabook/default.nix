@@ -19,6 +19,8 @@
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
     ./custom-hardware-configuration.nix
+
+    ../common/users/bruno
     ./gnome.nix
   ];
 
@@ -151,17 +153,6 @@
   services.xserver.xkb = {
     layout = "br";
     variant = "";
-  };
-
-  users.users = {
-    bruno = {
-      isNormalUser = true;
-      openssh.authorizedKeys.keys = [
-        # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
-      ];
-      extraGroups = [ "networkmanager" "wheel" "docker" "vboxusers" ];
-      shell = pkgs.zsh;
-    };
   };
 
   environment.shells = [ pkgs.zsh ];

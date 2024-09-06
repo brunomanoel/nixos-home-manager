@@ -33,37 +33,27 @@
         }
     );
   in {
+    inherit lib;
+
     devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
+
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      # predabook = nixpkgs.lib.nixosSystem {
-      #   specialArgs = {inherit inputs outputs;};
-      #   # > Our main nixos configuration file <
-      #   modules = [
-      #     ./nixos/configuration.nix
-      #     home-manager.nixosModules.home-manager {
-      #       # home-manager.useGlobalPkgs = true;
-      #       home-manager.useUserPackages = true;
-      #       home-manager.users.bruno = import ./home-manager/home.nix;
-      #     }
-      #   ];
-      # };
       predabook = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
         modules = [
           ./hosts/predabook
-          home-manager.nixosModules.home-manager {
-            # home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.bruno = import ./home-manager/home.nix;
-          }
+          # home-manager.nixosModules.home-manager
         ];
       };
       wsl = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
-        modules = [./hosts/wsl];
+        modules = [
+          ./hosts/wsl
+          # home-manager.nixosModules.home-manager
+        ];
       };
     };
 
@@ -73,8 +63,12 @@
       "bruno@predabook" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
-        # > Our main home-manager configuration file <
-        modules = [./home-manager/home.nix];
+        modules = [./home/bruno/predabook.nix];
+      };
+      "bruno@wsl" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [./home/bruno/wsl.nix];
       };
     };
   };

@@ -10,13 +10,18 @@ nix-shell
 
 ## Bootstrap
 
-To build system configuration
+### Build system configuration
 
+On the same directory
 ```shell
 nh os switch . --ask
 ```
+With `FLAKE` environment variable
+```shell
+FLAKE=/home/bruno/dotfiles nh os switch --ask
+```
 
-To build user configuration
+### Build user configuration
 
 ```shell
 nh home switch . --ask

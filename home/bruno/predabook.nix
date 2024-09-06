@@ -9,15 +9,12 @@
 }: {
   # You can import other home-manager modules here
   imports = [
-    # If you want to use home-manager modules from other flakes (such as nix-colors):
-    # inputs.nix-colors.homeManagerModule
-
-    ../apps/terminal.nix
-  	../apps/git.nix
-  	../apps/utils.nix
-  	../apps/dev-essentials.nix
-    ../apps/gaming.nix
-    ../apps/gnome.nix
+    ./features/terminal.nix
+  	./features/git.nix
+  	./features/utils.nix
+  	./features/dev-essentials.nix
+    ./features/gaming.nix
+    ./features/gnome.nix
   ];
 
   nixpkgs = {

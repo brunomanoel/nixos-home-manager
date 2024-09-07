@@ -4,7 +4,7 @@
     gnome-tweaks
     # gnomeExtensions.tray-icons-reloaded
     gnomeExtensions.vitals
-    # gnomeExtensions.sound-output-device-chooser
+    gnomeExtensions.sound-output-device-chooser
     gnomeExtensions.space-bar
     gnomeExtensions.gsconnect
     gnomeExtensions.appindicator
@@ -19,5 +19,6 @@
     gnomeExtensions.wireless-hid
     gnomeExtensions.no-overview
     gnomeExtensions.caffeine
+    gnomeExtensions.gamemode-shell-extension
   ];
 }

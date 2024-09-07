@@ -8,11 +8,15 @@
 
   home.packages = with pkgs; [
     steam
+    heroic
+    prismlauncher
+    lutris
+    gamescope
+    gamemode
+    protontricks
     wineWowPackages.waylandFull
     # wine-wayland
     # wine
-    heroic
-    prismlauncher
   ];
 
   programs.mangohud = {

@@ -98,7 +98,7 @@
       git_status = {
         disabled = false;
         conflicted = "=$count";
-        deleted = "✘$count'";
+        deleted = "✘$count";
         renamed = "»$count";
         stashed =  ''\$$count'';
         untracked = "?$count";

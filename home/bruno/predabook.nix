@@ -13,7 +13,7 @@
 
   	./features/git.nix
   	./features/utils.nix
-  	./features/dev-essentials.nix
+  	./features/dev
     ./features/games
     ./features/gnome.nix
     ./features/obs-studio.nix

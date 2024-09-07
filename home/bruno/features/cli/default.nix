@@ -5,6 +5,7 @@
     ./starship.nix
     ./fzf.nix
     ./tmux.nix
+    ../dev/neovim
   ];
 
   home.packages = with pkgs; [

@@ -6,6 +6,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     systems.url = "github:nix-systems/default-linux";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -46,6 +47,7 @@
         modules = [./hosts/predabook];
       };
       wsl = nixpkgs.lib.nixosSystem {
+      	system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [./hosts/wsl];
       };

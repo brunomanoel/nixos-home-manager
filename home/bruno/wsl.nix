@@ -11,8 +11,7 @@
   imports = [
     ./global
 
-  	./features/git.nix
-  	./features/dev-essentials.nix
+    ./features/git.nix
   ];
 
   programs.gpg.enable = true;

@@ -31,6 +31,7 @@
     zoxide.enable = true; # Better cd
     thefuck.enable = true;
     dircolors.enable = true;
+    navi.enable = true;
   };
 
   programs.bat = {

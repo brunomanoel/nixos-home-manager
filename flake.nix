@@ -7,13 +7,14 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     systems.url = "github:nix-systems/default-linux";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
-    # home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
+    # Common hardware modules
+    hardware.url = "github:nixos/nixos-hardware";
   };
 
   outputs = {
@@ -47,7 +48,7 @@
         modules = [./hosts/predabook];
       };
       wsl = nixpkgs.lib.nixosSystem {
-      	system = "x86_64-linux";
+        system = "x86_64-linux";
         specialArgs = {inherit inputs outputs;};
         modules = [./hosts/wsl];
       };

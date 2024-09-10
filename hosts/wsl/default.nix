@@ -8,6 +8,8 @@
   imports = [
     # include NixOS-WSL modules
     inputs.nixos-wsl.nixosModules.default
+    # VS Code server modules
+    inputs.vscode-server.nixosModules.default
     ../common/global
     ../common/users/bruno
   ];
@@ -17,9 +19,12 @@
 
   networking.hostName = "wsl";
 
+  programs.nix-ld.enable = true;
+  services.vscode-server.enable = true;
+  services.vscode-server.enableFHS = true;
+  services.vscode-server.extraRuntimeDependencies = [ pkgs.wget ];
+
   environment.systemPackages = [
-  	pkgs.micro
-  	pkgs.fastfetch
   ];
 
   # This value determines the NixOS release from which the default

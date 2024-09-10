@@ -12,6 +12,7 @@
     inputs.vscode-server.nixosModules.default
     ../common/global
     ../common/users/bruno
+    ../common/optional/docker.nix
   ];
 
   wsl.enable = true;

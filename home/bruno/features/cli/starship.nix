@@ -20,13 +20,14 @@
         "\${custom.typescript}"
         "$bun"
         "$java"
-        "$go"
+        "$golang"
         "$python"
         "$rust"
         "$elixir"
         "$time"
         "$line_break"
         "$container"
+        "$nix_shell"
         "$character"
       ];
       right_format = lib.concatStrings [
@@ -121,7 +122,7 @@
         symbol = " ";
       };
       golang = {
-        symbol = " ";
+        symbol = " ";
         format = "[$symbol($version )]($style)";
       };
       java = {
@@ -138,8 +139,8 @@
         impure_msg = "[impure shell](bold red)";
         pure_msg = "[pure shell](bold green)";
         unknown_msg = "[unknown shell](bold yellow)";
-        # format = "[$symbol($name )]($style)";
-        format = "via [☃️ $state( \($name\))](bold blue) ";
+        format = "[$symbol\\[$name\\]]($style) ";
+        # format = "via [☃️ $state( \($name\))](bold blue) ";
       };
       nodejs = {
         symbol = " ";

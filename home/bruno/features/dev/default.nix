@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   imports = [
-	./vscode.nix
-	./neovim
+    ./vscode.nix
+    ./neovim
   ];
 }

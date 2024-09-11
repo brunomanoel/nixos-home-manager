@@ -73,4 +73,9 @@
       font.normal.family = "FiraCode Nerd Font";
     };
   };
+
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 }

@@ -17,6 +17,7 @@
     ./features/games
     ./features/gnome.nix
     ./features/obs-studio.nix
+    ./features/video-edit.nix
   ];
 
   programs.gpg.enable = true;

@@ -60,11 +60,10 @@
         format = "[$time]($style)";
       };
       jobs = {
-        # symbol = " ";
         symbol = "";
         style = "bold red";
         number_threshold = 1;
-        format = "[$symbol$number]($style) ";
+        format = "[$symbol $number]($style) ";
       };
       cmd_duration = {
         # style = "bold yellow";

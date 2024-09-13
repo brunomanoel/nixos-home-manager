@@ -28,11 +28,20 @@
     };
     initExtra = ''
       bindkey '^f' autosuggest-accept
-      bindkey '^[[A' history-search-backward
-      bindkey '^[[B' history-search-forward
+      bindkey '^p' history-search-backward
+      bindkey '^n' history-search-forward
 
+      # case-insensitive completion
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
+      # disable sort when completing `git checkout`
+      zstyle ':completion:*:git-checkout:*' sort false
+      # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+      zstyle ':completion:*' menu no
+      # preview directory's content with eza when completing cd
+      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+    '';
+    loginExtra = ''
       fastfetch
     '';
     dirHashes = {
@@ -44,40 +53,30 @@
     plugins = [
       {
         name = "zsh-nix-shell";
-        file = "nix-shell.plugin.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "chisui";
-          repo = "zsh-nix-shell";
-          rev = "v0.8.0";
-          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
-        };
+        file = "share/zsh-nix-shell/nix-shell.plugin.zsh";
+        src = pkgs.zsh-nix-shell;
       }
       {
-        name = "zsh-interactive-cd";
-        file = "zsh-interactive-cd.plugin.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "mrjohannchang";
-          repo = "zsh-interactive-cd";
-          rev = "e7d4802aa526ec069dafec6709549f4344ce9d4a";
-          hash = "sha256-j23Ew18o7i/7dLlrTu0/54+6mbY8srsptfrDP/9BI/Q=";
-        };
+        name = "zsh-you-should-use";
+        file = "share/zsh/plugins/you-should-use/you-should-use.plugin.zsh";
+        src = pkgs.zsh-you-should-use;
       }
       {
-        name = "fzf-git";
-        file = "fzf-git.zsh";
-        src = pkgs.fetchFromGitHub {
-          owner = "junegunn";
-          repo = "fzf-git.sh";
-          rev = "6a5d4a923b86908abd9545c8646ae5dd44dff607";
-          hash = "sha256-Hn28aoXBKE63hNbKfIKdXqhjVf8meBdoE2no5iv0fBQ=";
-        };
+        name = "zsh-forgit";
+        file = "share/zsh/zsh-forgit/forgit.plugin.zsh";
+        src = pkgs.zsh-forgit;
+      }
+      {
+        name = "fzf-tab";
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+        src = pkgs.zsh-fzf-tab;
       }
     ];
     shellAliases = {
       ".." = "cd ..";
       g = "git";
       gst = "git status";
-      ga = "git add -p";
+      gap = "git add -p";
       gcm = "git checkout main";
       gcd = "git checkout develop";
       gcmsg = "git commit -m";

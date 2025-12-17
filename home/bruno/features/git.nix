@@ -4,14 +4,14 @@
     enable = true;
     userName = "Bruno Manoel";
     userEmail = "26349861+brunomanoel@users.noreply.github.com";
-    signing.signByDefault = true;
-    signing.key = "86B002F60764A739";
+    # signing.signByDefault = true;
+    # signing.format = "ssh";
+    signing.key = "key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTYDR1Kt9tyrI4qn0ZMK5W7LHt4sR6DPduoF5BfCkAW 26349861+brunomanoel@users.noreply.github.com";
     extraConfig = ''
       [pull]
         rebase = true
       [branch]
         autosetuprebase = always
-
     '';
     delta = {
       enable = true;

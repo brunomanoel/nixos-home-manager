@@ -1,14 +1,5 @@
-{ pkgs, ... }:
-let
-  git-fixup = pkgs.writeShellScriptBin "git-fixup" ''
-    rev="$(git rev-parse "$1")"
-    git commit --fixup "$@"
-    GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $rev^
-  '';
-in
-{
+{pkgs, ...}: {
   home.packages = [
-    git-fixup
   ];
 
   programs.git = {
@@ -73,8 +64,14 @@ in
 
   programs.lazygit = {
     enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
     settings = {
-      git.paging.pager = "delta --paging=never --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
+      git.pagers = [
+        {
+          pager = "delta --paging=never --hyperlinks --hyperlinks-file-link-format=\"lazygit-edit://{path}:{line}\"";
+        }
+      ];
     };
   };
 }

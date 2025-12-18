@@ -45,7 +45,7 @@
     stateVersion = lib.mkDefault "23.05";
     sessionPath = ["$HOME/.local/bin"];
     sessionVariables = {
-      FLAKE = "$HOME/dotfiles";
+      NH_FLAKE = "$HOME/dotfiles";
       # BROWSER = "firefox";
     # TERMINAL = "alacritty";
     };

@@ -16,9 +16,9 @@ On the same directory
 ```shell
 nh os switch . --ask
 ```
-With `FLAKE` environment variable
+With `NH_FLAKE` environment variable
 ```shell
-FLAKE=/home/bruno/dotfiles nh os switch --ask
+NH_FLAKE=/home/bruno/dotfiles nh os switch --ask
 ```
 
 ### Build user configuration

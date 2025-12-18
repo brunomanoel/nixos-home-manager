@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   programs.zsh = {
     enable = true;
@@ -26,7 +31,7 @@
         ".."
       ];
     };
-    initExtra = ''
+    initContent = ''
       bindkey '^f' autosuggest-accept
       bindkey '^p' history-search-backward
       bindkey '^n' history-search-forward
@@ -45,10 +50,10 @@
       fastfetch
     '';
     dirHashes = {
-      docs  = "$HOME/Documents";
-      vids  = "$HOME/Videos";
-      dl    = "$HOME/Downloads";
-      ws    = "$HOME/workspaces";
+      docs = "$HOME/Documents";
+      vids = "$HOME/Videos";
+      dl = "$HOME/Downloads";
+      ws = "$HOME/workspaces";
     };
     plugins = [
       {

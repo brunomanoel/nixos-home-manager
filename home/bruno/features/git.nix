@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
- git-fixup = pkgs.writeShellScriptBin "git-fixup" ''
+  git-fixup = pkgs.writeShellScriptBin "git-fixup" ''
     rev="$(git rev-parse "$1")"
     git commit --fixup "$@"
     GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $rev^
@@ -10,6 +10,7 @@ in
   home.packages = [
     git-fixup
   ];
+
   programs.git = {
     enable = true;
     settings = {
@@ -31,28 +32,31 @@ in
     ignores = [
       ".direnv"
     ];
-    delta = {
-      enable = true;
-      options = {
-      	features = "side-by-side line-numbers decorations";
-      	syntax-theme = "Dracula";
-        decorations = {
-          commit-decoration-style = "ol";
-          hunk-header-decoration-style = "box ul ol";
-          hunk-header-style = "file line-number syntax";
-          file-decoration-style = "ul";
-        };
-        interactive = {
-          keep-plus-minus-markers = true;
-        };
-        line-numbers = {
-          line-numbers-minus-style = 124;
-          line-numbers-plus-style = 28;
-        };
-        hyperlinks = {
-          hyperlinks = true;
-          hyperlinks-file-link-format = "vscode://file/{path}:{line}";
-        };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    enableJujutsuIntegration = true;
+    options = {
+      features = "side-by-side line-numbers decorations";
+      syntax-theme = "Dracula";
+      decorations = {
+        commit-decoration-style = "ol";
+        hunk-header-decoration-style = "box ul ol";
+        hunk-header-style = "file line-number syntax";
+        file-decoration-style = "ul";
+      };
+      interactive = {
+        keep-plus-minus-markers = true;
+      };
+      line-numbers = {
+        line-numbers-minus-style = 124;
+        line-numbers-plus-style = 28;
+      };
+      hyperlinks = {
+        hyperlinks = true;
+        hyperlinks-file-link-format = "vscode://file/{path}:{line}";
       };
     };
   };

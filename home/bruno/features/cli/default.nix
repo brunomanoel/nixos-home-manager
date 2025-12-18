@@ -5,6 +5,8 @@
     ./starship.nix
     ./fzf.nix
     ./tmux.nix
+    ./ssh.nix
+    ./gpg.nix
     ../dev/neovim
   ];
 
@@ -14,10 +16,15 @@
     tldr
     fastfetch
     pfetch
+    ncdu
 
     # Nix Tools
     comma # Runs software withouth installing it
+    nixd # Nix LSP
+    alejandra # Nix formatter
+    nixfmt-rfc-style
     nvd # Nix version manager
+    nix-diff # Differ, more detailed
     nix-output-monitor # Monitor nix builds
     nh # Nice wrapper for NixOS and Home Manager
   ];
@@ -27,11 +34,17 @@
     command-not-found.enable = true;
     htop.enable = true;
     btop.enable = true;
+    bottom.enable = true;
     ripgrep.enable = true; # Better grep
     zoxide.enable = true; # Better cd
-    thefuck.enable = true;
     dircolors.enable = true;
     navi.enable = true;
+  };
+
+  programs.pay-respects = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
   };
 
   programs.bat = {
@@ -39,10 +52,6 @@
     config = {
       theme = "Dracula";
     };
-  };
-
-  programs.ssh = {
-    enable = true;
   };
 
   programs.micro = {
@@ -58,10 +67,11 @@
     enable = true;
     enableZshIntegration = true;
     enableBashIntegration = true;
-    icons = true;
+    icons = "always";
+    colors = "always";
+    git = true;
     extraOptions = [
       "--group-directories-first"
-      "--color=always"
     ];
   };
 
@@ -76,7 +86,10 @@
 
   programs.direnv = {
     enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
     nix-direnv.enable = true;
+    silent = true;
     config.global = {
       hide_env_diff = true;
     };

@@ -1,18 +1,36 @@
 { pkgs, ... }:
+let
+ git-fixup = pkgs.writeShellScriptBin "git-fixup" ''
+    rev="$(git rev-parse "$1")"
+    git commit --fixup "$@"
+    GIT_SEQUENCE_EDITOR=true git rebase -i --autostash --autosquash $rev^
+  '';
+in
 {
+  home.packages = [
+    git-fixup
+  ];
   programs.git = {
     enable = true;
-    userName = "Bruno Manoel";
-    userEmail = "26349861+brunomanoel@users.noreply.github.com";
-    # signing.signByDefault = true;
-    # signing.format = "ssh";
+    settings = {
+      user = {
+        name = "Bruno Manoel";
+        email = "26349861+brunomanoel@users.noreply.github.com";
+      };
+      pull = {
+        rebase = true;
+      };
+      branch = {
+        autosetuprebase = "always";
+      };
+      init.defaultBranch = "main";
+    };
+    signing.signByDefault = true;
+    signing.format = "ssh";
     signing.key = "key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTYDR1Kt9tyrI4qn0ZMK5W7LHt4sR6DPduoF5BfCkAW 26349861+brunomanoel@users.noreply.github.com";
-    extraConfig = ''
-      [pull]
-        rebase = true
-      [branch]
-        autosetuprebase = always
-    '';
+    ignores = [
+      ".direnv"
+    ];
     delta = {
       enable = true;
       options = {

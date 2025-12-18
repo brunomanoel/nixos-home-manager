@@ -1,7 +1,11 @@
-{ pkgs ? import <nixpkgs> {}, ... }: {
+{
+  pkgs ? import <nixpkgs> { },
+  ...
+}:
+{
   default = pkgs.mkShell {
     NIX_CONFIG = "extra-experimental-features = nix-command flakes ca-derivations";
-    FLAKE = "$HOME/dotfiles";
+    NH_FLAKE = "$HOME/dotfiles";
     nativeBuildInputs = with pkgs; [
       fastfetch
       pfetch

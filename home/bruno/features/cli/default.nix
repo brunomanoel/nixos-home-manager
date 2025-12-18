@@ -1,5 +1,9 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./zsh.nix
     ./starship.nix
@@ -17,6 +21,7 @@
     fastfetch
     pfetch
     ncdu
+    wget
 
     # Nix Tools
     comma # Runs software withouth installing it

@@ -12,6 +12,8 @@
     ./global
 
     ./features/git.nix
+    # ./features/ollama.nix
+    ./features/dev/reverse-engineer.nix
   ];
 
 }

@@ -11,6 +11,7 @@
       ./font.nix
       ./zsh.nix
       ./nix.nix
+      ./cuda.nix
     ];
 
 #   home-manager.useGlobalPkgs = true;

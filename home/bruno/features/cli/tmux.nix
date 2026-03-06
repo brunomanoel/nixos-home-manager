@@ -1,12 +1,16 @@
-{ config, pkgs, lib, ... }:
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   programs.tmux = {
     enable = true;
     baseIndex = 1;
     clock24 = true;
     newSession = true;
     customPaneNavigationAndResize = true;
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
     mouse = true;
     # keyMode = "vi";
     sensibleOnTop = true;
@@ -14,8 +18,18 @@
       {
         plugin = catppuccin;
         extraConfig = ''
-          set -g @catppuccin_window_status 'yes'
-          set -g @catppuccin_window_default_text '#W'
+          set -g @catppuccin_flavor "mocha"
+          set -g @catppuccin_window_status_style "rounded"
+          set -g @catppuccin_window_flags "icon"
+
+          # Make the status line pretty and add some modules
+          set -g status-right-length 100
+          set -g status-left-length 100
+          set -g status-left ""
+          set -g status-right "#{E:@catppuccin_status_application}"
+          set -agF status-right "#{E:@catppuccin_status_cpu}"
+          set -ag status-right "#{E:@catppuccin_status_session}"
+          set -ag status-right "#{E:@catppuccin_status_uptime}"
         '';
       }
       {
@@ -29,6 +43,7 @@
           set -g @continuum-save-interval '10' # minutes
         '';
       }
+      cpu
       vim-tmux-navigator
       yank
       tmux-thumbs
@@ -40,7 +55,8 @@
       bind-key -n M-H previous-window
       bind-key -n M-L next-window
 
-      set -as terminal-overrides ",gnome*:Tc"
+      set -as terminal-features ",xterm-256color:RGB"
+      set -as terminal-features ",gnome*:RGB"
 
       # Smart pane switching with awareness of Vim splits.
       # See: https://github.com/christoomey/vim-tmux-navigator

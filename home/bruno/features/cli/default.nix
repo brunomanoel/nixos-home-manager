@@ -27,7 +27,7 @@
     comma # Runs software withouth installing it
     nixd # Nix LSP
     alejandra # Nix formatter
-    nixfmt-rfc-style
+    nixfmt
     nvd # Nix version manager
     nix-diff # Differ, more detailed
     nix-output-monitor # Monitor nix builds
@@ -42,8 +42,8 @@
     bottom.enable = true;
     ripgrep.enable = true; # Better grep
     zoxide.enable = true; # Better cd
-    dircolors.enable = true;
     navi.enable = true;
+    jq.enable = true;
   };
 
   programs.pay-respects = {
@@ -80,13 +80,19 @@
     ];
   };
 
-  programs.alacritty = {
+  programs.wezterm = {
     enable = true;
-    settings = {
-      window.opacity = 0.8;
-      font.size = 16.0;
-      font.normal.family = "FiraCode Nerd Font";
-    };
+    extraConfig = ''
+      local wezterm = require 'wezterm'
+      local config = wezterm.config_builder()
+
+      config.font = wezterm.font('FiraCode Nerd Font')
+      config.font_size = 16.0
+      config.window_background_opacity = 0.8
+      config.color_scheme = 'Catppuccin Mocha'
+
+      return config
+    '';
   };
 
   programs.direnv = {

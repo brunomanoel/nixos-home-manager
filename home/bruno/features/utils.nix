@@ -8,6 +8,7 @@
     libgtop
     noisetorch
     qalculate-gtk
+    krita #painting app
   ];
 
   programs.chromium = {

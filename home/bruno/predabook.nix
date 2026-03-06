@@ -18,5 +18,6 @@
     ./features/gnome.nix
     ./features/obs-studio.nix
     ./features/video-edit.nix
+    ./features/ollama.nix
   ];
 }

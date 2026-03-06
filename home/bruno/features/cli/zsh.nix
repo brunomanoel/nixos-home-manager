@@ -3,8 +3,7 @@
   pkgs,
   lib,
   ...
-}:
-{
+}: {
   programs.zsh = {
     enable = true;
     autocd = true;
@@ -72,9 +71,14 @@
         src = pkgs.zsh-forgit;
       }
       {
-        name = "fzf-tab";
+        name = "zsh-fzf-tab";
         file = "share/fzf-tab/fzf-tab.plugin.zsh";
         src = pkgs.zsh-fzf-tab;
+      }
+      {
+        name = "zsh-autopair";
+        file = "share/zsh/zsh-autopair/autopair.zsh";
+        src = pkgs.zsh-autopair;
       }
     ];
     shellAliases = {

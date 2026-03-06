@@ -18,6 +18,10 @@
       controlMaster = "no";
       controlPath = "~/.ssh/master-%r@%n:%p";
       controlPersist = "no";
+      # macOS Keychain: persists keys across reboots without manual ssh-add
+      extraOptions = lib.mkIf pkgs.stdenv.isDarwin {
+        UseKeychain = "yes";
+      };
     };
     matchBlocks = {
       "github.com" = {

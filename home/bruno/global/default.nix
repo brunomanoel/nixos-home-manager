@@ -32,7 +32,11 @@
     };
   };
 
-  systemd.user.startServices = "sd-switch";
+  systemd.user.startServices = lib.mkIf pkgs.stdenv.isLinux "sd-switch";
+
+  # Auto-start SSH agent as a systemd user service (Linux only)
+  # macOS uses its own Keychain agent; UseKeychain is set in ssh.nix
+  services.ssh-agent.enable = lib.mkIf pkgs.stdenv.isLinux true;
 
   programs = {
     home-manager.enable = true;
@@ -41,7 +45,11 @@
 
   home = {
     username = lib.mkDefault "bruno";
-    homeDirectory = lib.mkDefault "/home/${config.home.username}";
+    homeDirectory = lib.mkDefault (
+      if pkgs.stdenv.isDarwin
+      then "/Users/${config.home.username}"
+      else "/home/${config.home.username}"
+    );
     stateVersion = lib.mkDefault "23.05";
     sessionPath = ["$HOME/.local/bin"];
     sessionVariables = {

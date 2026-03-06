@@ -14,9 +14,9 @@
     ../dev/neovim
   ];
 
-  home.packages = with pkgs; [
-    wl-clipboard
-    unzip
+  home.packages = with pkgs;
+    [
+      unzip
     tldr
     fastfetch
     pfetch
@@ -32,7 +32,10 @@
     nix-diff # Differ, more detailed
     nix-output-monitor # Monitor nix builds
     nh # Nice wrapper for NixOS and Home Manager
-  ];
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      wl-clipboard
+    ];
 
   programs = {
     bash.enable = true;

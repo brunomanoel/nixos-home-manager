@@ -5,9 +5,13 @@
     # Nix Ecosystem
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
-    systems.url = "github:nix-systems/default-linux";
+    systems.url = "github:nix-systems/default";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
+
+    # macOS
+    nix-darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
@@ -24,6 +28,7 @@
   outputs = {
     self,
     nixpkgs,
+    nix-darwin,
     home-manager,
     systems,
     ...
@@ -58,6 +63,16 @@
       };
     };
 
+    # macOS (nix-darwin) configuration entrypoint
+    # Available through 'darwin-rebuild --flake .#your-hostname'
+    darwinConfigurations = {
+      mac = nix-darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = {inherit inputs outputs;};
+        modules = [./hosts/mac];
+      };
+    };
+
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
@@ -70,6 +85,11 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
         modules = [./home/bruno/wsl.nix];
+      };
+      "bruno@mac" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [./home/bruno/mac.nix];
       };
     };
   };

@@ -23,10 +23,8 @@
     wget
 
     # Nix Tools
-    comma # Runs software withouth installing it
     nixd # Nix LSP
     alejandra # Nix formatter
-    nixfmt
     nvd # Nix version manager
     nix-diff # Differ, more detailed
     nix-output-monitor # Monitor nix builds

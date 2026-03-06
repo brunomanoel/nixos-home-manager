@@ -8,6 +8,7 @@
 }: {
   imports =
     [
+      inputs.nix-index-database.hmModules.nix-index
       ./fonts.nix
       ../features/cli
     ];
@@ -37,6 +38,7 @@
   programs = {
     home-manager.enable = true;
     git.enable = true;
+    nix-index-database.comma.enable = true;
   };
 
   home = {

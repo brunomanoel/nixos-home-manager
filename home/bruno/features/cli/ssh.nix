@@ -4,6 +4,14 @@
   lib,
   ...
 }: {
+  # Linux: keychain starts the SSH agent and pre-loads keys at login.
+  # macOS: UseKeychain in the matchBlock delegates to the system Keychain.
+  programs.keychain = lib.mkIf pkgs.stdenv.isLinux {
+    enable = true;
+    keys = ["github.key"];
+    extraFlags = ["--quiet"];
+  };
+
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;

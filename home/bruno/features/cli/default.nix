@@ -10,7 +10,6 @@
     ./fzf.nix
     ./tmux.nix
     ./ssh.nix
-    ./gpg.nix
     ../dev/neovim
   ];
 

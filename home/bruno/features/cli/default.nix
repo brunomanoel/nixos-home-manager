@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -24,7 +23,7 @@
 
     # Nix Tools
     nixd # Nix LSP
-    alejandra # Nix formatter
+    nixfmt-rfc-style # Nix formatter (official RFC 166 style)
     nvd # Nix version manager
     nix-diff # Differ, more detailed
     nix-output-monitor # Monitor nix builds

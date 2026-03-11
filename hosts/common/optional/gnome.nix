@@ -1,11 +1,19 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.wayland = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  environment.gnome.excludePackages = (with pkgs; [
+  services.displayManager.gdm.enable = true;
+  services.displayManager.gdm.wayland = true;
+  services.desktopManager.gnome.enable = true;
+  environment.gnome.excludePackages = (
+    with pkgs;
+    [
       gnome-photos
       gnome-tour
       cheese # webcam tool
@@ -27,7 +35,8 @@
       gnome-connections
       simple-scan
       gnome-calculator
-    ]);
+    ]
+  );
   services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 
   programs.dconf.enable = true; # https://nixos.wiki/wiki/GNOME

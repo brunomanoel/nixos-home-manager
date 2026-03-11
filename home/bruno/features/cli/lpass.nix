@@ -21,7 +21,7 @@ let
       # Authenticate if needed
       if ! lpass status --quiet 2>/dev/null; then
         echo "LastPass: login required to bootstrap SSH key for $host"
-        lpass login --trust "$(git config user.email)" || return 1
+        lpass login --trust || return 1
       fi
 
       # Fetch private key (SSH Key note → "Private Key" field)

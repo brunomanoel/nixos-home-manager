@@ -13,7 +13,8 @@
     port = 11434;
     loadModels = [
       "nomic-embed-text" # easy-memory default
-      "embeddinggemma:300m" # local-rag default
+      "embeddinggemma:300m" # local-rag embeddings
+      "qwen2.5-coder:1.5b" # local-rag descriptions
     ];
   };
 

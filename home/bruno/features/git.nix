@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = [
   ];
 
@@ -19,7 +20,7 @@
     };
     signing.signByDefault = true;
     signing.format = "ssh";
-    signing.key = "key::ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGTYDR1Kt9tyrI4qn0ZMK5W7LHt4sR6DPduoF5BfCkAW 26349861+brunomanoel@users.noreply.github.com";
+    signing.key = "~/.ssh/github.pub";
     ignores = [
       ".direnv"
     ];

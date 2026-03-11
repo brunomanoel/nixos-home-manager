@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./zsh.nix
     ./starship.nix
@@ -12,22 +13,23 @@
     ../dev/neovim
   ];
 
-  home.packages = with pkgs;
+  home.packages =
+    with pkgs;
     [
       unzip
-    tldr
-    fastfetch
-    pfetch
-    ncdu
-    wget
+      tldr
+      fastfetch
+      pfetch
+      ncdu
+      wget
 
-    # Nix Tools
-    nixd # Nix LSP
-    nixfmt-rfc-style # Nix formatter (official RFC 166 style)
-    nvd # Nix version manager
-    nix-diff # Differ, more detailed
-    nix-output-monitor # Monitor nix builds
-    nh # Nice wrapper for NixOS and Home Manager
+      # Nix Tools
+      nixd # Nix LSP
+      nixfmt # Nix formatter (official RFC 166 style)
+      nvd # Nix version manager
+      nix-diff # Differ, more detailed
+      nix-output-monitor # Monitor nix builds
+      nh # Nice wrapper for NixOS and Home Manager
     ]
     ++ lib.optionals stdenv.isLinux [
       wl-clipboard
@@ -35,7 +37,9 @@
 
   programs = {
     bash.enable = true;
-    command-not-found.enable = true;
+    command-not-found.enable = false;
+    nix-index.enable = true;
+    nix-index.symlinkToCacheHome = true;
     htop.enable = true;
     btop.enable = true;
     bottom.enable = true;

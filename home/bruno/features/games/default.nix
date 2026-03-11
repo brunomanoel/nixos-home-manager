@@ -14,7 +14,7 @@
     gamescope
     gamemode
     protontricks
-    wineWowPackages.waylandFull
+    # wineWowPackages.waylandFull
     # wine-wayland
     # wine
   ];

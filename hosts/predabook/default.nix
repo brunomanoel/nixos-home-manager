@@ -6,7 +6,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules from other flakes (such as nixos-hardware):
@@ -26,6 +27,7 @@
     ../common/optional/docker.nix
     ../common/optional/virtualbox.nix
     ../common/optional/gaming.nix
+    ../common/optional/ai-services.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
@@ -46,7 +48,9 @@
     # "intel_idle.max_cstate=1" # In case your laptop hangs randomly
   ];
 
-  boot.kernel.sysctl = { "vm.swappiness" = 10;};
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+  };
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback # OBS Studio virtual camera requirement https://nixos.wiki/wiki/OBS_Studio
@@ -94,9 +98,42 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   programs.kdeconnect.enable = true;
+
+  # Allow dynamically linked executables (e.g. vscode extensions, .NET, claude-code native binary)
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    openssl
+    curl
+    icu
+    libxml2
+    libz
+    glib
+    nss
+    nspr
+    dbus
+    atk
+    cups
+    libdrm
+    gtk3
+    pango
+    cairo
+    xorg.libX11
+    xorg.libXcomposite
+    xorg.libXdamage
+    xorg.libXext
+    xorg.libXfixes
+    xorg.libXrandr
+    xorg.libxcb
+    mesa
+    expat
+    libxkbcommon
+    alsa-lib
+  ];
 }

@@ -1,5 +1,11 @@
 { config, pkgs, ... }:
 {
+  dconf.settings = {
+    "org/gnome/mutter" = {
+      experimental-features = [ "scale-monitor-framebuffer" ];
+    };
+  };
+
   home.packages = with pkgs; [
     gnome-tweaks
     # gnomeExtensions.tray-icons-reloaded

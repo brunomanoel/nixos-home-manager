@@ -5,13 +5,14 @@
   config,
   outputs,
   ...
-}: {
-  imports =
-    [
-      inputs.nix-index-database.hmModules.nix-index
-      ./fonts.nix
-      ../features/cli
-    ];
+}:
+{
+  imports = [
+    inputs.nix-index-database.homeModules.nix-index
+    ./fonts.nix
+    ../features/cli
+    ../features/claude.nix
+  ];
 
   nix = {
     package = lib.mkDefault pkgs.nix;
@@ -21,12 +22,12 @@
         "flakes"
         "ca-derivations"
       ];
-    #   warn-dirty = false;
+      #   warn-dirty = false;
     };
   };
 
   nixpkgs = {
-    overlays = [];
+    overlays = [ ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
@@ -44,16 +45,14 @@
   home = {
     username = lib.mkDefault "bruno";
     homeDirectory = lib.mkDefault (
-      if pkgs.stdenv.isDarwin
-      then "/Users/${config.home.username}"
-      else "/home/${config.home.username}"
+      if pkgs.stdenv.isDarwin then "/Users/${config.home.username}" else "/home/${config.home.username}"
     );
     stateVersion = lib.mkDefault "23.05";
-    sessionPath = ["$HOME/.local/bin"];
+    sessionPath = [ "$HOME/.local/bin" ];
     sessionVariables = {
       NH_FLAKE = "$HOME/dotfiles";
       # BROWSER = "firefox";
-    # TERMINAL = "alacritty";
+      # TERMINAL = "alacritty";
     };
   };
 }

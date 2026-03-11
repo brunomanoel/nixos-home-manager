@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     # include NixOS-WSL modules
     inputs.nixos-wsl.nixosModules.default
@@ -13,6 +14,7 @@
     ../common/global
     ../common/users/bruno
     ../common/optional/docker.nix
+    ../common/optional/ai-services.nix
   ];
 
   wsl.enable = true;
@@ -24,8 +26,6 @@
   services.vscode-server.enable = true;
   services.vscode-server.enableFHS = true;
   services.vscode-server.extraRuntimeDependencies = [ pkgs.wget ];
-  services.open-webui.enable = true; #enable web portal for ollama at http://localhost:8080
-
   environment.systemPackages = [
   ];
 

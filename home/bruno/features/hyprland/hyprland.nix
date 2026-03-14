@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  xdg.portal.config.common.default = "*";
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = null; # use system package from programs.hyprland

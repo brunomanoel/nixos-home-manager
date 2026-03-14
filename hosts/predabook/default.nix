@@ -37,6 +37,14 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
+  boot.plymouth = {
+    enable = true;
+    themePackages = [
+      (pkgs.adi1090x-plymouth-themes.override { selected_themes = [ "darth_vader" ]; })
+    ];
+    theme = "darth_vader";
+  };
+
   boot.kernelParams = [
     "i915.enable_fbc=1"
     "i915.enable_psr=0"

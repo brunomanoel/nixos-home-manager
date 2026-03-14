@@ -20,6 +20,7 @@
     ../common/users/bruno
     ../common/global
     ../common/optional/gnome.nix
+    ../common/optional/hyprland.nix
     ../common/optional/docker.nix
     # ../common/optional/virtualbox.nix # disabled: VirtualBox modules incompatible with kernel 6.19+
     ../common/optional/gaming.nix

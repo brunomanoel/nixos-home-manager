@@ -74,7 +74,7 @@
           }
           {
             type = "host";
-            key = "󰌢  Host";
+            key = "󰌢 Host";
           }
           {
             type = "uptime";
@@ -82,7 +82,7 @@
           }
           {
             type = "packages";
-            key = "󰏗  Packages";
+            key = "󰏗 Packages";
           }
           {
             type = "shell";
@@ -103,7 +103,7 @@
           }
           {
             type = "gpu";
-            key = "󰍛  GPU";
+            key = "󰍛 GPU";
           }
           {
             type = "memory";
@@ -111,7 +111,7 @@
           }
           {
             type = "swap";
-            key = "󰓡  Swap";
+            key = "󰓡 Swap";
           }
           {
             type = "disk";
@@ -126,7 +126,7 @@
           "break"
           {
             type = "display";
-            key = "󰍹  Display";
+            key = "󰍹 Display";
           }
           {
             type = "battery";
@@ -134,7 +134,7 @@
           }
           {
             type = "localip";
-            key = "󰈀  IP";
+            key = "󰈀 IP";
           }
           "break"
           {
@@ -149,7 +149,7 @@
           }
           {
             type = "command";
-            key = "󰍛  GPU Driver";
+            key = "󰍛 GPU Driver";
             text = "cat /proc/driver/nvidia/version 2>/dev/null | head -1 | grep -oP '\\d+\\.\\d+' | head -1 || echo 'N/A'";
           }
           "break"

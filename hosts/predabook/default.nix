@@ -44,7 +44,7 @@
   ];
 
   boot.kernel.sysctl = {
-    "vm.swappiness" = 100;
+    "vm.swappiness" = 150; # zram-aware: favors zram over disk, but less aggressive than 180
     "vm.vfs_cache_pressure" = 50;
     "vm.dirty_ratio" = 10;
     "vm.dirty_background_ratio" = 5;
@@ -52,7 +52,7 @@
 
   zramSwap = {
     enable = true;
-    memoryPercent = 75;
+    memoryPercent = 50; # 8GB compressed — enough headroom without flooding SATA swap
   };
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [

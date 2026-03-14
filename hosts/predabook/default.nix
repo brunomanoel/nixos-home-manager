@@ -52,7 +52,7 @@
 
   zramSwap = {
     enable = true;
-    memoryPercent = 50; # 8GB compressed — enough headroom without flooding SATA swap
+    memoryPercent = 75; # ~12GB compressed — safe without disk swap (OOM kills vs freeze)
   };
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [

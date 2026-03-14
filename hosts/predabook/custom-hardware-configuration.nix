@@ -1,8 +1,13 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
-    # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  # services.xserver.videoDrivers — covered by inputs.hardware.nixosModules.common-gpu-nvidia
 
   hardware = {
     graphics = {
@@ -32,19 +37,23 @@
       open = true;
 
       # Enable the Nvidia settings menu,
-  	  # accessible via `nvidia-settings`.
+      # accessible via `nvidia-settings`.
       nvidiaSettings = true;
 
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
 
       prime = {
+        offload.enable = lib.mkForce false;
         sync.enable = true;
         nvidiaBusId = "PCI:1:0:0";
         intelBusId = "PCI:0:2:0";
       };
     };
   };
+
+  # GPU containers (docker run --gpus all)
+  hardware.nvidia-container-toolkit.enable = true;
 
   # SSD support
   services.fstrim.enable = true;

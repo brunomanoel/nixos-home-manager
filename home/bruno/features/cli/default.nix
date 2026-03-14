@@ -8,7 +8,6 @@
     ./zsh.nix
     ./starship.nix
     ./fzf.nix
-    ./tmux.nix
     ./ssh.nix
     ./lpass.nix
     ../dev/neovim

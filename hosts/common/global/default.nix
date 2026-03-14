@@ -3,25 +3,25 @@
   inputs,
   outputs,
   ...
-}: {
-  imports =
-    [
-      inputs.home-manager.nixosModules.home-manager
-      ./locale.nix
-      ./font.nix
-      ./zsh.nix
-      ./nix.nix
-      ./cuda.nix
-    ];
+}:
+{
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+    ./locale.nix
+    ./font.nix
+    ./zsh.nix
+    ./nix.nix
+    ./cuda.nix
+  ];
 
-#   home-manager.useGlobalPkgs = true;
+  home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;
   };
 
   nixpkgs = {
-    overlays = [];
+    overlays = [ ];
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;

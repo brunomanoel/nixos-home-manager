@@ -17,6 +17,8 @@
         autosetuprebase = "always";
       };
       init.defaultBranch = "main";
+      rerere.enabled = true;
+      fetch.prune = true;
     };
     signing.signByDefault = true;
     signing.format = "ssh";

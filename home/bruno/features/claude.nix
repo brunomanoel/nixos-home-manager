@@ -57,6 +57,20 @@ let
     **Só leia arquivos markdown (CLAUDE.md, CONTEXT.md, planos) se o memory não trouxer
     contexto suficiente.** Leitura de arquivo é fallback, não ponto de partida.
 
+    ### Anti-padrões — nunca faça isso
+
+    Estas ações são **erros**, não opções:
+
+    - Abrir um arquivo com `Read` para localizar uma função → use `memory_search_code` primeiro
+    - Usar `Bash grep` ou `mcp_grep` para encontrar onde um símbolo é usado → use `memory_find_usages`
+    - Usar `Task` agent para explorar o codebase → use `memory_search_code` + `memory_get_file_context`
+    - Iniciar uma sessão sem chamar `memory_recall` → sempre a primeira chamada, sem exceção
+    - Ler um arquivo inteiro para entender o contexto ao redor de um símbolo → use `memory_get_file_context`
+    - Acumular descobertas para registrar no final da sessão → registre com `memory_remember` imediatamente
+
+    O índice vetorial existe, está populado e é mais rápido que qualquer busca em arquivo.
+    Ignorá-lo desperdiça tokens e tempo sem nenhum benefício.
+
     ### Escrita — quando registrar
 
     Após qualquer descoberta não-óbvia, chame `memory_remember` imediatamente:

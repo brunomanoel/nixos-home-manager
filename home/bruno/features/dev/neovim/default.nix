@@ -25,7 +25,6 @@
       # }
       lualine-nvim
       which-key-nvim
-      vim-tmux-navigator
 
       # Themes
       dracula-nvim

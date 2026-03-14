@@ -1,26 +1,26 @@
 { config, pkgs, ... }:
 {
-  # programs.steam = {
-    # enable = true;
-    # remotePlay.openFirewall = true;
-    # dedicatedServer.openFirewall = true;
-  # };
-
   home.packages = with pkgs; [
-    steam
     heroic
     prismlauncher
     lutris
-    gamescope
-    gamemode
-    protontricks
-    # wineWowPackages.waylandFull
-    # wine-wayland
-    # wine
   ];
 
   programs.mangohud = {
     enable = true;
-    enableSessionWide = true;
+    enableSessionWide = false;
+    settings = {
+      toggle_hud = "Shift_R+F12";
+      position = "top-left";
+      font_size = 20;
+      gpu_stats = true;
+      gpu_temp = true;
+      gpu_power = true;
+      cpu_stats = true;
+      cpu_temp = true;
+      ram = true;
+      vram = true;
+      frame_timing = true;
+    };
   };
 }

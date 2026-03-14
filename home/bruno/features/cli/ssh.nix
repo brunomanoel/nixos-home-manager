@@ -3,13 +3,14 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   # Linux: keychain starts the SSH agent and pre-loads keys at login.
   # macOS: UseKeychain in the matchBlock delegates to the system Keychain.
   programs.keychain = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
-    keys = ["github.key"];
-    extraFlags = ["--quiet"];
+    keys = [ "github.key" ];
+    extraFlags = [ "--quiet" ];
   };
 
   programs.ssh = {
@@ -23,9 +24,9 @@
       serverAliveCountMax = 3;
       hashKnownHosts = true;
       userKnownHostsFile = "~/.ssh/known_hosts";
-      controlMaster = "no";
+      controlMaster = "auto";
       controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "no";
+      controlPersist = "10m";
       # macOS Keychain: persists keys across reboots without manual ssh-add
       extraOptions = lib.mkIf pkgs.stdenv.isDarwin {
         UseKeychain = "yes";

@@ -16,21 +16,11 @@
 
   nix = {
     package = lib.mkDefault pkgs.nix;
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-        "ca-derivations"
-      ];
-      #   warn-dirty = false;
-    };
-  };
-
-  nixpkgs = {
-    overlays = [ ];
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = _: true;
+    # experimental-features set at system level (nix.nix / nix-darwin.nix)
+    gc = {
+      automatic = true;
+      frequency = "weekly";
+      options = "--delete-older-than 7d";
     };
   };
 

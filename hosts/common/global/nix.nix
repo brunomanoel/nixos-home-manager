@@ -20,6 +20,8 @@ in
         "flakes"
         "ca-derivations"
       ];
+      max-jobs = 4;
+      cores = 3;
       #   warn-dirty = false;
       #   flake-registry = ""; # Disable global flake registry
     };

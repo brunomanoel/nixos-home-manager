@@ -24,6 +24,13 @@
     };
   };
 
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = _: true;
+    };
+  };
+
   systemd.user.startServices = lib.mkIf pkgs.stdenv.isLinux "sd-switch";
 
   programs = {

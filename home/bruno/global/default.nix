@@ -19,7 +19,7 @@
     # experimental-features set at system level (nix.nix / nix-darwin.nix)
     gc = {
       automatic = true;
-      frequency = "weekly";
+      dates = "weekly";
       options = "--delete-older-than 7d";
     };
   };

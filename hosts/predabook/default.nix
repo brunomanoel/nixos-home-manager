@@ -142,4 +142,15 @@
     libxkbcommon
     alsa-lib
   ];
+
+  specialisation = {
+    xanmod.configuration = {
+      system.nixos.tags = [ "xanmod" ];
+      boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;
+    };
+    latest.configuration = {
+      system.nixos.tags = [ "latest" ];
+      boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+    };
+  };
 }

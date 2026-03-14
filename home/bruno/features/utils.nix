@@ -8,7 +8,8 @@
     libgtop
     noisetorch
     qalculate-gtk
-    krita #painting app
+    krita # painting app
+    stremio-linux-shell
   ];
 
   programs.chromium = {
@@ -17,7 +18,7 @@
 
   programs.firefox = {
     enable = true;
-      # package = pkgs.firefox-wayland.override {
+    # package = pkgs.firefox-wayland.override {
     # package = pkgs.firefox.override {
     #   cfg = {
     #     # nativeMessagingHosts.gsconnect = true;

@@ -2,7 +2,7 @@
 let
   hypr-keybinds = pkgs.writeShellScriptBin "hypr-keybinds" ''
     hyprctl binds -j | ${pkgs.jq}/bin/jq -r '.[] | "\(.modmask | tostring | gsub("64";"Super") | gsub("1";"Shift") | gsub("0";"")) + \(.key) → \(.dispatcher) \(.arg)"' | \
-      ${pkgs.rofi-wayland}/bin/rofi -dmenu -i -p "Keybinds" -theme-str 'window { width: 800px; }'
+      ${pkgs.rofi}/bin/rofi -dmenu -i -p "Keybinds" -theme-str 'window { width: 800px; }'
   '';
 in
 {

@@ -81,6 +81,20 @@ let
 
     Não acumule para registrar no final — registre assim que descobrir.
 
+    ### Limite de tamanho — regra crítica, não negociável
+
+    O `memory_remember` **trunca silenciosamente** conteúdo longo sem aviso.
+    Dados perdidos não são recuperáveis. Para garantir integridade:
+
+    1. **Máximo 280 caracteres por memória.** Uma decisão = uma memória.
+    2. **Após cada `memory_remember`, faça `memory_recall` imediato** com termo do
+       final do conteúdo salvo. Se não encontrar, deletar e resalvar menor.
+    3. **Nunca salvar um plano inteiro numa memória.** Quebrar em itens atômicos.
+    4. **Se o usuário pedir para salvar algo grande**, avisar que será quebrado
+       em partes e salvar cada parte com tags consistentes para reagrupar.
+
+    Violação desta regra causa perda permanente de contexto entre sessões.
+
     ## MCPs — use automaticamente, sem precisar ser solicitado
 
     **context / context7** — sempre que precisar de documentação de biblioteca ou framework, siga esta ordem sem pular etapas:
@@ -154,16 +168,6 @@ in
           "-y"
           "@playwright/mcp"
         ];
-      };
-      brave-search = {
-        command = "npx";
-        args = [
-          "-y"
-          "@brave/brave-search-mcp-server"
-        ];
-        env = {
-          BRAVE_API_KEY = ""; # Get key at https://api-dashboard.search.brave.com/app/plans
-        };
       };
     };
   };

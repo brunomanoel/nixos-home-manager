@@ -22,4 +22,8 @@
     ./features/video-edit.nix
 
   ];
+
+  home.packages = with pkgs; [
+    unityhub
+  ];
 }

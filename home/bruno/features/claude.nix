@@ -148,6 +148,23 @@ in
           "serve"
         ];
       };
+      playwright = {
+        command = "npx";
+        args = [
+          "-y"
+          "@playwright/mcp"
+        ];
+      };
+      brave-search = {
+        command = "npx";
+        args = [
+          "-y"
+          "@brave/brave-search-mcp-server"
+        ];
+        env = {
+          BRAVE_API_KEY = ""; # Get key at https://api-dashboard.search.brave.com/app/plans
+        };
+      };
     };
   };
 

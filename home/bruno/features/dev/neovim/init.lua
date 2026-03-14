@@ -96,18 +96,12 @@ vim.keymap.set('n', '<leader>s/', function()
     }
 end, { desc = '[S]earch [/] in Open Files' })
 
---Treesiter
-require'nvim-treesitter.configs'.setup {
-  highlight = {
-    enable = true,
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+-- Treesitter: grammars installed via Nix, highlight enabled via native API
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
+})
 
 -- nvim-tree
 vim.g.loaded_netrw = 1

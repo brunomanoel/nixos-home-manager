@@ -21,7 +21,7 @@
     ../common/global
     ../common/optional/gnome.nix
     ../common/optional/docker.nix
-    ../common/optional/virtualbox.nix
+    # ../common/optional/virtualbox.nix # disabled: VirtualBox modules incompatible with kernel 6.19+
     ../common/optional/gaming.nix
     ../common/optional/ai-services.nix
   ];
@@ -42,7 +42,7 @@
 
   boot.kernelParams = [
     "i915.enable_fbc=1"
-    "i915.enable_psr=2"
+    "i915.enable_psr=0"
     # "intel_idle.max_cstate=1" # In case your laptop hangs randomly
   ];
 

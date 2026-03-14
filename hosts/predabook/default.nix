@@ -31,14 +31,10 @@
 
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  #  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 3;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.devices = [ "nodev" ];
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.configurationLimit = 5;
 
   boot.kernelParams = [
     "i915.enable_fbc=1"
@@ -68,6 +64,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

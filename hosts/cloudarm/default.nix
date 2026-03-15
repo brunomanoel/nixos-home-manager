@@ -175,64 +175,8 @@
   };
 
   # --- Supergateway: expose stdio MCPs as SSE over the network ---
-
-  # memory (local-rag) on port 8001
-  systemd.services.mcp-memory = {
-    description = "MCP Memory (local-rag) via supergateway";
-    after = [
-      "network.target"
-      "ollama.service"
-      "qdrant.service"
-    ];
-    wants = [
-      "ollama.service"
-      "qdrant.service"
-    ];
-    wantedBy = [ "multi-user.target" ];
-    path = [
-      pkgs.bash
-      pkgs.nodejs_22
-      pkgs.coreutils
-      pkgs.python3 # node-gyp needs python
-      pkgs.gcc # node-gyp needs C compiler
-      pkgs.gnumake # node-gyp needs make
-    ];
-    environment = {
-      HOME = "/var/lib/mcp-memory";
-      XDG_DATA_DIRS = "/var/lib/mcp-memory/.local/share";
-      XDG_CONFIG_HOME = "/var/lib/mcp-memory/.config";
-    };
-    serviceConfig = {
-      Type = "simple";
-      StateDirectory = "mcp-memory";
-      ExecStart =
-        let
-          configFile = pkgs.writeText "local-rag-config.json" (
-            builtins.toJSON {
-              "qdrant-url" = "http://localhost:6333";
-              "embed-provider" = "ollama";
-              "embed-model" = "qwen3-embedding:8b";
-              "ollama-url" = "http://localhost:11434";
-              "generate-descriptions" = true;
-              "llm-provider" = "ollama";
-              "llm-model" = "qwen2.5-coder:14b";
-              "dashboard" = false;
-            }
-          );
-          localRagScript = pkgs.writeShellScript "local-rag-serve" ''
-            export PATH="${pkgs.nodejs_22}/bin:$PATH"
-            exec ${pkgs.nodejs_22}/bin/npx -y @13w/local-rag serve --config ${configFile}
-          '';
-        in
-        ''
-          ${pkgs.nodejs_22}/bin/npx -y supergateway \
-            --stdio "${localRagScript}" \
-            --port 8001
-        '';
-      Restart = "on-failure";
-      RestartSec = 10;
-    };
-  };
+  # Note: memory (local-rag) runs locally on dev machines via Claude Code stdio,
+  # connecting to Ollama/Qdrant on cloudarm via WireGuard. No need for supergateway.
 
   # fetch on port 8003
   systemd.services.mcp-fetch = {

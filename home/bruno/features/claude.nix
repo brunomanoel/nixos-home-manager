@@ -164,14 +164,8 @@ in
         ];
       };
       playwright = {
-        command = "npx";
-        args = [
-          "-y"
-          "@playwright/mcp"
-        ];
-        env = {
-          CHROME_PATH = "${pkgs.chromium}/bin/chromium";
-        };
+        type = "remote";
+        url = "http://10.100.0.1:8002/sse";
       };
     };
   };

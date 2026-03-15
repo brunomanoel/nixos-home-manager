@@ -1,6 +1,39 @@
 # Pelican Panel + Wings — game server management
-# Panel installed manually at /var/www/pelican (Laravel + SQLite)
-# Wings is a Go binary managing Docker containers
+#
+# NixOS provides: Caddy, PHP-FPM, systemd services (queue worker, scheduler, wings)
+# Panel code is installed MANUALLY (Laravel app, not nixified).
+#
+# === First-time setup ===
+#
+# 1. Install panel:
+#    mkdir -p /var/www/pelican && cd /var/www/pelican
+#    curl -L https://github.com/pelican-dev/panel/releases/latest/download/panel.tar.gz | tar -xzv
+#    COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
+#
+# 2. Setup database and app key:
+#    php artisan key:generate --force
+#    php artisan migrate --seed --force
+#
+# 3. Create admin user:
+#    php artisan p:user:make --email=EMAIL --username=USER --password=PASS --admin=1 --no-interaction
+#
+# 4. Fix ownership:
+#    chown -R pelican:pelican /var/www/pelican
+#    chmod -R 755 /var/www/pelican/storage /var/www/pelican/bootstrap/cache
+#
+# 5. Configure Wings (after creating a Node in the Panel UI):
+#    curl -sfL https://github.com/pelican-dev/wings/releases/download/v1.0.0-beta24/wings_linux_arm64 -o /etc/pelican/wings
+#    chmod +x /etc/pelican/wings
+#    /etc/pelican/wings configure --panel-url http://10.100.0.1 --token TOKEN --node 1 --allow-insecure --config /var/lib/wings/config.yml
+#    systemctl restart wings
+#
+# === Updating ===
+#
+# cd /var/www/pelican
+# curl -L https://github.com/pelican-dev/panel/releases/latest/download/panel.tar.gz | tar -xzv
+# COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader
+# php artisan migrate --force
+# chown -R pelican:pelican /var/www/pelican
 {
   config,
   pkgs,

@@ -60,7 +60,6 @@ let
     ])
   );
   panelDir = "/var/www/pelican";
-  casaosContainerIp = "10.200.0.166";
 in
 {
   # PHP-FPM pool for Pelican
@@ -82,25 +81,14 @@ in
     };
   };
 
-  # Caddy — reverse proxy for all services on port 80
-  services.caddy = {
-    enable = true;
-    virtualHosts = {
-      # Pelican Panel — default (IP público + pelican.local)
-      ":80" = {
-        extraConfig = ''
-          root * ${panelDir}/public
-          php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
-          file_server
-        '';
-      };
-      # CasaOS — via hostname
-      "http://casaos.local" = {
-        extraConfig = ''
-          reverse_proxy ${casaosContainerIp}:80
-        '';
-      };
-    };
+  # Caddy virtualhost for Pelican Panel (default, IP público + pelican.local)
+  services.caddy.enable = true;
+  services.caddy.virtualHosts.":80" = {
+    extraConfig = ''
+      root * ${panelDir}/public
+      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
+      file_server
+    '';
   };
 
   # Pelican queue worker (background jobs)

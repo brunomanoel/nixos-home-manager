@@ -106,7 +106,15 @@
     };
   };
 
-  # --- CasaOS container (auto-provision) ---
+  # --- CasaOS ---
+  # Caddy virtualhost for CasaOS (via hostname routing)
+  services.caddy.virtualHosts."http://casaos.local" = {
+    extraConfig = ''
+      reverse_proxy 10.200.0.166:80
+    '';
+  };
+
+  # Auto-provision container
   # Creates Debian 12 container with CasaOS if not exists
   systemd.services.casaos-provision = {
     description = "Provision CasaOS Incus container";

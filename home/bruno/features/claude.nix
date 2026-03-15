@@ -5,6 +5,7 @@ let
     name:
     pkgs.writeShellScript "mcp-${name}" ''
       unset PYTHONPATH
+      export UV_PYTHON=${pkgs.python3}/bin/python3
       exec ${pkgs.uv}/bin/uvx ${name} "$@"
     '';
 
@@ -166,6 +167,15 @@ in
       playwright = {
         type = "remote";
         url = "http://10.100.0.1:8002/mcp";
+      };
+      chrome-devtools = {
+        command = "npx";
+        args = [
+          "-y"
+          "chrome-devtools-mcp@latest"
+          "--headless"
+          "--no-usage-statistics"
+        ];
       };
     };
   };

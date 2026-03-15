@@ -1,40 +1,59 @@
 { pkgs, lib, ... }:
 let
-  # Bootstrap SSH key from LastPass vault based on hostname.
-  # Vault entries: SSH/predabook, SSH/wsl, SSH/mac
-  # Each entry is a Secure Note of type "SSH Key" with fields:
+  # Bootstrap SSH keys from LastPass vault based on hostname.
+  # Vault entries:
+  #   SSH/github-<host>  → GitHub deploy key (per-machine isolation)
+  #   SSH/cloudarm       → Oracle Cloud server access key
+  #   WireGuard/<host>   → WireGuard private key (stored, not auto-deployed)
+  # Each SSH entry is a Secure Note of type "SSH Key" with fields:
   #   "Private Key" → private key content
   #   "Public Key"  → public key content
   bootstrapScript = ''
     _lpass_bootstrap_ssh() {
-      local host vault_entry key_priv key_pub
+      local host
       host=$(hostname -s)
-      vault_entry="SSH/github-$host"
-      key_priv="$HOME/.ssh/github.key"
-      key_pub="$HOME/.ssh/github.pub"
 
-      # Skip if key file already exists and is loaded in the agent
-      if [[ -f "$key_pub" ]] && ssh-add -l 2>/dev/null | grep -qF "$(ssh-keygen -lf "$key_pub" 2>/dev/null | awk '{print $2}')"; then
-        return 0
+      # Skip if GitHub key already exists and is loaded in the agent
+      if [[ -f "$HOME/.ssh/github.pub" ]] && ssh-add -l 2>/dev/null | grep -qF "$(ssh-keygen -lf "$HOME/.ssh/github.pub" 2>/dev/null | awk '{print $2}')"; then
+        # Also check cloudarm key exists
+        if [[ -f "$HOME/.ssh/cloudarm.key" ]]; then
+          return 0
+        fi
       fi
 
       # Authenticate if needed
       if ! lpass status --quiet 2>/dev/null; then
-        echo "LastPass: login required to bootstrap SSH key for $host"
+        echo "LastPass: login required to bootstrap SSH keys for $host"
         lpass login --trust || return 1
       fi
 
-      # Fetch private key (SSH Key note → "Private Key" field)
-      lpass show --field="Private Key" "$vault_entry" 2>/dev/null > "$key_priv" \
-        && chmod 600 "$key_priv" \
-        || { echo "LastPass: could not fetch $vault_entry → Private Key"; return 1; }
+      # --- GitHub key (per-machine) ---
+      local gh_vault="SSH/github-$host"
+      local gh_priv="$HOME/.ssh/github.key"
+      local gh_pub="$HOME/.ssh/github.pub"
 
-      # Fetch public key (SSH Key note → "Public Key" field)
-      lpass show --field="Public Key" "$vault_entry" 2>/dev/null > "$key_pub" \
-        && chmod 644 "$key_pub" \
-        || { echo "LastPass: could not fetch $vault_entry → Public Key"; return 1; }
+      if [[ ! -f "$gh_priv" ]]; then
+        lpass show --field="Private Key" "$gh_vault" 2>/dev/null > "$gh_priv" \
+          && chmod 600 "$gh_priv" \
+          || echo "LastPass: could not fetch $gh_vault → Private Key"
+      fi
 
-      ssh-add "$key_priv" 2>/dev/null
+      if [[ ! -f "$gh_pub" ]]; then
+        lpass show --field="Public Key" "$gh_vault" 2>/dev/null > "$gh_pub" \
+          && chmod 644 "$gh_pub" \
+          || echo "LastPass: could not fetch $gh_vault → Public Key"
+      fi
+
+      [[ -f "$gh_priv" ]] && ssh-add "$gh_priv" 2>/dev/null
+
+      # --- Cloudarm key (shared across machines) ---
+      local ca_priv="$HOME/.ssh/cloudarm.key"
+
+      if [[ ! -f "$ca_priv" ]]; then
+        lpass show --field="Private Key" "SSH/cloudarm" 2>/dev/null > "$ca_priv" \
+          && chmod 600 "$ca_priv" \
+          || echo "LastPass: could not fetch SSH/cloudarm → Private Key"
+      fi
     }
 
     _lpass_bootstrap_ssh

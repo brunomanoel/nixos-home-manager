@@ -11,51 +11,34 @@
   imports = [
     ./hardware-configuration.nix
 
-    ../common/users/bruno
+    inputs.home-manager-stable.nixosModules.home-manager
     ../common/global
+    ../common/users/bruno
   ];
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "23.11"; # Set by nixos-infect — do not change
 
   # --- Boot ---
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 5;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.configurationLimit = 5;
 
-  # Mainline kernel — best aarch64 support (zen/xanmod are x86-focused)
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Default channel kernel — conservative choice for cloud server stability
 
-  # Oracle Cloud ARM needs predictable interface names disabled
-  boot.kernelParams = [ "net.ifnames=0" ];
-
-  # --- Memory & I/O tuning ---
-  boot.kernel.sysctl = {
-    # zram-aware swappiness (kernel 6.1+ supports >100 with zram)
-    "vm.swappiness" = 180;
-    "vm.vfs_cache_pressure" = 50;
-    # Frequent flush — Oracle block storage is slow (20 VPU max)
-    "vm.dirty_ratio" = 10;
-    "vm.dirty_background_ratio" = 5;
-  };
-
-  # zram swap — no physical swap on cloud, block storage is the bottleneck
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50; # 12GB compressed
-  };
+  # zram swap — no physical swap on cloud
+  zramSwap.enable = true;
 
   # --- Networking ---
   networking.hostName = "cloudarm";
   networking.useDHCP = true; # Oracle Cloud assigns IP via DHCP
 
-  # Firewall: only SSH + WireGuard exposed publicly
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22 ];
-    allowedUDPPorts = [
-      51820 # WireGuard
-    ];
-  };
+  # Firewall disabled — Oracle Cloud Security List handles public filtering.
+  # Exposing only SSH (22/TCP) and WireGuard (51820/UDP) at the OCI level.
+  # All other services (Ollama, Qdrant, MCPs) are accessible only via WireGuard tunnel.
+  networking.firewall.enable = false;
 
   # --- SSH hardening ---
   services.openssh = {
@@ -66,8 +49,24 @@
     };
   };
 
+  # SSH keys shared across users — cloudarm (Oracle) + predabook (personal)
   users.users.bruno.openssh.authorizedKeys.keys = [
-    # TODO: Add SSH public keys
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoNlaCDSgLyGcjpNa4BA1PA/lXO5VIDyxSaCSAK8csa 26349861+brunomanoel@users.noreply.github.com"
+  ];
+
+  # Oracle Cloud default user — kept for console/compatibility access
+  users.users.ubuntu = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
+    ];
+  };
+
+  # Root also needs the key — nixos-infect initial access + emergency recovery
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
   ];
 
   # --- WireGuard ---
@@ -216,11 +215,18 @@
       Type = "simple";
       DynamicUser = true;
       StateDirectory = "mcp-fetch";
-      ExecStart = ''
-        ${pkgs.nodejs_22}/bin/npx -y supergateway \
-          --stdio "${pkgs.python3}/bin/python3 -m uvx mcp-fetch" \
-          --port 8003
-      '';
+      ExecStart =
+        let
+          fetchScript = pkgs.writeShellScript "mcp-fetch" ''
+            unset PYTHONPATH
+            exec ${pkgs.uv}/bin/uvx mcp-fetch "$@"
+          '';
+        in
+        ''
+          ${pkgs.nodejs_22}/bin/npx -y supergateway \
+            --stdio "${fetchScript}" \
+            --port 8003
+        '';
       Restart = "on-failure";
       RestartSec = 5;
     };

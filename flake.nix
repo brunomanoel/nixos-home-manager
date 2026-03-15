@@ -4,7 +4,7 @@
   inputs = {
     # Nix Ecosystem
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
     systems.url = "github:nix-systems/default";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
     vscode-server.url = "github:nix-community/nixos-vscode-server";
@@ -16,6 +16,10 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Home manager stable — for server hosts using nixpkgs-stable
+    home-manager-stable.url = "github:nix-community/home-manager/release-25.11";
+    home-manager-stable.inputs.nixpkgs.follows = "nixpkgs-stable";
 
     # Nix Index Database
     nix-index-database.url = "github:nix-community/nix-index-database";
@@ -45,6 +49,21 @@
           config.allowUnfree = true;
         }
       );
+
+      # Overlay: pull specific packages from unstable into stable
+      unstableOverlay =
+        system: final: prev:
+        let
+          unstable = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        in
+        {
+          ollama = unstable.ollama;
+          qdrant = unstable.qdrant;
+          chromium = unstable.chromium;
+        };
     in
     {
       inherit lib;
@@ -64,10 +83,13 @@
           specialArgs = { inherit inputs outputs; };
           modules = [ ./hosts/wsl ];
         };
-        cloudarm = nixpkgs.lib.nixosSystem {
+        cloudarm = inputs.nixpkgs-stable.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = { inherit inputs outputs; };
-          modules = [ ./hosts/cloudarm ];
+          modules = [
+            ./hosts/cloudarm
+            { nixpkgs.overlays = [ (unstableOverlay "aarch64-linux") ]; }
+          ];
         };
       };
 
@@ -100,7 +122,7 @@
           modules = [ ./home/bruno/mac.nix ];
         };
         "bruno@cloudarm" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-linux;
+          pkgs = inputs.nixpkgs-stable.legacyPackages.aarch64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [ ./home/bruno/cloudarm.nix ];
         };

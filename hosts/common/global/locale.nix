@@ -1,4 +1,5 @@
-{ lib, ... }: {
+{ lib, ... }:
+{
   # Set your time zone.
   time.timeZone = "America/Sao_Paulo";
 
@@ -25,9 +26,4 @@
   # Configure console keymap
   console.keyMap = "br-abnt2";
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "br";
-    variant = "";
-  };
 }

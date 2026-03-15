@@ -17,8 +17,10 @@
     ./hardware-configuration.nix
     ./custom-hardware-configuration.nix
 
-    ../common/users/bruno
+    inputs.home-manager.nixosModules.home-manager
     ../common/global
+    ../common/global/desktop.nix
+    ../common/users/bruno
     ../common/optional/gnome.nix
     ../common/optional/hyprland.nix
     ../common/optional/docker.nix
@@ -34,6 +36,7 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 3;
+  boot.loader.systemd-boot.rebootForBitlocker = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 

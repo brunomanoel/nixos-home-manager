@@ -33,7 +33,7 @@ in
     };
 
     # Add each flake input as a registry and nix_path
-    registry = lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs;
+    registry = lib.mkForce (lib.mapAttrs (_: flake: { inherit flake; }) flakeInputs);
     nixPath = lib.mapAttrsToList (n: _: "${n}=flake:${n}") flakeInputs;
     # Making legacy nix commands consistent as well, awesome!
     # nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;

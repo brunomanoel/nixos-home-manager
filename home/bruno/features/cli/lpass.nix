@@ -9,7 +9,7 @@ let
     _lpass_bootstrap_ssh() {
       local host vault_entry key_priv key_pub
       host=$(hostname -s)
-      vault_entry="SSH/$host"
+      vault_entry="SSH/github-$host"
       key_priv="$HOME/.ssh/github.key"
       key_pub="$HOME/.ssh/github.pub"
 

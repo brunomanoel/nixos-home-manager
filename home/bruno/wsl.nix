@@ -12,8 +12,10 @@
   imports = [
     ./global
 
+    ./features/cli
     ./features/git.nix
 
+    ./features/dev/neovim
     ./features/dev/reverse-engineer.nix
   ];
 

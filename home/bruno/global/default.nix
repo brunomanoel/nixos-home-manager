@@ -9,8 +9,6 @@
 {
   imports = [
     inputs.nix-index-database.homeModules.nix-index
-    ./fonts.nix
-    ../features/cli
     ../features/claude.nix
   ];
 

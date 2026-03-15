@@ -6,15 +6,11 @@
 }:
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
     ./locale.nix
-    ./font.nix
     ./zsh.nix
     ./nix.nix
-    ./cuda.nix
   ];
 
-  #   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;
@@ -27,6 +23,4 @@
       allowUnfreePredicate = _: true;
     };
   };
-
-  hardware.enableRedistributableFirmware = true;
 }

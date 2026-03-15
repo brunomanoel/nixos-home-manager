@@ -11,6 +11,7 @@
     inputs.nixos-wsl.nixosModules.default
     # VS Code server modules
     inputs.vscode-server.nixosModules.default
+    inputs.home-manager.nixosModules.home-manager
     ../common/global
     ../common/users/bruno
     ../common/optional/docker.nix

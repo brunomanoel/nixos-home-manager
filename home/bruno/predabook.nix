@@ -11,7 +11,10 @@
   # You can import other home-manager modules here
   imports = [
     ./global
+    ./global/fonts.nix
 
+    ./features/cli
+    ./features/cli/wezterm.nix
     ./features/git.nix
     ./features/utils.nix
     ./features/dev
@@ -20,7 +23,6 @@
     ./features/hyprland
     ./features/obs-studio.nix
     ./features/video-edit.nix
-
   ];
 
   home.packages = with pkgs; [

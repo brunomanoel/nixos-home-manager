@@ -169,6 +169,9 @@ in
           "-y"
           "@playwright/mcp"
         ];
+        env = {
+          CHROME_PATH = "${pkgs.chromium}/bin/chromium";
+        };
       };
     };
   };

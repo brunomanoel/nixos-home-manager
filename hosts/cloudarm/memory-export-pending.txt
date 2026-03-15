@@ -1,5 +1,29 @@
-LEMBRAR: Bruno usa opencode, não claude code. Config MCP em ~/.config/opencode/opencode.json
-LEMBRAR: local-rag roda localmente via stdio do opencode, conecta Ollama/Qdrant no cloudarm (10.100.0.1) via WireGuard
-LEMBRAR: qwen3-embedding:8b = 2s/embedding no ARM idle, 4096 dims. Viável.
-LEMBRAR: MCPs no cloudarm precisam de bash+nodejs+coreutils no PATH dos systemd services
-LEMBRAR: uvx no NixOS precisa de programs.nix-ld.enable = true
+== CONTEXTO PARA PRÓXIMA SESSÃO ==
+
+IMPORTANTE: Bruno usa opencode, NÃO claude code. Config MCP em ~/.config/opencode/opencode.json gerado pelo claude.nix no dotfiles.
+
+== ESTADO ATUAL ==
+- Predabook: Ollama + Qdrant rodando LOCAL (revertido). GPU RTX 2060. Tudo funcional.
+- Cloudarm (137.131.233.96): NixOS 25.11 stable rodando com Ollama, Qdrant, MCPs (playwright, fetch, context, context7). WireGuard ativo (10.100.0.1).
+- WireGuard: cloudarm=10.100.0.1, predabook=10.100.0.2, wsl=10.100.0.4. Porta 51820/UDP.
+- SSH cloudarm: user ubuntu, key ~/.ssh/cloudarm.key (RSA, LastPass entry 6358867201542651779)
+
+== DECISÕES TOMADAS ==
+- ARM Ampere A1 (4 cores, 24GB, DDR4 ~25GB/s) é LENTO DEMAIS para embedding inference com inputs reais.
+  - 50 chars: 1.5s | 500 chars: 11s | 1000 chars: 23s | 2000 chars: 46s | 3000 chars: 71s
+  - Escala ~23ms/char. Memory bandwidth é o bottleneck (~25 GB/s vs ~273 GB/s Apple M4 Pro).
+  - Leitura (recall) com queries curtas (50-200 chars) funciona: 0.5-2.3s. Aceitável.
+  - Escrita (indexação) com chunks de 3000 chars: 71s. Estoura timeout 60s do local-rag.
+- local-rag: MAX_CHUNK_CHARS=3000 e DESC_CONCURRENCY=5 hardcoded. Patches locais funcionam (2000 chars, concurrency 1) mas são frágeis (npx reinstala).
+- Cloudarm usa nixpkgs-stable (25.11) com overlay unstable para ollama, qdrant, chromium.
+- Reestruturação dotfiles feita: desktop/server separados, HM per-host.
+- ai-services.nix reabilitado no predabook (Ollama+Qdrant+Open WebUI local).
+- MCPs no cloudarm precisam de bash+nodejs+coreutils no PATH dos systemd services.
+- uvx no NixOS precisa de programs.nix-ld.enable = true.
+
+== PENDENTE ==
+- Importar 76 memórias do memory-export.json no Qdrant LOCAL
+- Decidir o futuro do cloudarm: MCPs remotos valem a pena? Ou tudo local?
+- Limpar memory-export.json e memory-export-pending.txt do repo
+- WireGuard: ainda útil se MCPs ficarem no cloudarm? Ou remover?
+- local-rag patches (MAX_CHUNK_CHARS, DESC_CONCURRENCY) se perdem com npx update — precisam de solução permanente se for usar no ARM

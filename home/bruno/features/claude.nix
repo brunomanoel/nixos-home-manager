@@ -175,6 +175,8 @@ in
           "--headless"
           "--no-usage-statistics"
           "--no-performance-crux"
+          "--executablePath"
+          "${pkgs.chromium}/bin/chromium"
         ];
       };
     };

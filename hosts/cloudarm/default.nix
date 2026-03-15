@@ -199,6 +199,8 @@
     ];
     environment = {
       HOME = "/var/lib/mcp-memory";
+      XDG_DATA_DIRS = "/var/lib/mcp-memory/.local/share";
+      XDG_CONFIG_HOME = "/var/lib/mcp-memory/.config";
     };
     serviceConfig = {
       Type = "simple";

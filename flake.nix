@@ -60,8 +60,6 @@
           };
         in
         {
-          ollama = unstable.ollama;
-          qdrant = unstable.qdrant;
           chromium = unstable.chromium;
         };
     in

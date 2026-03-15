@@ -1,3 +1,6 @@
+# Pelican Panel + Wings — game server management
+# Panel installed manually at /var/www/pelican (Laravel + SQLite)
+# Wings is a Go binary managing Docker containers
 {
   config,
   pkgs,
@@ -6,17 +9,6 @@
 }:
 
 let
-  pelicanVersion = "1.0.0-beta25";
-  pelicanSrc = pkgs.fetchurl {
-    url = "https://github.com/pelican-dev/panel/releases/latest/download/panel.tar.gz";
-    hash = ""; # TODO: fill after first download
-  };
-  wingsVersion = "1.0.0-beta24";
-  wingsBin = pkgs.fetchurl {
-    url = "https://github.com/pelican-dev/wings/releases/download/v${wingsVersion}/wings_linux_arm64";
-    hash = ""; # TODO: fill after first download
-    executable = true;
-  };
   php = pkgs.php83.withExtensions (
     { enabled, all }:
     enabled
@@ -30,15 +22,19 @@ let
       intl
       sqlite3
       pdo_sqlite
+      tokenizer
+      fileinfo
     ])
   );
-  dataDir = "/var/lib/pelican";
+  panelDir = "/var/www/pelican";
+  casaosContainerIp = "10.200.0.166";
 in
 {
-  # PHP-FPM for Pelican
+  # PHP-FPM pool for Pelican
   services.phpfpm.pools.pelican = {
     user = "pelican";
     group = "pelican";
+    phpPackage = php;
     settings = {
       "listen.owner" = config.services.caddy.user;
       "listen.group" = config.services.caddy.group;
@@ -48,33 +44,67 @@ in
       "pm.min_spare_servers" = 1;
       "pm.max_spare_servers" = 3;
     };
-    phpPackage = php;
-  };
-
-  # Caddy reverse proxy
-  services.caddy = {
-    enable = true;
-    virtualHosts.":80" = {
-      extraConfig = ''
-        root * ${dataDir}/public
-        php_fastcgi unix/${config.services.phpfpm.pools.pelican.socket}
-        file_server
-      '';
+    phpEnv = {
+      APP_ENV = "production";
     };
   };
 
-  # Wings daemon
-  systemd.services.wings = {
-    description = "Pelican Wings Daemon";
-    after = [ "docker.service" ];
-    requires = [ "docker.service" ];
+  # Caddy — reverse proxy for all services on port 80
+  services.caddy = {
+    enable = true;
+    virtualHosts = {
+      # Pelican Panel — default (IP público + pelican.local)
+      ":80" = {
+        extraConfig = ''
+          root * ${panelDir}/public
+          php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
+          file_server
+        '';
+      };
+      # CasaOS — via hostname
+      "http://casaos.local" = {
+        extraConfig = ''
+          reverse_proxy ${casaosContainerIp}:80
+        '';
+      };
+    };
+  };
+
+  # Pelican queue worker (background jobs)
+  systemd.services.pelican-queue = {
+    description = "Pelican Queue Worker";
+    after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${wingsBin}";
+      User = "pelican";
+      Group = "pelican";
+      WorkingDirectory = panelDir;
+      ExecStart = "${php}/bin/php artisan queue:work --queue=high,standard,low --sleep=3 --tries=3";
       Restart = "on-failure";
       RestartSec = 5;
-      LimitNOFILE = 4096;
+    };
+  };
+
+  # Pelican schedule (cron)
+  systemd.services.pelican-schedule = {
+    description = "Pelican Scheduler";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "pelican";
+      Group = "pelican";
+      WorkingDirectory = panelDir;
+      ExecStart = "${php}/bin/php artisan schedule:run";
+    };
+  };
+
+  systemd.timers.pelican-schedule = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*:0/1"; # every minute
+      Persistent = true;
     };
   };
 
@@ -82,16 +112,25 @@ in
   users.users.pelican = {
     isSystemUser = true;
     group = "pelican";
-    home = dataDir;
-    createHome = true;
+    home = panelDir;
   };
   users.groups.pelican = { };
 
-  # Required directories
+  # Ensure panel directory has correct ownership
   systemd.tmpfiles.rules = [
-    "d ${dataDir} 0750 pelican pelican -"
-    "d ${dataDir}/storage 0750 pelican pelican -"
-    "d /etc/pelican 0750 pelican pelican -"
-    "d /var/log/pelican 0750 pelican pelican -"
+    "d ${panelDir}/storage 0755 pelican pelican -"
+    "d ${panelDir}/storage/app 0755 pelican pelican -"
+    "d ${panelDir}/storage/framework 0755 pelican pelican -"
+    "d ${panelDir}/storage/framework/cache 0755 pelican pelican -"
+    "d ${panelDir}/storage/framework/sessions 0755 pelican pelican -"
+    "d ${panelDir}/storage/framework/views 0755 pelican pelican -"
+    "d ${panelDir}/storage/logs 0755 pelican pelican -"
+    "d ${panelDir}/bootstrap/cache 0755 pelican pelican -"
+  ];
+
+  # PHP + Composer in system packages for manual maintenance
+  environment.systemPackages = [
+    php
+    pkgs.php83Packages.composer
   ];
 }

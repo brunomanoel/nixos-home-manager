@@ -14,6 +14,7 @@
     inputs.home-manager-stable.nixosModules.home-manager
     ../common/global
     ../common/users/bruno
+    ./pelican.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

@@ -213,10 +213,14 @@
               "llm-model" = "qwen2.5-coder:14b";
             }
           );
+          localRagScript = pkgs.writeShellScript "local-rag-serve" ''
+            export PATH="${pkgs.nodejs_22}/bin:$PATH"
+            exec ${pkgs.nodejs_22}/bin/npx -y @13w/local-rag serve --config ${configFile}
+          '';
         in
         ''
           ${pkgs.nodejs_22}/bin/npx -y supergateway \
-            --stdio "${pkgs.nodejs_22}/bin/npx -y @13w/local-rag serve --config ${configFile}" \
+            --stdio "${localRagScript}" \
             --port 8001
         '';
       Restart = "on-failure";

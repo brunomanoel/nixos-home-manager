@@ -1,0 +1,5 @@
+LEMBRAR: Bruno usa opencode, não claude code. Config MCP em ~/.config/opencode/opencode.json
+LEMBRAR: local-rag roda localmente via stdio do opencode, conecta Ollama/Qdrant no cloudarm (10.100.0.1) via WireGuard
+LEMBRAR: qwen3-embedding:8b = 2s/embedding no ARM idle, 4096 dims. Viável.
+LEMBRAR: MCPs no cloudarm precisam de bash+nodejs+coreutils no PATH dos systemd services
+LEMBRAR: uvx no NixOS precisa de programs.nix-ld.enable = true

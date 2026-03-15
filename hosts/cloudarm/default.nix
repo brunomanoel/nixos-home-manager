@@ -118,8 +118,8 @@
     host = "0.0.0.0"; # accessible via WireGuard
     port = 11434;
     loadModels = [
-      "qwen3-embedding:8b" # code embeddings — #1 MTEB-Code, 4.7GB
-      "qwen2.5-coder:14b" # code descriptions/analysis, 9GB
+      "embeddinggemma:300m" # code embeddings — fast on ARM, 768 dims
+      "qwen2.5-coder:7b" # code descriptions, good quality/speed tradeoff on ARM
     ];
     environmentVariables = {
       # Keep embedding model loaded — primary workload

@@ -4,27 +4,50 @@ NixOS + nix-darwin + Home Manager — personal configuration
 
 ## Hosts
 
-| Host        | Tipo                  | Sistema    | Perfil            |
-|-------------|-----------------------|------------|-------------------|
-| `wsl`       | WSL2 (Linux)          | NixOS      | `bruno@wsl`       |
-| `predabook` | NixOS                 | NixOS      | `bruno@predabook` |
-| `mac`       | macOS (Apple Silicon) | nix-darwin | `bruno@mac`       |
+| Host        | Tipo                           | Sistema            | Perfil            |
+|-------------|--------------------------------|--------------------|-------------------|
+| `predabook` | Desktop                        | NixOS unstable     | `bruno@predabook` |
+| `cloudarm`  | Server (Oracle ARM A1.Flex)     | NixOS 25.11 stable | `bruno@cloudarm`  |
+| `wsl`       | WSL2                           | NixOS unstable     | `bruno@wsl`       |
+| `mac`       | macOS (Apple Silicon)          | nix-darwin         | `bruno@mac`       |
+
+### Cloudarm — Oracle Cloud ARM (4 cores, 24GB RAM)
+
+Game server + self-hosted services. Acesso via WireGuard (`10.100.0.1`).
+
+| Serviço | Acesso | Stack |
+|---------|--------|-------|
+| Pelican Panel | `http://pelican.local` / IP público porta 80 | Caddy + PHP-FPM + SQLite |
+| Pelican Wings | porta 8080 | binário Go, gerencia Docker containers |
+| CasaOS | `http://casaos.local` | Incus container (Debian 12), Docker compartilhado |
+| Playwright MCP | `http://10.100.0.1:8002/mcp` | Chromium headless |
+
+Usa `nixpkgs-stable` (25.11) com overlay unstable para ollama, qdrant, chromium.
 
 ## Estrutura
 
 ```
-home/bruno/features/
-  cli/        # zsh, tmux, wezterm, starship, fzf...
-  dev/        # neovim, vscode, ghidra, reverse-engineer
+home/bruno/
+  features/
+    cli/        # zsh, starship, fzf, ssh, lpass...
+    cli/wezterm.nix  # terminal (desktop only)
+    dev/        # neovim, vscode, ghidra, reverse-engineer
+    claude.nix  # MCP servers config (opencode)
+  global/       # config HM compartilhada (universal)
+  global/fonts.nix  # fontes (desktop only)
 
 hosts/
-  wsl/        # WSL2 host
-  predabook/  # NixOS host
-  mac/        # macOS (nix-darwin) host
+  predabook/    # Desktop NixOS
+  cloudarm/     # Server NixOS (Oracle ARM)
+    pelican.nix # Pelican Panel + Wings + Caddy
+  wsl/          # WSL2
+  mac/          # macOS (nix-darwin)
   common/
-    global/   # config compartilhada (+ darwin.nix / nix-darwin.nix para macOS)
+    global/         # config NixOS universal (todos os hosts)
+    global/desktop.nix  # só desktops (fonts, cuda, xkb, firmware)
     users/
     optional/
+      ai-services.nix   # Ollama + Qdrant (desktop only)
 ```
 
 ## Bootstrap (sistema novo)
@@ -37,7 +60,7 @@ nix develop
 nix-shell
 ```
 
-### NixOS / WSL
+### NixOS / WSL (desktop)
 
 Aplica o sistema e o Home Manager juntos (HM é um módulo NixOS):
 
@@ -81,6 +104,13 @@ nh os switch
 ### macOS (nix-darwin)
 ```shell
 nh darwin switch --configuration mac
+```
+
+### Cloudarm (server remoto)
+
+```shell
+ssh -i ~/.ssh/cloudarm.key root@137.131.233.96
+cd /root/dotfiles && git pull && nixos-rebuild switch --flake .#cloudarm
 ```
 
 ### Home Manager (standalone)

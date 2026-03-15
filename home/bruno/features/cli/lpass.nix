@@ -58,9 +58,42 @@ let
 
     _lpass_bootstrap_ssh
   '';
+  # Script to bootstrap WireGuard key from LastPass (requires sudo)
+  # Usage: wg-bootstrap
+  wgBootstrap = pkgs.writeShellScriptBin "wg-bootstrap" ''
+    set -e
+    HOST=$(hostname -s)
+    VAULT="WireGuard/$HOST"
+    KEYFILE="/etc/wireguard/private.key"
+
+    if [[ -f "$KEYFILE" ]]; then
+      echo "WireGuard key already exists at $KEYFILE"
+      exit 0
+    fi
+
+    if ! lpass status --quiet 2>/dev/null; then
+      echo "LastPass: login required"
+      lpass login --trust || exit 1
+    fi
+
+    KEY=$(lpass show --field="Private Key" "$VAULT" 2>/dev/null)
+    if [[ -z "$KEY" ]]; then
+      echo "LastPass: could not fetch $VAULT → Private Key"
+      exit 1
+    fi
+
+    sudo mkdir -p /etc/wireguard
+    echo "$KEY" | sudo tee "$KEYFILE" > /dev/null
+    sudo chmod 600 "$KEYFILE"
+    sudo chmod 700 /etc/wireguard
+    echo "WireGuard key installed at $KEYFILE from $VAULT"
+  '';
 in
 {
-  home.packages = with pkgs; [ lastpass-cli ];
+  home.packages = with pkgs; [
+    lastpass-cli
+    wgBootstrap
+  ];
 
   programs.zsh.loginExtra = lib.mkAfter bootstrapScript;
   programs.bash.profileExtra = lib.mkAfter bootstrapScript;

@@ -124,6 +124,8 @@
     environmentVariables = {
       # Keep embedding model loaded — primary workload
       OLLAMA_KEEP_ALIVE = "-1";
+      # Serialize requests — ARM CPU can't handle parallel inference without timeouts
+      OLLAMA_NUM_PARALLEL = "1";
     };
   };
 

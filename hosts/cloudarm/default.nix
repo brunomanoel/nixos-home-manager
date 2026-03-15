@@ -309,6 +309,9 @@
     };
   };
 
+  # nix-ld — required for uvx/uv which download dynamically linked Python
+  programs.nix-ld.enable = true;
+
   # --- System packages ---
   environment.systemPackages = with pkgs; [
     vim

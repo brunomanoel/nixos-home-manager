@@ -193,6 +193,9 @@
       pkgs.bash
       pkgs.nodejs_22
       pkgs.coreutils
+      pkgs.python3 # node-gyp needs python
+      pkgs.gcc # node-gyp needs C compiler
+      pkgs.gnumake # node-gyp needs make
     ];
     environment = {
       HOME = "/var/lib/mcp-memory";

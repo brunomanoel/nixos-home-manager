@@ -170,7 +170,7 @@
     serviceConfig = {
       Type = "simple";
       StateDirectory = "playwright-mcp";
-      ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0";
+      ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0 --allowed-hosts '*'";
       Restart = "on-failure";
       RestartSec = 5;
     };

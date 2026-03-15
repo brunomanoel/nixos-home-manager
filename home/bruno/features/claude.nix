@@ -158,7 +158,7 @@ in
       };
       playwright = {
         type = "remote";
-        url = "http://10.100.0.1:8002/sse";
+        url = "http://10.100.0.1:8002/mcp";
       };
     };
   };

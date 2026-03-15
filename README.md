@@ -22,7 +22,7 @@ Game server + self-hosted services. Acesso via WireGuard (`10.100.0.1`).
 | CasaOS | `http://casaos.local` | Incus container (Debian 12), Docker compartilhado |
 | Playwright MCP | `http://10.100.0.1:8002/mcp` | Chromium headless |
 
-Usa `nixpkgs-stable` (25.11) com overlay unstable para ollama, qdrant, chromium.
+Usa `nixpkgs-stable` (25.11) com overlay unstable para chromium (Playwright).
 
 ## Estrutura
 

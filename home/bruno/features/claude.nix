@@ -19,12 +19,12 @@ let
     {
       "qdrant-url": "http://localhost:6333",
       "embed-provider": "ollama",
-      "embed-model": "embeddinggemma:300m",
-      "embed-dim": 768,
+      "embed-model": "qwen3-embedding:0.6b",
+      "embed-dim": 1024,
       "ollama-url": "http://localhost:11434",
       "generate-descriptions": true,
       "llm-provider": "ollama",
-      "llm-model": "qwen2.5-coder:7b",
+      "llm-model": "qwen2.5-coder:3b",
       "dashboard": true,
       "dashboard-port": $PORT
     }

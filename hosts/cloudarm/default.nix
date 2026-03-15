@@ -156,6 +156,7 @@
     description = "Playwright MCP Server (headless)";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash ];
     environment = {
       HOME = "/var/lib/playwright-mcp";
       NODE_PATH = "${pkgs.nodejs_22}/lib/node_modules";
@@ -185,6 +186,7 @@
       "qdrant.service"
     ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash ];
     environment = {
       HOME = "/var/lib/mcp-memory";
     };
@@ -199,7 +201,6 @@
               "qdrant-url" = "http://localhost:6333";
               "embed-provider" = "ollama";
               "embed-model" = "qwen3-embedding:8b";
-              "embed-dim" = 1024;
               "ollama-url" = "http://localhost:11434";
               "generate-descriptions" = true;
               "llm-provider" = "ollama";
@@ -222,6 +223,7 @@
     description = "MCP Fetch via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash ];
     environment = {
       HOME = "/var/lib/mcp-fetch";
     };
@@ -251,6 +253,7 @@
     description = "MCP Context7 via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash ];
     environment = {
       HOME = "/var/lib/mcp-context7";
     };
@@ -273,6 +276,7 @@
     description = "MCP Context (neuledge) via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash ];
     environment = {
       HOME = "/var/lib/mcp-context";
     };

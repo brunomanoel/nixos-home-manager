@@ -118,11 +118,11 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "/etc/pelican/wings";
+      ExecStart = "/etc/pelican/wings --config /var/lib/wings/config.yml";
       Restart = "on-failure";
       RestartSec = 5;
       LimitNOFILE = 4096;
-      WorkingDirectory = "/etc/pelican";
+      WorkingDirectory = "/var/lib/wings";
     };
   };
 

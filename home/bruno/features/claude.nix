@@ -167,6 +167,16 @@ in
         type = "remote";
         url = "http://10.100.0.1:8002/mcp";
       };
+      chrome-devtools = {
+        command = "npx";
+        args = [
+          "-y"
+          "chrome-devtools-mcp@latest"
+          "--headless"
+          "--no-usage-statistics"
+          "--no-performance-crux"
+        ];
+      };
     };
   };
 

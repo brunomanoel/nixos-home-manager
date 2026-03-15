@@ -214,6 +214,7 @@
               "generate-descriptions" = true;
               "llm-provider" = "ollama";
               "llm-model" = "qwen2.5-coder:14b";
+              "dashboard" = false;
             }
           );
           localRagScript = pkgs.writeShellScript "local-rag-serve" ''

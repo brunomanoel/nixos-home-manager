@@ -82,7 +82,7 @@
 
   # --- WireGuard to cloudarm ---
   # Private key stored at /etc/wireguard/private.key (not in repo)
-  networking.wireguard.interfaces.wg0 = {
+  networking.wireguard.interfaces.CloudArm = {
     ips = [ "10.100.0.2/24" ];
     privateKeyFile = "/etc/wireguard/private.key";
 

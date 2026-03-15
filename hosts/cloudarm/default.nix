@@ -170,7 +170,7 @@
     serviceConfig = {
       Type = "simple";
       StateDirectory = "playwright-mcp";
-      ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0 --allowed-hosts '*'";
+      ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0 --allowed-hosts '*' --executable-path ${pkgs.chromium}/bin/chromium";
       Restart = "on-failure";
       RestartSec = 5;
     };

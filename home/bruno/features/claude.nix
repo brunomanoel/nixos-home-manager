@@ -122,8 +122,11 @@ in
         args = [ ];
       };
       context7 = {
-        type = "remote";
-        url = "http://10.100.0.1:8004/sse";
+        command = "npx";
+        args = [
+          "-y"
+          "@upstash/context7-mcp"
+        ];
       };
       filesystem = {
         command = "npx";
@@ -138,8 +141,8 @@ in
         args = [ ];
       };
       fetch = {
-        type = "remote";
-        url = "http://10.100.0.1:8003/sse";
+        command = "${mkUvxMcp "mcp-fetch"}";
+        args = [ ];
       };
       sequential-thinking = {
         command = "npx";
@@ -153,8 +156,12 @@ in
         args = [ ];
       };
       context = {
-        type = "remote";
-        url = "http://10.100.0.1:8005/sse";
+        command = "npx";
+        args = [
+          "-y"
+          "@neuledge/context"
+          "serve"
+        ];
       };
       playwright = {
         type = "remote";

@@ -65,6 +65,46 @@
   # --- Docker ---
   virtualisation.docker.enable = true;
 
+  # --- Incus (LXC containers) ---
+  virtualisation.incus = {
+    enable = true;
+    preseed = {
+      profiles = [
+        {
+          name = "default";
+          devices = {
+            root = {
+              path = "/";
+              pool = "default";
+              type = "disk";
+            };
+            eth0 = {
+              name = "eth0";
+              network = "incusbr0";
+              type = "nic";
+            };
+          };
+        }
+      ];
+      networks = [
+        {
+          name = "incusbr0";
+          type = "bridge";
+          config = {
+            "ipv4.address" = "10.200.0.1/24";
+            "ipv4.nat" = "true";
+          };
+        }
+      ];
+      storage_pools = [
+        {
+          name = "default";
+          driver = "dir";
+        }
+      ];
+    };
+  };
+
   # --- SSH hardening ---
   services.openssh = {
     enable = true;
@@ -73,6 +113,12 @@
       PasswordAuthentication = false;
     };
   };
+
+  # Add bruno to container/docker groups
+  users.users.bruno.extraGroups = [
+    "incus-admin"
+    "docker"
+  ];
 
   # SSH keys shared across users — cloudarm (Oracle) + predabook (personal)
   users.users.bruno.openssh.authorizedKeys.keys = [

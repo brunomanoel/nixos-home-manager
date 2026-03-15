@@ -75,6 +75,11 @@
   networking.hostName = "predabook";
   networking.networkmanager.enable = true;
 
+  # Cloudarm services via WireGuard
+  networking.extraHosts = ''
+    10.100.0.1 cloudarm casaos.local
+  '';
+
   # --- WireGuard to cloudarm ---
   # Private key stored at /etc/wireguard/private.key (not in repo)
   networking.wireguard.interfaces.wg0 = {

@@ -163,7 +163,6 @@
     };
     serviceConfig = {
       Type = "simple";
-      DynamicUser = true;
       StateDirectory = "playwright-mcp";
       ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0";
       Restart = "on-failure";
@@ -192,7 +191,6 @@
     };
     serviceConfig = {
       Type = "simple";
-      DynamicUser = true;
       StateDirectory = "mcp-memory";
       ExecStart =
         let
@@ -229,7 +227,6 @@
     };
     serviceConfig = {
       Type = "simple";
-      DynamicUser = true;
       StateDirectory = "mcp-fetch";
       ExecStart =
         let
@@ -259,7 +256,6 @@
     };
     serviceConfig = {
       Type = "simple";
-      DynamicUser = true;
       StateDirectory = "mcp-context7";
       ExecStart = ''
         ${pkgs.nodejs_22}/bin/npx -y supergateway \
@@ -282,7 +278,6 @@
     };
     serviceConfig = {
       Type = "simple";
-      DynamicUser = true;
       StateDirectory = "mcp-context";
       ExecStart = ''
         ${pkgs.nodejs_22}/bin/npx -y supergateway \

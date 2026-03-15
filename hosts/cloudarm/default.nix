@@ -106,6 +106,49 @@
     };
   };
 
+  # --- CasaOS container (auto-provision) ---
+  # Creates Debian 12 container with CasaOS if not exists
+  systemd.services.casaos-provision = {
+    description = "Provision CasaOS Incus container";
+    after = [
+      "incus.service"
+      "incus-preseed.service"
+    ];
+    requires = [ "incus.service" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.incus ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      # Skip if container already exists
+      if incus info casaos &>/dev/null; then
+        echo "CasaOS container already exists — skipping"
+        exit 0
+      fi
+
+      echo "Creating CasaOS container..."
+      incus launch images:debian/12 casaos \
+        --config security.nesting=true \
+        --config security.privileged=true
+
+      echo "Waiting for container to start..."
+      sleep 10
+
+      echo "Mounting Docker socket..."
+      incus config device add casaos docker-sock disk \
+        source=/var/run/docker.sock \
+        path=/var/run/docker.sock
+
+      echo "Installing Docker client and CasaOS..."
+      incus exec casaos -- bash -c 'apt-get update -qq && apt-get install -y -qq curl docker.io > /dev/null 2>&1'
+      incus exec casaos -- bash -c 'curl -fsSL https://get.casaos.io | bash'
+
+      echo "CasaOS provisioned successfully"
+    '';
+  };
+
   # --- SSH hardening ---
   services.openssh = {
     enable = true;
@@ -124,7 +167,6 @@
   # SSH keys shared across users — cloudarm (Oracle) + predabook (personal)
   users.users.bruno.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINoNlaCDSgLyGcjpNa4BA1PA/lXO5VIDyxSaCSAK8csa 26349861+brunomanoel@users.noreply.github.com"
   ];
 
   # Oracle Cloud default user — kept for console/compatibility access

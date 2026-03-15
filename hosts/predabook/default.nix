@@ -134,8 +134,8 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
+    nvtopPackages.nvidia # GPU monitoring TUI
+    gpustat # GPU status one-liner
   ];
 
   programs.kdeconnect.enable = true;

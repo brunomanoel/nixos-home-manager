@@ -68,6 +68,20 @@ xychart-beta
 **Escolhido: qwen3-embedding:0.6b + qwen2.5-coder:3b** — mais lento na indexação,
 mas melhor qualidade de embedding (1024 dims) e descriptions. Indexação é one-time.
 
+### Tuning: OLLAMA_NUM_PARALLEL=2 + FLASH_ATTENTION=1
+
+Testado com ambos modelos warm, GPU idle.
+
+| Operação | Sem flags | Com flags | Diferença |
+|----------|-----------|-----------|-----------|
+| Embed sequential | ~220ms | ~214ms | Igual |
+| Coder sequential | ~960ms | ~958ms | Igual |
+| **Parallel (embed+coder)** | ~4270ms | **~2565ms** | **40% mais rápido** |
+| VRAM | 3132 MiB | 3219 MiB | +87 MiB |
+
+NUM_PARALLEL=2 permite embed e coder rodarem ao mesmo tempo na GPU.
+FLASH_ATTENTION=1 reduz VRAM do KV cache sem impacto em velocidade.
+
 ### Leitura (recall) — queries reais, modelo warm
 
 | Input | Tempo |

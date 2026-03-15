@@ -73,8 +73,24 @@
   ];
 
   networking.hostName = "predabook";
-  # Enable networking
   networking.networkmanager.enable = true;
+
+  # --- WireGuard to cloudarm ---
+  # Private key stored at /etc/wireguard/private.key (not in repo)
+  networking.wireguard.interfaces.wg0 = {
+    ips = [ "10.100.0.2/24" ];
+    privateKeyFile = "/etc/wireguard/private.key";
+
+    peers = [
+      {
+        # cloudarm
+        publicKey = "pCMb0Db+WhhYqvDVqtAcat/ACxMt+FAWa1/Fmml6LlM=";
+        allowedIPs = [ "10.100.0.0/24" ];
+        endpoint = "137.131.233.96:51820";
+        persistentKeepalive = 25;
+      }
+    ];
+  };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   systemd.services.NetworkManager-wait-online.enable = false;
 

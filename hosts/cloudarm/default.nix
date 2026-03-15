@@ -40,6 +40,28 @@
   # All other services (Ollama, Qdrant, MCPs) are accessible only via WireGuard tunnel.
   networking.firewall.enable = false;
 
+  # --- WireGuard ---
+  # Private key stored at /etc/wireguard/private.key (not in repo)
+  networking.wireguard.interfaces.wg0 = {
+    ips = [ "10.100.0.1/24" ];
+    listenPort = 51820;
+    privateKeyFile = "/etc/wireguard/private.key";
+
+    peers = [
+      {
+        # predabook
+        publicKey = "bGDWAUyi6eXyv766BeFVsbU/trma2WUjVuOYZUJN/mE=";
+        allowedIPs = [ "10.100.0.2/32" ];
+      }
+      # mac (10.100.0.3) — add peer when key is generated
+      {
+        # wsl
+        publicKey = "CVxISNMKGh+QhFWhyaUJFy/dpwKIPiF7vMTzF6xz4j8=";
+        allowedIPs = [ "10.100.0.4/32" ];
+      }
+    ];
+  };
+
   # --- SSH hardening ---
   services.openssh = {
     enable = true;

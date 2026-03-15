@@ -12,6 +12,14 @@ Data: 2026-03-15
 | qwen3-embedding:0.6b | 92ms | 108ms | 193ms | 1024 | 1.5GB |
 | qwen3-embedding:4b | 110ms | 195ms | 687ms | 2560 | 3.9GB |
 
+```mermaid
+xychart-beta
+    title "Embedding — chunk grande (2649 chars)"
+    x-axis ["gemma:300m", "qwen3:0.6b", "qwen3:4b"]
+    y-axis "Tempo (ms)" 0 --> 750
+    bar [555, 193, 687]
+```
+
 ### Coder Models (GPU, individual, warm)
 
 | Modelo | Gen time | VRAM | GPU fit |
@@ -19,6 +27,14 @@ Data: 2026-03-15
 | qwen2.5-coder:1.5b | 394ms | 1.4GB | 100% GPU |
 | qwen2.5-coder:3b | 655ms | 2.4GB | 100% GPU |
 | qwen2.5-coder:7b | 2510ms | 5.4GB | 28% CPU / 72% GPU |
+
+```mermaid
+xychart-beta
+    title "Coder — generation time"
+    x-axis ["1.5b", "3b", "7b"]
+    y-axis "Tempo (ms)" 0 --> 2700
+    bar [394, 655, 2510]
+```
 
 ### Combos — VRAM (ambos carregados)
 
@@ -40,6 +56,14 @@ O local-rag faz parse + chunk + generate description + 2 embeds + upsert por chu
 | gemma + coder:1.5b (baseline) | **230s** | **1.37s** | — |
 | qwen3:0.6b + coder:1.5b | **200s** | **1.19s** | 13% mais rápido |
 | qwen3:0.6b + coder:3b | **350s** | **2.08s** | 52% mais lento |
+
+```mermaid
+xychart-beta
+    title "Indexação REAL — 71 arquivos, 168 chunks"
+    x-axis ["gemma+1.5b", "qwen3+1.5b", "qwen3+3b"]
+    y-axis "Tempo total (s)" 0 --> 400
+    bar [230, 200, 350]
+```
 
 **Escolhido: qwen3-embedding:0.6b + qwen2.5-coder:3b** — mais lento na indexação,
 mas melhor qualidade de embedding (1024 dims) e descriptions. Indexação é one-time.
@@ -70,6 +94,15 @@ Kernel: 6.12.76 (NixOS 25.11)
 | 1000 chars | 23.5s |
 | 2000 chars | 46.2s |
 | 3000 chars | 71.1s |
+
+```mermaid
+xychart-beta
+    title "ARM A1 — Embedding escala linear com input (~23ms/char)"
+    x-axis ["50c", "500c", "1000c", "2000c", "3000c"]
+    y-axis "Tempo (s)" 0 --> 80
+    bar [1.5, 11.3, 23.5, 46.2, 71.1]
+    line [1.2, 11.5, 23.0, 46.0, 69.0]
+```
 
 Escala ~23ms/char. Memory bandwidth (~25 GB/s) é o bottleneck.
 MAX_CHUNK_CHARS do local-rag = 3000 → estoura timeout 60s do client.

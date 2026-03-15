@@ -156,7 +156,11 @@
     description = "Playwright MCP Server (headless)";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.bash ];
+    path = [
+      pkgs.bash
+      pkgs.nodejs_22
+      pkgs.coreutils
+    ];
     environment = {
       HOME = "/var/lib/playwright-mcp";
       NODE_PATH = "${pkgs.nodejs_22}/lib/node_modules";
@@ -185,7 +189,11 @@
       "qdrant.service"
     ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.bash ];
+    path = [
+      pkgs.bash
+      pkgs.nodejs_22
+      pkgs.coreutils
+    ];
     environment = {
       HOME = "/var/lib/mcp-memory";
     };
@@ -221,7 +229,11 @@
     description = "MCP Fetch via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.bash ];
+    path = [
+      pkgs.bash
+      pkgs.nodejs_22
+      pkgs.coreutils
+    ];
     environment = {
       HOME = "/var/lib/mcp-fetch";
     };
@@ -250,7 +262,11 @@
     description = "MCP Context7 via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.bash ];
+    path = [
+      pkgs.bash
+      pkgs.nodejs_22
+      pkgs.coreutils
+    ];
     environment = {
       HOME = "/var/lib/mcp-context7";
     };
@@ -272,7 +288,11 @@
     description = "MCP Context (neuledge) via supergateway";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.bash ];
+    path = [
+      pkgs.bash
+      pkgs.nodejs_22
+      pkgs.coreutils
+    ];
     environment = {
       HOME = "/var/lib/mcp-context";
     };

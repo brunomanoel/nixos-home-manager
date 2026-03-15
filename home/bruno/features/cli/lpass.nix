@@ -2,7 +2,7 @@
 let
   # Bootstrap SSH keys from LastPass vault based on hostname.
   # Vault entries:
-  #   SSH/github-<host>  → GitHub deploy key (per-machine isolation)
+  #   GitHub/<host>      → GitHub deploy key (per-machine isolation)
   #   SSH/cloudarm       → Oracle Cloud server access key
   #   WireGuard/<host>   → WireGuard private key (stored, not auto-deployed)
   # Each SSH entry is a Secure Note of type "SSH Key" with fields:
@@ -29,7 +29,7 @@ let
       fi
 
       # --- GitHub key (per-machine) ---
-      local gh_vault="SSH/github-$host"
+      local gh_vault="GitHub/$host"
       local gh_priv="$HOME/.ssh/github.key"
       local gh_pub="$HOME/.ssh/github.pub"
 

@@ -17,13 +17,13 @@ let
     CONFIG=$(mktemp /tmp/local-rag-XXXXXX.json)
     cat > "$CONFIG" << JSONEOF
     {
-      "qdrant-url": "http://localhost:6333",
+      "qdrant-url": "http://10.100.0.1:6333",
       "embed-provider": "ollama",
-      "embed-model": "embeddinggemma:300m",
-      "ollama-url": "http://localhost:11434",
+      "embed-model": "qwen3-embedding:8b",
+      "ollama-url": "http://10.100.0.1:11434",
       "generate-descriptions": true,
       "llm-provider": "ollama",
-      "llm-model": "qwen2.5-coder:1.5b",
+      "llm-model": "qwen2.5-coder:14b",
       "dashboard": true,
       "dashboard-port": $PORT
     }

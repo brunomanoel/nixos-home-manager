@@ -15,7 +15,7 @@
     ../common/global
     ../common/users/bruno
     ../common/optional/docker.nix
-    ../common/optional/ai-services.nix
+    # ../common/optional/ai-services.nix  # moved to cloudarm
   ];
 
   wsl.enable = true;

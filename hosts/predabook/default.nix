@@ -26,7 +26,7 @@
     ../common/optional/docker.nix
     # ../common/optional/virtualbox.nix # disabled: VirtualBox modules incompatible with kernel 6.19+
     ../common/optional/gaming.nix
-    ../common/optional/ai-services.nix
+    # ../common/optional/ai-services.nix  # moved to cloudarm
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

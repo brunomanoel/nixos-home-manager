@@ -122,16 +122,8 @@
       "qwen2.5-coder:14b" # code descriptions/analysis, 9GB
     ];
     environmentVariables = {
-      # Embedding workload: many parallel small requests
-      OLLAMA_NUM_PARALLEL = "8";
-      # Keep models loaded — they're the primary workload
+      # Keep embedding model loaded — primary workload
       OLLAMA_KEEP_ALIVE = "-1";
-      # Up to 4 models in memory (embedding + coder + headroom)
-      OLLAMA_MAX_LOADED_MODELS = "4";
-      # Flash attention reduces memory per inference
-      OLLAMA_FLASH_ATTENTION = "1";
-      # KV cache quantization — saves ~40% memory with minimal quality loss
-      OLLAMA_KV_CACHE_TYPE = "q8_0";
     };
   };
 

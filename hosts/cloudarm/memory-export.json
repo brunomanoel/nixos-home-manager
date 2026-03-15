@@ -111,6 +111,19 @@
     "importance": 0.8
   },
   {
+    "id": "3f85de97-c0d4-4acb-802b-44d640aace50",
+    "content": "Cloudarm usa nixpkgs-stable (25.11) como base. Overlay unstable só para: ollama, qdrant, chromium. stateVersion=23.11",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "cloudarm",
+      "nixpkgs",
+      "stable",
+      "overlay"
+    ],
+    "importance": 0.9
+  },
+  {
     "id": "400adc5d-d836-48d2-aceb-2ae047a9317c",
     "content": "Suites (suites.dev) foi discutido 4+ vezes. Decisão ainda não tomada pelo usuário — ele continua perguntando porque o Claude muda de posição a cada sessão sem memória do contexto anterior. O problema real que Suites resolveria: testes colapsam todas as camadas (controller+service+repository) usando db e pglite diretamente, resultando em 99 usos de db/pglite espalhados nos test files. Com Suites: TestBed.solitary(Service) mocka Repository automaticamente com tipos corretos — sem db, sem pglite, sem bypass de banco. createTestApp ficaria só para contrato HTTP (status code, shape). O usuário está exigindo uma posição consistente e fundamentada, não vai-e-volta a cada sessão.",
     "memory_type": "semantic",
@@ -418,6 +431,18 @@
     "importance": 0.8
   },
   {
+    "id": "8cadbb1a-f30b-46de-8d72-7094f92dca62",
+    "content": "WireGuard ativo: cloudarm 10.100.0.1, predabook 10.100.0.2, wsl 10.100.0.4. Porta 51820/UDP. Latência ~28ms. Ollama e Qdrant acessíveis via túnel",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "cloudarm",
+      "wireguard",
+      "rede"
+    ],
+    "importance": 0.9
+  },
+  {
     "id": "8e1a7252-89e8-46c5-98aa-070338fab9a0",
     "content": "Phase 02 Notification Gating planned with 3 plans in 2 waves:\n- Plan 01 (Wave 1): Types update (add detailedMode), Vitest setup for app/, pure gating functions in notificationGating.ts (resolveNotificationAction, resolveCollisionAction, buildNotificationTag, deriveEventType) with TDD\n- Plan 02 (Wave 2): SW push handler gating integration + foreground gating (showLocalNotification + messaging.firebase.ts) + MOCK_PUSH removal + Simulator \"Copiar payload\" button\n- Plan 03 (Wave 2): Settings UI with Radix Accordion + Switch primitives, 3 accordion sections (Padrão Global, Por Tipo de Evento, Notificações Repetidas), auto-save, restore defaults\nRequirements: SW-01, SW-02, SW-03 covered by Plans 01+02; SETT-01 covered by Plan 03\nKey: notification tag = assetId only (NOT compound), collision scope = per asset any event type, fail-open on IDB error, detailedMode boolean persisted in IDB",
     "memory_type": "semantic",
@@ -543,6 +568,18 @@
       "integration"
     ],
     "importance": 0.8
+  },
+  {
+    "id": "b013e2d7-8be1-41a1-b3cd-9e0458a60bf6",
+    "content": "Cloudarm deploy concluído: NixOS 25.11 stable + overlay unstable (ollama/qdrant/chromium). IP 137.131.233.96, SSH users: root/bruno/ubuntu",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "cloudarm",
+      "deploy",
+      "concluído"
+    ],
+    "importance": 0.9
   },
   {
     "id": "b6ef19b6-094c-4710-a1b5-e518327114df",

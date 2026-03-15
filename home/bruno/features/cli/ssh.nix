@@ -37,6 +37,11 @@
         hostname = "github.com";
         identityFile = "~/.ssh/github.key";
       };
+      "cloudarm" = {
+        hostname = "10.100.0.1";
+        user = "bruno";
+        identityFile = "~/.ssh/cloudarm.key";
+      };
     };
   };
 }

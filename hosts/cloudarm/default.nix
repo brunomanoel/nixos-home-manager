@@ -62,6 +62,9 @@
     ];
   };
 
+  # --- Docker ---
+  virtualisation.docker.enable = true;
+
   # --- SSH hardening ---
   services.openssh = {
     enable = true;

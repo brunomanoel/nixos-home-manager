@@ -44,7 +44,13 @@
     matchBlocks = {
       "github.com" = {
         hostname = "github.com";
-        identityFile = "~/.ssh/github.key";
+        identityFile = [
+          "~/.ssh/yubikey-github.pub"
+          "~/.ssh/github.key"
+        ];
+        extraOptions = {
+          PKCS11Provider = "${pkgs.yubico-piv-tool}/lib/libykcs11.so";
+        };
       };
       "cloudarm" = {
         hostname = "10.100.0.1";

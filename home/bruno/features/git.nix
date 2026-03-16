@@ -22,7 +22,7 @@
     };
     signing.signByDefault = true;
     signing.format = "ssh";
-    signing.key = "~/.ssh/github.pub";
+    signing.key = "~/.ssh/yubikey-github.pub";
     ignores = [
       ".direnv"
     ];

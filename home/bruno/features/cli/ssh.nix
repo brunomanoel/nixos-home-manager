@@ -10,10 +10,7 @@
   programs.keychain = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     keys = [ "github.key" ];
-    extraFlags = [
-      "--quiet"
-      "--noask"
-    ];
+    extraFlags = [ "--quiet" ];
   };
 
   programs.ssh = {
@@ -30,7 +27,6 @@
       controlMaster = "auto";
       controlPath = "~/.ssh/master-%r@%n:%p";
       controlPersist = "10m";
-      # macOS Keychain: persists keys across reboots without manual ssh-add
       extraOptions = lib.mkIf pkgs.stdenv.isDarwin {
         UseKeychain = "yes";
       };

@@ -45,6 +45,8 @@
 
   # needed for store VS Code auth token
   services.gnome.gnome-keyring.enable = true;
+  # Disable gcr-ssh-agent — keychain manages SSH agent instead
+  systemd.user.services.gcr-ssh-agent.enable = false;
 
   services.gnome.gnome-browser-connector.enable = true;
 }

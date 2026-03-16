@@ -26,11 +26,12 @@ Do this on an air-gapped machine or at minimum on a live USB. The master key sho
 ```bash
 # Generate master key (certify-only, no expiration on master)
 gpg --expert --full-generate-key
-# Choose: (8) RSA (set your own capabilities) → certify only
-# Or: (9) ECC and ECC → Curve 25519
-# Key size: 4096 (RSA) or default (ECC)
-# Expiration: 0 (no expiration for master)
-# Real name, email: your personal identity
+# Choose: (11) ECC (set your own capabilities)
+# Toggle capabilities: type 's' to remove Sign, 'a' to remove Authenticate
+# Only 'Certify' should remain — confirm with 'q'
+# Curve: (1) Curve 25519
+# Expiration: 0 (no expiration)
+# Real name, email: your personal identity (primary email)
 ```
 
 ### 1.2 Add GitHub noreply User ID
@@ -51,19 +52,29 @@ save
 
 ### 1.3 Add subkeys
 
+Two subkeys — no expiration (YubiKey is the security boundary):
+
 ```bash
 gpg --expert --edit-key YOUR_KEY_ID
 # In gpg prompt:
+
+# Subkey 1: GitHub (Sign + Authenticate — for GPG commits and SSH on GitHub)
 addkey
-# Authentication subkey: (8) RSA → authenticate only → 4096 → 1y
+# Choose: (11) ECC (set your own capabilities)
+# Toggle: 's' to add Sign, 'a' to add Authenticate, 'e' to remove Encrypt
+# Only Sign + Authenticate should remain — confirm with 'q'
+# Curve: (1) Curve 25519
+# Expiration: 0 (no expiration — YubiKey is the security boundary)
+
+# Subkey 2: Servers (Authenticate only — for SSH on cloudarm and other servers)
 addkey
-# Signing subkey: (4) RSA (sign only) → 4096 → 1y
-addkey
-# Encryption subkey: (6) RSA (encrypt only) → 4096 → 1y
+# Choose: (11) ECC (set your own capabilities)
+# Toggle: 'a' to add Authenticate — only Authenticate should remain — confirm with 'q'
+# Curve: (1) Curve 25519
+# Expiration: 0
+
 save
 ```
-
-> Set expiration to 1-2 years. Rotating subkeys periodically is good practice.
 
 ### 1.4 Export and back up the master key
 

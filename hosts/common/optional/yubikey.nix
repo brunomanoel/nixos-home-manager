@@ -4,7 +4,11 @@
   # Not needed on macOS (handled by com.apple.ifdreader) or cloudarm (no physical YubiKey).
   services.pcscd.enable = true;
 
+  # udev rules for YubiKey USB access without root
+  services.udev.packages = [ pkgs.yubikey-personalization ];
+
   environment.systemPackages = with pkgs; [
     yubikey-manager # ykman CLI for YubiKey management
+    yubikey-personalization # udev rules + personalization tool
   ];
 }

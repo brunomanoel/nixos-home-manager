@@ -15,6 +15,7 @@
     ../common/global
     ../common/users/bruno
     ../common/optional/docker.nix
+    ../common/optional/yubikey.nix
     # ../common/optional/ai-services.nix  # moved to cloudarm
   ];
 

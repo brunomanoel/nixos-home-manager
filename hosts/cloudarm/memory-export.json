@@ -1,6 +1,337 @@
 [
   {
-    "id": "0690322c-783b-46ff-9efd-e0a49c0e1d5a",
+    "id": "0dc8805c-fedd-4707-8966-372f97b76c92",
+    "content": "Cloudarm MCPs via supergateway: memory(8001), playwright(8002), fetch(8003), context7(8004), context(8005), brave-search(8006).",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "mcp",
+      "ports"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "1155968e-529b-40f9-8966-356b156ac7eb",
+    "content": "Predabook: boot.loader.systemd-boot.rebootForBitlocker=true adicionado. Fix p/ dual boot Windows (BSOD por TPM/BitLocker)",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "predabook",
+      "boot",
+      "bitlocker",
+      "fix"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "17c1bea1-b011-49fb-ac98-cc7ff39bcd1a",
+    "content": "MCPs locais (stdio): memory/local-rag (aponta Ollama/Qdrant remotos), filesystem, git, sequential-thinking",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "mcp",
+      "local"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "17c9b2fa-bcba-4c12-a5d9-48b7cf145555",
+    "content": "Cloudarm Qdrant: ~300MB RAM para 6 projetos com dim=1024. Embed dim muda de 768 para 1024 (qwen3-embedding).",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "qdrant",
+      "memory"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "191e2505-6f3b-44f2-a4de-1fafb7c99a39",
+    "content": "valida.doctor pricing (Mar/2026): Mensal R$57 | Trimestral R$147 (≈R$49/mês) | Semestral R$237 (≈R$39,50/mês). SEM plano anual — churn estrutural pós-prova.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "pricing",
+      "business-model"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "248071ee-7f2f-4266-b68c-b314ab7dd9d1",
+    "content": "Bug nh 4.3.0: `nh os switch` não reinicia home-manager-bruno.service. Fix: usar `sudo nixos-rebuild switch --flake ~/dotfiles#predabook` ou `nh home switch` separadamente.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "nh",
+      "home-manager",
+      "nixos",
+      "bug"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "289a4e21-62ff-44c6-b635-9c64234476dc",
+    "content": "Predabook dotfiles lpass.nix: bootstrap SSH keys do LastPass. GitHub/$host = deploy key por máquina. SSH/cloudarm = acesso servidor. Keychain (ssh.nix) inicia agent no zshrc. Bootstrap roda via zsh.loginExtra — keychain já está ativo.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "predabook",
+      "dotfiles",
+      "lpass",
+      "ssh",
+      "bootstrap",
+      "keychain"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "2ba78512-2d2b-4451-8fc4-777e1d259f43",
+    "content": "Reestruturação pós-infect: 1) separar common/global em universal vs desktop-only 2) reestruturar claude.nix (local-rag→remote Ollama/Qdrant)",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "reestruturação",
+      "pendente"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "2f8a3ae0-2bf5-42cd-8952-15f27b4fec95",
+    "content": "Cloudarm net.ifnames=0 removido. Manter nomes predictable (enp0s6). networking.useDHCP=true funciona com qualquer nome",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "network",
+      "ifnames"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "318b6a68-edeb-4955-9b74-5cf755318ffe",
+    "content": "valida.doctor pricing Mar/2026: Mensal R$57 | Trimestral R$147 (≈R$49/mês) | Semestral R$237 (≈R$39,50/mês). SEM plano anual. ARPU conservador R$50/mês.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "pricing",
+      "business-model"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "3397613d-d9e2-42a1-8d99-fefe8388b5b1",
+    "content": "Cloudarm: Oracle A1.Flex, 4 ARM cores, 24GB RAM, 200GB, aarch64-linux. Migração via nixos-infect.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "hardware",
+      "oracle"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "344e2999-1adb-46a2-9acd-8f4b59e898a8",
+    "content": "Análise competitiva Revalida Mar/2026: Simula Revalida R$39,90/mês, Revalida Resolve R$25-42/mês, Nedra R$49,90-57/mês 70k questões, MedTask R$249/mês 90k questões.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "competitive-analysis",
+      "revalida",
+      "pricing"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "3e77dbac-7f27-4447-b860-590424a99344",
+    "content": "Cloudarm hw-config.nix é placeholder. Disco real: sda1=root(ext4), sda15=EFI(vfat 98MB). Infect gera o correto — copiar depois",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "hardware",
+      "placeholder"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "4183b971-56ad-4756-b983-aabcc15da78d",
+    "content": "Suites (suites.dev) discutido 4x, decisão pendente do usuário. Não usar sem decisão explícita. Problema: pglite exposto no TestApp, db:any, DDL inline, 99 usos pglite.exec nos test files. Fix: TestBed.solitary(Service) mocka Repository automaticamente sem pglite.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "testing",
+      "suites",
+      "anti-pattern",
+      "decision-pending"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "41c0f1d5-32ce-465c-9223-6f28451b6986",
+    "content": "Cloudarm Ollama: qwen3-embedding:8b (4.7GB) + qwen2.5-coder:14b (9GB). Total ~14GB, sobram 10GB RAM. Tuning: OLLAMA_NUM_PARALLEL=8, KEEP_ALIVE=-1, MAX_LOADED_MODELS=4.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "ollama",
+      "models",
+      "tuning"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "43f7d8af-546e-4ec3-b39c-2cf2acab0a34",
+    "content": "WireGuard ativo: cloudarm 10.100.0.1, predabook 10.100.0.2, wsl 10.100.0.4. Porta 51820/UDP. Latência ~28ms. Ollama e Qdrant acessíveis via túnel",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "wireguard",
+      "rede"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "4f5683f2-48ba-433f-9591-5b1ba1378e5c",
+    "content": "Cloudarm propósito: server de memória para agentes (local-rag). Não é chat/Open WebUI. 100% code RAG workload.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "purpose"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "564f7cc6-6f27-452e-baee-d206523d5155",
+    "content": "Cloudarm serviços: Ollama CPU-only, Qdrant, Chromium headless, supergateway. Sem Open WebUI, sem Pelican.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "services"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "5a942748-1e58-485a-a6f6-07990af680e1",
+    "content": "Predabook Ollama: qwen3-embedding:0.6b (1.5GB, 1024 dims) + qwen2.5-coder:3b (2.4GB). OLLAMA_NUM_PARALLEL=2, FLASH_ATTENTION=1.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "predabook",
+      "ollama",
+      "models"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "5cc86a09-d13a-4dcf-9402-8db325761e6a",
+    "content": "Anti-padrões de teste valida.doctor: pglite exposto no TestApp, db:any exposto, DDL inline por test file. Fix correto: expor só app+db tipado. pglite nunca fora de createTestApp.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "testing",
+      "anti-pattern",
+      "pglite",
+      "createTestApp",
+      "technical-debt"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "6082941f-89d3-425c-9798-ae2f0ca326ae",
+    "content": "Cloudarm infect plano: 3 etapas. 1) nixos-infect config padrão 2) copiar hw-config gerado 3) aplicar flake dotfiles#cloudarm",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "infect",
+      "plano"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "65a58be4-65ac-44fa-b4c0-1c371330211e",
+    "content": "Cloudarm boot: GRUB EFI (não systemd-boot). efiInstallAsRemovable=true, device=nodev. ESP 98MB em /boot/efi (sda15)",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "boot",
+      "grub"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "709bc167-f4bd-4c96-a82d-e7f46a806469",
+    "content": "Cloudarm propósito: server de memória para agentes (local-rag). Ollama CPU-only, Qdrant, Chromium headless, supergateway. Sem Open WebUI.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "purpose",
+      "services"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "75bc3b5e-7180-40ea-b51a-aa0bc4202b61",
+    "content": "valida.doctor diferencial: gabarito comentado referenciando protocolos brasileiros (PCDT, SBC, SBP) + foco exclusivo Revalida + freemium genuíno + analytics de lacunas.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "competitive-analysis",
+      "revalida",
+      "diferencial"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "78448239-a426-4179-9d7b-5a27c6733665",
+    "content": "Cloudarm: Oracle A1.Flex, 4 ARM cores, 24GB RAM, 200GB, aarch64-linux. IP 137.131.233.96. SSH: user ubuntu, key ~/.ssh/cloudarm.key.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "hardware",
+      "oracle",
+      "ssh"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "855a9d2e-ed45-4de7-bb1d-65b765686e07",
+    "content": "Predabook Ollama parallel embed+coder 40% mais rápido: 2565ms vs 4270ms.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "predabook",
+      "ollama",
+      "tuning",
+      "benchmark"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "8fea0a56-0c73-4a83-bdfe-9f658541a300",
+    "content": "Cloudarm kernel: linuxPackages_latest configurado. Risco em cloud — se causar problema de boot, trocar para default do channel",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "kernel",
+      "risco"
+    ],
+    "importance": 0.7
+  },
+  {
+    "id": "928dd0b9-ea17-4df3-9250-2c8188c17b60",
     "content": "Cloudarm MCPs remotos: memory(8001), playwright(8002 nativo), fetch(8003), context7(8004), context(8005), brave-search(8006)",
     "memory_type": "semantic",
     "scope": "global",
@@ -12,109 +343,22 @@
     "importance": 0.9
   },
   {
-    "id": "0fe38d6a-0baf-4f9a-ab10-3e7db4bb26bf",
-    "content": "Cloudarm serviços: Ollama CPU-only, Qdrant, Chromium headless, supergateway. Sem Open WebUI, sem Pelican.",
+    "id": "952f6e2d-ee51-4e35-9e8a-5dd18f66cbbd",
+    "content": "Cloudarm embedding: qwen3-embedding:8b (4.7GB). Descrições: qwen2.5-coder:14b (9GB). Total ~14GB, sobram 10GB.",
     "memory_type": "semantic",
     "scope": "global",
     "tags": [
       "cloudarm",
-      "services"
+      "ollama",
+      "models"
     ],
     "importance": 0.9
   },
   {
-    "id": "14977f1c-2c37-494a-b139-3f5a7c104590",
-    "content": "Cloudarm net.ifnames=0 removido. Manter nomes predictable (enp0s6). networking.useDHCP=true funciona com qualquer nome",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "network",
-      "ifnames"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "21b5cff5-0e14-49b5-9c03-4ac741fc5952",
-    "content": "Phase 2 Plan 04 complete: addMessage dedup guard fixes UAT test 7. Dedup by messageStamp+assetName composite key with optimistic set() before await saveMessage() to prevent TOCTOU race. Both FCM onMessage and SW postMessage paths deliver the same push with different ids. 6 tests including concurrent-call race test. Commits: 5ff5aa5 (test), c1d3e56 (feat).",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "dedup",
-      "addMessage",
-      "TOCTOU",
-      "zustand",
-      "messagesStore"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "31ca4ecc-c6e8-4e8e-8f75-7a323300789c",
-    "content": "Cloudarm boot: GRUB EFI (não systemd-boot). efiInstallAsRemovable=true, device=nodev. ESP 98MB em /boot/efi (sda15)",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "boot",
-      "grub"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "324c0ac5-b6ba-4a90-b4df-7d57dd5e3084",
-    "content": "Cloudarm propósito: server de memória para agentes (local-rag). Não é chat/Open WebUI. 100% code RAG workload.",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "purpose"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "348e1d5a-fb5f-4e07-ad27-ec352238594f",
-    "content": "valida.doctor — regras de camada NestJS (layer rules tabela):\n\n| Camada           | Importa / recebe              | NUNCA importa                        |\n|------------------|-------------------------------|--------------------------------------|\n| *.controller.ts  | *.service.ts, shared/schemas (só para tipos de request/response e ZodValidationPipe), common/guards, common/decorators | db/schema.ts, db/db.ts, *.repository.ts |\n| *.service.ts     | *.repository.ts, domain/, lib/ | shared/schemas/, db/schema.ts, db/db.ts |\n| *.repository.ts  | DB_TOKEN via @Inject, db/schema.ts | shared/schemas/, *.service.ts       |\n| domain/          | nada interno                  | tudo (TypeScript puro)               |\n| dto/             | nada interno                  | tudo (TypeScript puro)               |\n\nRepository NUNCA expõe tipos Drizzle para fora — mapeia InferSelect para entity/DTO antes de retornar.\nService NUNCA conhece Drizzle, NUNCA conhece Zod, NUNCA conhece shared/schemas.\nController é o ÚNICO ponto onde shared/schemas é usado — e apenas para validação de entrada e formatação de saída.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "nestjs",
-      "layer-rules",
-      "architecture",
-      "repository-pattern",
-      "dto"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "37e70b74-5d68-45f8-a402-5ffbbd40d454",
-    "content": "Phase04 key decisions: AssetSnapshotItem maps snake_case→camelCase at store level. SummaryCards computed from assets array (not Firestore). snapshotAt replaces per-unit updatedAt.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "decisions",
-      "architecture"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "39cf3642-a6ab-46de-b9e9-55e28a6d1c2c",
-    "content": "Phase 2 (notification-gating) fully complete: 4 plans executed, all requirements (SW-01, SW-02, SW-03, SETT-01) satisfied, verification passed. Plan 04 fixed the duplicate feed items bug with optimistic dedup guard in addMessage. Next phase: 3 (asset-snapshot-backend).",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "complete",
-      "notification-gating"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "3f85de97-c0d4-4acb-802b-44d640aace50",
+    "id": "a027b2b3-2071-4d7a-9827-e1f4b024571a",
     "content": "Cloudarm usa nixpkgs-stable (25.11) como base. Overlay unstable só para: ollama, qdrant, chromium. stateVersion=23.11",
     "memory_type": "semantic",
-    "scope": "project",
+    "scope": "global",
     "tags": [
       "cloudarm",
       "nixpkgs",
@@ -124,34 +368,81 @@
     "importance": 0.9
   },
   {
-    "id": "400adc5d-d836-48d2-aceb-2ae047a9317c",
-    "content": "Suites (suites.dev) foi discutido 4+ vezes. Decisão ainda não tomada pelo usuário — ele continua perguntando porque o Claude muda de posição a cada sessão sem memória do contexto anterior. O problema real que Suites resolveria: testes colapsam todas as camadas (controller+service+repository) usando db e pglite diretamente, resultando em 99 usos de db/pglite espalhados nos test files. Com Suites: TestBed.solitary(Service) mocka Repository automaticamente com tipos corretos — sem db, sem pglite, sem bypass de banco. createTestApp ficaria só para contrato HTTP (status code, shape). O usuário está exigindo uma posição consistente e fundamentada, não vai-e-volta a cada sessão.",
+    "id": "a4cceb56-6622-48ba-9188-2627fed5c2eb",
+    "content": "Cloudarm Ollama tuning: OLLAMA_NUM_PARALLEL=8, KEEP_ALIVE=-1, MAX_LOADED_MODELS=4.",
     "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "testing",
-      "suites",
-      "testbed",
-      "anti-pattern",
-      "decision-pending"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "40b9f742-e6ff-4a49-8376-42d91c026687",
-    "content": "Cloudarm firewall: desabilitado no NixOS (networking.firewall.enable=false). Filtragem via Oracle Security List. Portas: 22/TCP + 51820/UDP",
-    "memory_type": "semantic",
-    "scope": "project",
+    "scope": "global",
     "tags": [
       "cloudarm",
-      "firewall",
-      "oracle"
+      "ollama",
+      "tuning"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "b0228260-9c33-4a28-8e15-826914d4243b",
+    "content": "MCPs no cloudarm (supergateway): playwright(8002), fetch(8003), context7(8004), context(8005), nixos. Prioridade: context antes de context7",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "mcp",
+      "remote"
     ],
     "importance": 0.9
   },
   {
-    "id": "4758cb2d-2376-4b40-bbd1-7ef634ee0eba",
-    "content": "Decisão explícita do usuário: IndexedDB é a ÚNICA persistência para preferências de notificação. LocalStorage NÃO deve ser usado — nem como fallback — sem decisão explícita do usuário. Isso vale para todo o projeto.",
+    "id": "b85d7d58-1fc2-427b-bee9-5f9bb486a981",
+    "content": "valida.doctor memory profiling (2026-03-13): RSS peak 207MB, idle 173MB, cold start ~2198ms local (~1.3-1.5s prod). 256MiB Cloud Functions confirmado suficiente.",
+    "memory_type": "semantic",
+    "scope": "project",
+    "tags": [
+      "profiling",
+      "memory",
+      "nestjs",
+      "cloud-functions"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "bab9e5a3-e85e-472f-801b-f3f525735dc8",
+    "content": "Cloudarm Pterodactyl descartado. Substituído por Pelican Panel (fork ativo). Wings como daemon de game servers.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "pterodactyl",
+      "pelican"
+    ],
+    "importance": 0.7
+  },
+  {
+    "id": "c17c3e8a-892d-4e64-89c1-9bd7c0f0b36d",
+    "content": "Cloudarm deploy concluído: NixOS 25.11 stable + overlay unstable (ollama/qdrant/chromium). IP 137.131.233.96, SSH users: root/bruno/ubuntu",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "deploy",
+      "concluído"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "c4ef0540-4efe-4ea5-a882-8f88caa5628d",
+    "content": "Cloudarm iptables Oracle: regras InstanceServices (169.254.x.x) p/ metadata/iSCSI. Com firewall.enable=false, tudo ACCEPT — sem conflito",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "iptables",
+      "oracle"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "cbc59cb6-7d73-4ec7-96aa-995a995cd736",
+    "content": "IndexedDB é a ÚNICA persistência para preferências de notificação. LocalStorage NÃO deve ser usado — nem como fallback — sem decisão explícita do usuário.",
     "memory_type": "semantic",
     "scope": "project",
     "tags": [
@@ -164,363 +455,20 @@
     "importance": 0.9
   },
   {
-    "id": "4849bd35-d31c-45fa-84f4-3760d23b79cf",
-    "content": "Cloudarm config path: /home/bruno/dotfiles/hosts/cloudarm/. Flake: nixosConfigurations.cloudarm, system=aarch64-linux.",
+    "id": "d19c8195-6a63-48c2-9ce4-7f2eb9a56552",
+    "content": "Cloudarm SSH: user ubuntu, key ~/.ssh/cloudarm.key (RSA, do LastPass entry 6358867201542651779), IP 137.131.233.96",
     "memory_type": "semantic",
     "scope": "global",
     "tags": [
       "cloudarm",
-      "nixos",
-      "flake"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "4af116d1-4397-4e06-94be-477491ae247b",
-    "content": "Cloudarm Pterodactyl descartado: nginx+php+mariadb+redis+wings+docker container game server. Tudo será apagado pelo infect",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "pterodactyl",
-      "descartado"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "4e035824-b131-44fd-b26c-8cfb64c169b7",
-    "content": "Cloudarm Qdrant: ~300MB RAM para 6 projetos com dim=1024. Embed dim muda de 768 para 1024 (qwen3-embedding).",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "qdrant",
-      "memory"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "511541bc-9cd3-4df8-8cde-6ca61e3c94c5",
-    "content": "Phase 3 (asset-snapshot-backend) context gathered. Key decisions: getAssetSnapshot CF returns { assets: AssetSnapshot[], snapshotAt: string, count: number }. Excludes last_message_id and silent_alert_sent_at. Flat array ordered by asset_name. 'todas' = SELECT * without filter. requireActiveUser auth (any active user). No units = empty array (not error). Turso down = HttpsError. No cache/rate limit. Frontend has separate AssetSnapshot type. Backend is agnostic API.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase3",
-      "context",
-      "asset-snapshot",
-      "decisions"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "54dc4048-7f29-4436-a348-4c00c59432ee",
-    "content": "Phase 3 (asset-snapshot-backend) complete: getAssetSnapshot CF implemented via TDD. 1 plan, 2 tasks, 5 commits. AssetSnapshotItem type excludes internal fields. getAssetsByUnits() with parameterized WHERE IN. CF uses requireActiveUser, 'todas' → getAllAssets(), empty units → empty array, Turso error → HttpsError('unavailable'). 136/136 tests pass. Requirements SNAP-01, SNAP-02 satisfied. Next: Phase 4 (home-redesign).",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase3",
-      "complete",
-      "asset-snapshot",
-      "getAssetSnapshot"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "565861f6-1e3a-41bb-85f7-1c0501ff6f09",
-    "content": "Phase04 key decisions: Notifications stay in Layout slide-up panel (only unread). Home page shows ONLY assets after redesign. Historical msgs remain in IndexedDB. No new npm deps.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "decisions",
-      "architecture"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "5a386d52-5525-4de5-b013-5d62181a6ea2",
-    "content": "Phase 4 (home-redesign) context: Assets as primary home content, notifications in existing slide-up panel. SummaryCards stays, data unified from snapshot (no separate Firestore call). Asset rows: minimal (name+dot+status+time), tap expands. Filter: pill buttons Todos/Fora/Dentro with count badges, default Todos with Out-first sort. Text search kept. FCM updates: flash highlight ~2s, re-sort, filtered items fade out after ~3s delay. Skeleton loading while snapshot loads.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "context",
-      "home-redesign",
-      "decisions"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "614b4e52-1122-4912-b01d-c48f4720c5ef",
-    "content": "Cloudarm MCP proxy: supergateway (npm) wrapa stdio→SSE. Cliente usa supergateway --sse para conectar. Tudo via WireGuard.",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "mcp",
-      "supergateway"
+      "ssh",
+      "acesso"
     ],
     "importance": 0.9
   },
   {
-    "id": "61ca9e4c-a676-49f3-8dce-64d90db54938",
-    "content": "Phase 2 UAT: Duplicate messages bug found. Root cause: FirebaseMessagingService.initialize() has dual delivery — onMessage (foreground FCM) and SW postMessage (FCM_MESSAGE broadcast) both trigger listener callbacks, causing addMessage to be called twice per push. Store has no dedup. Fix: either deduplicate in addMessage by messageStamp+assetName, or prevent SW from broadcasting FCM_MESSAGE when app is in foreground.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "bug",
-      "duplicate-messages",
-      "notification",
-      "fcm"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "6c4ef115-1b12-46be-afdd-d6d0123e5a44",
-    "content": "Dotfiles era só pra PCs. Cloudarm é primeiro servidor. common/global tem coisas desktop-only: font.nix, cuda.nix, xkb, hw firmware",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "dotfiles",
-      "reestruturação"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "70d7a7c2-e0cb-42c6-bdb2-3de0211cda06",
-    "content": "Cloudarm embedding: qwen3-embedding:8b (4.7GB). Descrições: qwen2.5-coder:14b (9GB). Total ~14GB, sobram 10GB.",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "ollama",
-      "models"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "74a5474d-00fa-47e3-abba-e20242e0a689",
-    "content": "Collision behavior implementation: dismissPrior = use same tag + renotify:true (browser replaces natively), showNew = append timestamp to tag (unique = new notification), silent = skip showNotification entirely. getNotifications({tag}) used for silent collision check but fail-open on iOS. Messages always broadcast to clients and stored in IDB feed regardless of gating decision.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "collision",
-      "notification",
-      "tag",
-      "implementation"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "74b8dbe2-383f-49f5-b397-986549baad7b",
-    "content": "Cloudarm users: bruno (normal+wheel), ubuntu (normal+wheel, compatibilidade Oracle), root (SSH key). Todos com mesma RSA key",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "users"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "7a4f0053-24b5-45f9-a7c2-83e40ff577f0",
-    "content": "Bug: `nh os switch` (nh 4.3.0) does not restart the home-manager-bruno.service after building a new HM generation. `sudo nixos-rebuild switch` works correctly — it shows \"restarting the following units: home-manager-bruno.service\" and applies HM changes. This is an nh-specific bug. Workaround: use `sudo nixos-rebuild switch --flake ~/dotfiles#predabook` or run `nh home switch` separately after `nh os switch`.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "nh",
-      "home-manager",
-      "nixos",
-      "bug"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "7bdb6e8e-919b-42d2-9cf4-c6bce960b5d6",
-    "content": "MCPs locais (stdio): memory/local-rag (aponta Ollama/Qdrant remotos), filesystem, git, sequential-thinking",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "mcp",
-      "local"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "7e3b35af-6648-4705-84ca-e5a63c0364e6",
-    "content": "Anti-padrões de teste introduzidos pelo Claude e nunca corrigidos: (1) `pglite` exposto no TestApp — usado para DDL inline, DELETE, INSERT e SELECT bruto via SQL string. (2) `db: any` exposto no TestApp — Drizzle sem tipo. (3) DDL inline em cada test file — removido em 2026-03-13 mas pglite e db ainda expostos. (4) 99 usos de pglite.exec/query e db.insert/select espalhados pelos test files. Solução correta: TestApp expõe só `app` + `db` tipado com ReturnType<typeof createDb>. Reset via db.delete() tipado. Seed via db.insert() tipado. pglite nunca exposto fora do createTestApp. Suites foi discutido 3x mas descartado — o problema real é a falta de disciplina no setup, não a ausência de Suites.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "testing",
-      "anti-pattern",
-      "pglite",
-      "db",
-      "createTestApp",
-      "technical-debt"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "7eed8c86-5114-44d0-81c2-5b85ad54b61f",
-    "content": "Security hardening added to NestJS API (2026-03-13):\n- helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }) in main.ts — same config as original Express\n- @nestjs/throttler (NOT express-rate-limit) — NestJS official recommendation\n- ThrottlerModule.forRoot global: 300 req/min per IP in AppModule\n- ThrottlerGuard registered as APP_GUARD globally\n- QuestionsController has @Throttle({ default: { ttl: 60_000, limit: 60 } }) — extra protection against bank extraction\n- GET /config has @SkipThrottle() — legitimate public route\n- 404 handler registered after nestApp.init() returning { error: { code: 'NOT_FOUND', message: ... } }",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "security",
-      "nestjs",
-      "helmet",
-      "rate-limit",
-      "throttler"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "82687ec9-e431-4845-b122-667707648552",
-    "content": "Cloudarm iptables Oracle: regras InstanceServices (169.254.x.x) p/ metadata/iSCSI. Com firewall.enable=false, tudo ACCEPT — sem conflito",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "iptables",
-      "oracle"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "82f79bbc-9020-4a4b-a847-64077ffa9554",
-    "content": "Phase 2 research complete: SW gating uses pure functions in notificationGating.ts (resolveNotificationAction, resolveCollisionAction). SW can import from project modules because vite-plugin-pwa injectManifest bundles with Vite. Tag strategy: asset-{name} for collision (per CONTEXT.md override — NOT compound {assetId}:{eventType}). NEW_USER_PENDING uses unique tags, no collision. Vitest setup needed in app/ directory (first time). Radix Accordion + Switch new dependencies. detailedMode field added to NotificationPreferences type.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "research",
-      "notification-gating",
-      "service-worker",
-      "architecture"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "866ab4d6-b7cf-4d50-817f-eda0c9352ee4",
-    "content": "Predabook: boot.loader.systemd-boot.rebootForBitlocker=true adicionado. Fix p/ dual boot Windows (BSOD por TPM/BitLocker)",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "predabook",
-      "boot",
-      "bitlocker",
-      "fix"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "89bb2391-dd60-4fe4-9377-f629a6da19a4",
-    "content": "Cloudarm mcp-fetch fix: uvx não é módulo Python. Corrigido p/ writeShellScript com unset PYTHONPATH + exec uv/bin/uvx mcp-fetch",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "mcp-fetch",
-      "fix"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "8cadbb1a-f30b-46de-8d72-7094f92dca62",
-    "content": "WireGuard ativo: cloudarm 10.100.0.1, predabook 10.100.0.2, wsl 10.100.0.4. Porta 51820/UDP. Latência ~28ms. Ollama e Qdrant acessíveis via túnel",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "wireguard",
-      "rede"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "8e1a7252-89e8-46c5-98aa-070338fab9a0",
-    "content": "Phase 02 Notification Gating planned with 3 plans in 2 waves:\n- Plan 01 (Wave 1): Types update (add detailedMode), Vitest setup for app/, pure gating functions in notificationGating.ts (resolveNotificationAction, resolveCollisionAction, buildNotificationTag, deriveEventType) with TDD\n- Plan 02 (Wave 2): SW push handler gating integration + foreground gating (showLocalNotification + messaging.firebase.ts) + MOCK_PUSH removal + Simulator \"Copiar payload\" button\n- Plan 03 (Wave 2): Settings UI with Radix Accordion + Switch primitives, 3 accordion sections (Padrão Global, Por Tipo de Evento, Notificações Repetidas), auto-save, restore defaults\nRequirements: SW-01, SW-02, SW-03 covered by Plans 01+02; SETT-01 covered by Plan 03\nKey: notification tag = assetId only (NOT compound), collision scope = per asset any event type, fail-open on IDB error, detailedMode boolean persisted in IDB",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "planning",
-      "notification-gating",
-      "plans"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "9ac0cb56-f2af-415d-a1f8-56c222f35f8e",
-    "content": "Cloudarm infect plano: 3 etapas. 1) nixos-infect config padrão 2) copiar hw-config gerado 3) aplicar flake dotfiles#cloudarm",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "infect",
-      "plano"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "9dd7970b-7419-4b29-9f10-3f941d3064fd",
-    "content": "Reestruturação pós-infect: 1) separar common/global em universal vs desktop-only 2) reestruturar claude.nix (local-rag→remote Ollama/Qdrant)",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "reestruturação",
-      "pendente"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "a2237477-b9b8-4898-aff3-b837f2bfceed",
-    "content": "NixOS/HM dotfiles config path: /home/bruno/dotfiles",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "nixos",
-      "dotfiles",
-      "path",
-      "config"
-    ],
-    "importance": 1
-  },
-  {
-    "id": "a2ffe864-cd08-4bcf-821e-467cb3fcc8f4",
-    "content": "Phase 04 home-redesign planned: 3 plans. Plan01=types+assetsStore, Plan02=AssetRow+HomePage redesign, Plan03=FCM integration+flash+cleanup. 11 total tasks.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "planning",
-      "home-redesign",
-      "plans"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "a4f19c21-4731-4654-b527-f17a84d18ed8",
-    "content": "Phase04 Plan01: (1) AssetSnapshotItem camelCase type in app types (2) AssetSnapshotResponse type (3) assetsStore Zustand+httpsCallable (4) formatRelativeTime via date-fns ptBR",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "plan01",
-      "tasks",
-      "foundation"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "a7770ba5-5bcd-48f1-8058-6c4d119dfc3b",
-    "content": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 é obrigatório no .env local para dev. Sem ela, admin.auth().verifyIdToken() rejeita tokens do Firebase Auth Emulator com 401. A variável precisa estar no ambiente ANTES do processo do emulador iniciar. Carregada via direnv (.envrc usa dotenv_if_exists .env).",
+    "id": "d7a726d5-e67c-4494-982a-09895f2023af",
+    "content": "FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 obrigatório no .env local. Sem ela, verifyIdToken() rejeita tokens do emulador com 401. Deve estar no ambiente ANTES do processo do emulador iniciar — carregada via direnv.",
     "memory_type": "semantic",
     "scope": "project",
     "tags": [
@@ -533,56 +481,103 @@
     "importance": 0.9
   },
   {
-    "id": "a7aa244a-9655-4a09-9d23-1a78fac9a2f7",
-    "content": "Decisões de pricing valida.doctor — Mar/2026:\n\nPlanos:\n- Mensal: R$57/mês\n- Trimestral: R$147 (≈R$49/mês)\n- Semestral: R$237 (≈R$39,50/mês)\n- SEM plano anual — público tem churn estrutural pós-prova\n\nARPU conservador para modelagem: R$50/mês (mix trimestral dominante)\n\nCustos fixos reais (one man army, início):\n- Cenário MEI: R$175/mês (MEI R$75 + imprevistos R$100)\n- Cenário SLU: R$400/mês (contador R$300 + imprevistos R$100)\n- Ferramentas dev, design, contabilidade separada: REMOVIDOS do modelo base\n\nFormalização:\n- Intenção: começar MEI, migrar para SLU quando abrir outra empresa no futuro\n- Sem sócio, sem outra empresa por ora\n\nZero caixa inicial — fundador subsidia custos do próprio bolso até break-even.",
+    "id": "da57414c-211b-4534-8b73-e48ee1be6f42",
+    "content": "Cloudarm firewall: desabilitado no NixOS (networking.firewall.enable=false). Filtragem via Oracle Security List. Portas: 22/TCP + 51820/UDP",
     "memory_type": "semantic",
-    "scope": "project",
+    "scope": "global",
     "tags": [
-      "pricing",
-      "business-model",
-      "custos"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "ac6a33a4-f064-45ba-8a1d-a598e32b61d7",
-    "content": "Análise competitiva Revalida — dados coletados Mar/2026:\n\n1. Simula Revalida (simularevalida.com.br): Free (simulados rápidos, 1 vídeo/dia) | Pro R$39,90/mês (cronograma IA, vídeos ilimitados). App Android. React SPA.\n\n2. Revalida Resolve (revalidaresolve.com): Trimestral R$127 (≈R$42/mês) | Semestral R$197 (≈R$33/mês) | Anual R$297 (≈R$25/mês). 5.000+ questões, roteiro por incidência, 4 modos, analytics IA, revisão espaçada (7/15/60d). Via Hotmart.\n\n3. Pense Revalida (penserevalida.com): Foco 2ª etapa (prova prática). Free 5 dias | Extensivo R$800 (até prova). 600+ checklists OSCE, IA de correção, chat parceiros.\n\n4. Eu Médico Revalida (eumedicorevalida.com.br): Modelo cursinho. Intensivo R$3.462 / Extensivo R$4.947–R$6.046. 40k+ questões comentadas.\n\n5. Medsimulados (medsimulados.com): Aparenta gratuito. Simulados por categoria, tracking de progresso. Ruby on Rails.\n\n6. Revalida Simulado (revalidasimulado.com): Gratuito (com ads Google). Banco grátis, simulados, checklists 2ª etapa, cronograma. Next.js.\n\n7. Simulados INEP (simuladosinep.com.br): Gratuito aparentemente. 1.665 questões INEP 2011-2025, Revalida+ENAMED+ENARE. React SPA.\n\n8. MedTask: referência mercado — 90k questões, R$249/mês.\n\nNosso preço: R$149/mês | R$699/semestre | R$997/ano.\nNosso diferencial: gabarito comentado referenciando protocolos brasileiros (PCDT, SBC, SBP) + foco exclusivo Revalida + freemium genuíno + analytics de progresso.\n",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "competitive-analysis",
-      "revalida",
-      "pricing"
+      "cloudarm",
+      "firewall",
+      "oracle"
     ],
     "importance": 0.9
   },
   {
-    "id": "af9f4161-d18b-4eae-8983-278b61540e38",
-    "content": "Phase04 Plan03: (1) FCM onMessage triggers assetsStore.refreshAssets (2) CSS @keyframes flash animation on refresh (3) cleanup dead code + verify build",
+    "id": "dbde1e6c-5546-44e2-9c07-bf654fb90407",
+    "content": "NixOS/HM dotfiles config path: /home/bruno/dotfiles",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "nixos",
+      "dotfiles",
+      "path"
+    ],
+    "importance": 1
+  },
+  {
+    "id": "e3450713-8a5f-4f8a-94cf-190b827f9ca1",
+    "content": "Cloudarm MCP proxy: supergateway (npm) wrapa stdio→SSE. Cliente usa supergateway --sse para conectar. Tudo via WireGuard.",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "mcp",
+      "supergateway"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "e8eb8c5e-d803-4251-b7ff-ddcccd7af4b8",
+    "content": "Cloudarm users: bruno (normal+wheel), ubuntu (normal+wheel, compatibilidade Oracle), root (SSH key). Todos com mesma RSA key",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "users"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "f1f2a240-7196-4020-864d-5c8bc31ad9b4",
+    "content": "NestJS security: helmet(CSP false, COEP false), @nestjs/throttler 300req/min global, QuestionsController 60req/min, GET /config @SkipThrottle, 404 handler após nestApp.init()",
     "memory_type": "semantic",
     "scope": "project",
     "tags": [
-      "phase4",
-      "plan03",
-      "tasks",
-      "integration"
+      "security",
+      "nestjs",
+      "helmet",
+      "throttler"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "f27d8408-ed5e-4365-8181-9bafe7303748",
+    "content": "Cloudarm mcp-fetch fix: uvx não é módulo Python. Corrigido p/ writeShellScript com unset PYTHONPATH + exec uv/bin/uvx mcp-fetch",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "mcp-fetch",
+      "fix"
     ],
     "importance": 0.8
   },
   {
-    "id": "b013e2d7-8be1-41a1-b3cd-9e0458a60bf6",
-    "content": "Cloudarm deploy concluído: NixOS 25.11 stable + overlay unstable (ollama/qdrant/chromium). IP 137.131.233.96, SSH users: root/bruno/ubuntu",
+    "id": "f3dc6832-73a4-4deb-9374-331dd3fe92fa",
+    "content": "Cloudarm config path: /home/bruno/dotfiles/hosts/cloudarm/. Flake: nixosConfigurations.cloudarm, system=aarch64-linux.",
     "memory_type": "semantic",
-    "scope": "project",
+    "scope": "global",
     "tags": [
       "cloudarm",
-      "deploy",
-      "concluído"
+      "nixos",
+      "flake"
     ],
     "importance": 0.9
   },
   {
-    "id": "b6ef19b6-094c-4710-a1b5-e518327114df",
+    "id": "f60a15ef-4327-4e68-9f74-56c1012741b3",
+    "content": "Dotfiles era só pra PCs. Cloudarm é primeiro servidor. common/global tem coisas desktop-only: font.nix, cuda.nix, xkb, hw firmware",
+    "memory_type": "semantic",
+    "scope": "global",
+    "tags": [
+      "cloudarm",
+      "dotfiles",
+      "reestruturação"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "f7359ec2-cae5-4f43-9ac9-e30ac68ae5d5",
     "content": "Predabook specs: i7-10750H 6c/12t, 16GB RAM, RTX 2060 6GB VRAM, x86_64-linux. NixOS com btrfs+zstd.",
     "memory_type": "semantic",
     "scope": "global",
@@ -593,283 +588,8 @@
     "importance": 0.8
   },
   {
-    "id": "bf021d25-4716-4260-87d9-a467a5101c08",
-    "content": "Cloudarm Ollama tuning: OLLAMA_NUM_PARALLEL=8, KEEP_ALIVE=-1, MAX_LOADED_MODELS=4. Embedding workload, muitos requests paralelos.",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "ollama",
-      "tuning"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "ca48326c-cd4d-44d4-84f4-7509c23e2153",
-    "content": "Cloudarm kernel: linuxPackages_latest configurado. Risco em cloud — se causar problema de boot, trocar para default do channel",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "kernel",
-      "risco"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "ca75fc80-3c67-4bbf-bfdd-f74714576953",
-    "content": "Account sharing detection (concurrent sessions by uid) identified as future work — NOT implemented. Separate from rate limiting by IP (which protects against bank extraction). Needs its own phase/feature.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "security",
-      "account-sharing",
-      "future",
-      "tech-debt"
-    ],
-    "importance": 0.6
-  },
-  {
-    "id": "ca9a3022-248d-475f-bac1-7d13c105bb11",
-    "content": "Cloudarm hw-config.nix é placeholder. Disco real: sda1=root(ext4), sda15=EFI(vfat 98MB). Infect gera o correto — copiar depois",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "hardware",
-      "placeholder"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "d27d135a-6eb7-4578-b9ef-40759f9ef4d4",
-    "content": "Phase04 Plan01 complete: assetsStore Zustand store with loadSnapshot, patchAsset, clearFlash, selectSortedFilteredAssets, selectAssetCounts. 19 tests passing. formatRelativeTime + flash-highlight animation added.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "plan01",
-      "assetsStore",
-      "complete"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "d7f4b4de-3f9d-46c8-88e3-ae820a28e138",
-    "content": "Phase 04 home-redesign: 2 plans verified. Plan01=types+store TDD (wave1), Plan02=UI components+home restructure+checkpoint (wave2). All 7 reqs covered (DASH-01..05, HOME-01..02).",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "planning",
-      "verified"
-    ],
-    "importance": 0.6
-  },
-  {
-    "id": "da5056f8-b66a-4543-8c58-3372991a0374",
-    "content": "Memory profiling results for NestJS API (2026-03-13):\n- Tool: GET /api/health returns process.memoryUsage() (rss_mb, heap_used_mb, heap_total_mb, external_mb)\n- Script: api/scripts/profile-memory.mjs — measures cold start + RSS at 4 stages + leak detection\n- Command: pnpm profile:memory (in api/)\n- Results with @nestjs/throttler + helmet:\n  - Cold start local: 2198ms (estimated production: ~1.3–1.5s, emulator adds overhead)\n  - RSS peak: 207.2 MB (~80% of 256MiB)\n  - RSS after idle: 173.0 MB (GC released 34MB)\n  - No memory leak detected\n  - New deps (@nestjs/throttler, helmet) added only 0.1MB RSS — negligible\n- Conclusion: 256MiB confirmed sufficient. 512MiB had no justification (was error by Phase 10.1 planner).\n- Cold start is NestJS DI container bootstrap (12 modules + reflect-metadata) — not dep-related\n- minInstances=1 would eliminate cold start at cost of ~R$47/month idle (already in COST_ANALYSIS)",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "profiling",
-      "memory",
-      "cold-start",
-      "nestjs",
-      "performance"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "e0ff292a-54b0-47eb-8e95-23b34f0ed3fe",
-    "content": "Cloudarm: Oracle A1.Flex, 4 ARM cores, 24GB RAM, 200GB, aarch64-linux. Migração via nixos-infect.",
-    "memory_type": "semantic",
-    "scope": "global",
-    "tags": [
-      "cloudarm",
-      "hardware",
-      "oracle"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "e222bee1-810a-4d7e-81ba-ce2348710cbc",
-    "content": "Phase04 Plan02: (1) AssetRow component with status badge/dwell/coords (2) HomePage redesign assets-first (3) SummaryCards from assetsStore (4) remove useAssetSummary+message list",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "plan02",
-      "tasks",
-      "ui"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "e5acaf64-e557-440f-80b3-2be24167ba73",
-    "content": "Phase 04 research done. No new deps. assetsStore via httpsCallable+Zustand. date-fns formatDistanceToNow+ptBR for relative time. Skeleton=animate-pulse. Flash=CSS keyframe 2s. FCM patches both stores.",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase4",
-      "research",
-      "home-redesign",
-      "architecture"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "f0b32864-f631-47f0-8e8c-685c41f10c66",
-    "content": "MCPs no cloudarm (supergateway): playwright(8002), fetch(8003), context7(8004), context(8005), nixos. Prioridade: context antes de context7",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "mcp",
-      "remote"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "f0cf7da9-2a04-4dc2-9b44-23c72a9f6770",
-    "content": "Phase 03 asset-snapshot-backend research completed. Key findings:\n- No new npm dependencies needed — all building blocks exist\n- getAssetsByUnits() goes in existing assetRepository.ts (137 lines, small file)\n- Dynamic IN clause: generate ? placeholders, spread units into args array\n- Critical pitfall: 'todas' is NOT a database value — filter it out before SQL query\n- Empty IN clause is a SQLite syntax error — check before querying\n- Test pattern: mock firebase-functions/v2/https, mock @app/lib/firebase.js, mock assetRepository\n- requireActiveUser() returns AppUser with units field — use that, never request.data units\n- Response must strip last_message_id and silent_alert_sent_at from AssetRow\n- vitest 2.x (not 4.x) due to vite 5.x dependency",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "phase3",
-      "research",
-      "asset-snapshot",
-      "architecture"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "f6cf2a96-55cb-46c1-89a5-8050a496e2db",
-    "content": "Cloudarm SSH: user ubuntu, key ~/.ssh/cloudarm.key (RSA, do LastPass entry 6358867201542651779), IP 137.131.233.96",
-    "memory_type": "semantic",
-    "scope": "project",
-    "tags": [
-      "cloudarm",
-      "ssh",
-      "acesso"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "39255a2e-cc00-4d25-bfa7-50a4280713eb",
-    "content": "NestJS architecture rules for valida.doctor — NON-NEGOTIABLE in every plan and execution:\n\n1. shared/schemas/ = APENAS contratos HTTP (Request/Response entre frontend e backend). Nunca cruza a fronteira do controller. Services e repositories NUNCA importam de shared/schemas/.\n\n2. db/schema.ts = APENAS dentro do repository. Nenhuma outra camada (service, controller, domain) importa ou conhece o schema Drizzle. Tipos Drizzle (InferSelect, etc.) nunca saem do repository.\n\n3. Fluxo obrigatório:\n   HTTP Request\n   → Controller: recebe XxxRequest (shared/schemas) via ZodValidationPipe\n   → Controller: mapeia para DTO interno (TypeScript puro, sem Zod, sem Drizzle)\n   → Service: trabalha com DTOs e entities (domain/) — nunca vê shared/schemas, nunca vê db/schema\n   → Repository: recebe domain DTO → executa query Drizzle → mapeia resultado para domain entity → retorna entity\n   → Service: retorna domain entity para controller\n   → Controller: mapeia entity para XxxResponse (shared/schemas)\n   → HTTP Response\n\n4. Estrutura por módulo:\n   modules/<domain>/\n   ├── <domain>.module.ts\n   ├── <domain>.controller.ts   — thin: validação + mapeamento request→DTO + mapeamento entity→response\n   ├── <domain>.service.ts      — business logic, recebe/retorna domain types\n   ├── <domain>.repository.ts   — ÚNICO lugar com Drizzle queries e imports de db/schema.ts\n   ├── dto/                     — DTOs internos (TypeScript puro, sem Zod, sem Drizzle)\n   └── entities/                — domain entities com comportamento (TypeScript puro)\n\n5. Injeção de dependência: tudo via DI do NestJS. Nenhum `new Service()` ou `new Repository()` manual em runtime. Libs externas (PostHog, email, etc.) são providers NestJS injetados via módulo.\n\n6. @CurrentUser() retorna string (uid) — encapsula DecodedIdToken Firebase. Controllers nunca recebem DecodedIdToken diretamente.",
-    "memory_type": "procedural",
-    "scope": "project",
-    "tags": [
-      "nestjs",
-      "architecture",
-      "layering",
-      "dto",
-      "repository",
-      "shared-schemas",
-      "dependency-injection"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "57f230a1-44fa-4732-972f-388654090458",
-    "content": "REGRA CRÍTICA para memory_remember: o storage trunca silenciosamente conteúdo longo. NUNCA salvar mais de 300 caracteres por memória. Quebrar informação em múltiplas memórias pequenas e atômicas. Uma decisão = uma memória. Verificar com recall imediatamente após salvar.",
-    "memory_type": "procedural",
-    "scope": "global",
-    "tags": [
-      "memory",
-      "regra",
-      "critico"
-    ],
-    "importance": 1
-  },
-  {
-    "id": "d890b2f5-9531-47c9-862e-6c36eb0ba12b",
-    "content": "README.md e .env.example devem SEMPRE refletir o estado atual do projeto. Ao encerrar qualquer fase, verificar se esses arquivos estão desatualizados e corrigir antes de declarar a fase completa. Isso inclui: stack, diretórios, scripts, variáveis de ambiente, e estrutura do projeto. Não é opcional — faz parte do checklist de encerramento de fase.",
-    "memory_type": "procedural",
-    "scope": "project",
-    "tags": [
-      "documentation",
-      "readme",
-      "env",
-      "phase-closure",
-      "checklist"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "0737ddba-e33d-47fd-856b-7a1c959d656a",
-    "content": "Phase 02 UAT gap closure: Plan 02-04 created to fix foreground push duplicate feed entries. Root cause: dual delivery in FirebaseMessagingService.initialize() — both onMessage and SW postMessage broadcast call addMessage for the same push. Fix: dedup guard in addMessage checking messageStamp + assetName before prepending. TDD approach with 5 test cases.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "gap-closure",
-      "dedup",
-      "messagesStore",
-      "bug-fix"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "2905fdc8-9ead-4371-8639-ca69872dac9e",
-    "content": "Phase 2 Plan 2 completed: SW push handler gating integrated. SW v4 reads IDB preferences via getPreferences(), gates OS notifications with resolveNotificationAction(), handles collisions via resolveCollisionAction(). MOCK_PUSH handler removed. Foreground gating via Zustand getState(). Simulator has \"Copiar payload\" button. Commits: 31fbe26 (SW handler), 5ea8322 (foreground + simulator).",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "plan02",
-      "notification-gating",
-      "service-worker",
-      "completed"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "4e23feb4-aeb2-437a-81ae-3f81625fca6d",
-    "content": "Phase 03 Plan 01 completed: getAssetSnapshot Cloud Function implemented via TDD. Key artifacts:\n- AssetSnapshotItem type in types/index.ts (Omit<AssetRow, 'last_message_id' | 'silent_alert_sent_at'>)\n- getAssetsByUnits() in services/assetRepository.ts with parameterized WHERE IN + empty guard\n- getAssetSnapshot CF in functions/getAssetSnapshot.ts: auth → requireActiveUser → unit routing (todas=getAllAssets, specific=getAssetsByUnits, empty=[]) → rowToSnapshot field stripping → response {assets, snapshotAt, count}\n- Turso errors caught and rethrown as HttpsError('unavailable')\n- 13 new tests (5 repo + 8 CF), total 136 tests passing\n- SNAP-01, SNAP-02 requirements complete",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase-03",
-      "getAssetSnapshot",
-      "tdd",
-      "cloud-function",
-      "asset-snapshot"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "57ca9e51-d83c-4270-86b4-501b847de791",
-    "content": "Plan 02-03 (Settings UI) completed Tasks 1-2, awaiting checkpoint:human-verify for Task 3. Commits: 2a029a8 (Accordion+Switch primitives), 704f5cd (NotificationsSection expanded), ee61172 (docs metadata). CSS-in-JS used for checkmark animation since tailwindcss-animate not installed. Pre-existing uncommitted changes from Plan 02-02 found in messaging.firebase.ts, notifications.ts, and Simulator/index.tsx — left untouched.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "plan03",
-      "settings-ui",
-      "checkpoint",
-      "accordion",
-      "switch"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "5a4cce03-f93c-4aef-bd78-32fd2a7693f1",
-    "content": "Phase 10.1 post-migration fixes completed (2026-03-13):\n1. app.setGlobalPrefix('api') added to main.ts and createTestApp\n2. vite.config.ts proxy target fixed to include /api suffix\n3. admin.initializeApp() explicit call in main.ts required for emulator auth\n4. FIREBASE_AUTH_EMULATOR_HOST=localhost:9099 must be in .env before emulator starts\n5. SkillsController: GET /skills → GET /admin/skills with RoleGuard\n6. seed-local.mjs made idempotent with WHERE NOT EXISTS\n7. memory: '256MiB' restored (was incorrectly set to 512MiB by Phase 10.1 planner)\n8. All test paths updated to /api/ prefix (9 test files)",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase-10.1",
-      "nestjs",
-      "migration",
-      "fixes"
-    ],
-    "importance": 0.8
-  },
-  {
-    "id": "6ed6f433-6fe3-4bb5-bde8-269f8c65738e",
-    "content": "createProductionDb() foi renomeado para createDbClient() em api/src/db/db.ts. O nome anterior era enganoso porque a função roda em todos os ambientes (local, staging, produção) dependendo de DB_DRIVER.",
+    "id": "252a1fe4-33be-4a45-9ae2-240f0513086d",
+    "content": "createProductionDb() renomeado para createDbClient() em api/src/db/db.ts. Nome anterior enganoso — roda em todos os ambientes dependendo de DB_DRIVER.",
     "memory_type": "episodic",
     "scope": "project",
     "tags": [
@@ -880,66 +600,8 @@
     "importance": 0.5
   },
   {
-    "id": "6f2e9454-3bbe-4682-beb6-83095d6d7c18",
-    "content": "Phase 2 Plan 01 executed successfully: Pure notification gating functions (resolveNotificationAction, resolveCollisionAction, buildNotificationTag, deriveEventType) implemented via TDD in app/src/lib/notificationGating.ts. Vitest 2.x configured (not 4.x due to vite 5 peer dep). 20 tests all passing. detailedMode boolean added to NotificationPreferences. Requirements SW-01, SW-02, SW-03 complete.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "phase2",
-      "plan01",
-      "execution",
-      "notification-gating",
-      "tdd",
-      "vitest"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "7fb2bb3a-192b-4ed5-9696-c3f81966dcd8",
-    "content": "Root cause of login being broken after Phase 10.1 NestJS migration: Firebase Hosting rewrites pass the FULL original path to the function (docs: \"the function receives the full original request path\"). So /api/auth/profile arrives at NestJS as /api/auth/profile. NestJS had no global prefix, so it looked for /auth/profile → 404. Fix: app.setGlobalPrefix('api') in main.ts (before app.init()) and createTestApp (same). All 9 test files updated to use /api/ prefix. pnpm test:integration: 213/213 pass. pnpm test:unit: 10/10 pass. pnpm build: clean.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "nestjs",
-      "firebase",
-      "routing",
-      "login",
-      "global-prefix",
-      "fix"
-    ],
-    "importance": 0.9
-  },
-  {
-    "id": "856fc674-5168-4dc7-9a75-dd602e16dd99",
-    "content": "10.1-06 complete: All 12 NestJS modules created. 4 test files migrated to createTestApp(). Key bugs fixed: (1) DashboardEntity missing nextRevalidaDate/daysUntilRevalida → DashboardResponseSchema.parse() was failing with 400; (2) DashboardResponseSchema missing answeredCount on specialty arrays; (3) POST /auth/profile needed @HttpCode(200); (4) firebase-admin needs vi.mock() in auth tests. 361 tests passing across 14 test files. Next: 10.1-07 (Express→NestJS cutover).",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "nestjs",
-      "refactor",
-      "10.1-06",
-      "testing",
-      "dashboard",
-      "auth"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "9fa1c854-b5c6-4b68-9473-b8d49eaa7efa",
-    "content": "512MiB memory setting root cause (2026-03-13): Phase 10.1 planner hardcoded memory: '512MiB' in NestJS main.ts template code. Introduced in commit a818172 (feat(10.1-01): create AppModule). The autonomous: true flag + hardcoded value in plan template = executor applied without user review. COST_ANALYSIS.md was calculating with correct 256MiB but deployed code used 512MiB — silent divergence. Fixed back to 256MiB.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "bug",
-      "phase-10.1",
-      "memory",
-      "post-mortem"
-    ],
-    "importance": 0.7
-  },
-  {
-    "id": "c25fbbd1-2b05-4bc7-a6d6-e9250d3abcf0",
-    "content": "Phase 10.1 verification: gaps_found. \n- PASS: TSC zero errors (api+web), 225 tests pass, index.ts thin re-export, 11 NestJS modules present and complete, AppModule imports all 11, no controller imports db/schema, no SQL in controllers, old Express routes deleted.\n- FAIL: auth.service.ts:84 calls onboardingSchema.parse(body) — Zod .parse() in service layer violates CONTEXT.md layer rules. Fix: move schema + parse to controller, service receives typed params.\n- NOTE: Success criterion says \"12 modules\" but only 11 exist (simulations.ts is legacy shim per plan intent). Likely spec error.\n- NOTE: Test count 225, not 250+. All existing tests pass.",
+    "id": "72ec3a45-718d-4de6-9869-937bb05e4396",
+    "content": "Phase 10.1 verification gaps: auth.service.ts:84 chama onboardingSchema.parse(body) — Zod .parse() em service layer viola layer rules. Fix: mover schema+parse para controller.",
     "memory_type": "episodic",
     "scope": "project",
     "tags": [
@@ -952,25 +614,8 @@
     "importance": 0.8
   },
   {
-    "id": "c52f6021-699c-4290-95f3-aaa7cca32f23",
-    "content": "Login fix completo após Phase 10.1: três mudanças necessárias simultaneamente:\n1. app.setGlobalPrefix('api') em main.ts e createTestApp — Firebase Hosting passa path completo /api/... para a function\n2. vite.config.ts proxy target: \"http://localhost:5001/demo-revalida/southamerica-east1/api\" (com /api no final) — emulador stripa o nome da function antes de entregar ao Express\n3. admin.initializeApp() explícito em main.ts antes do bootstrap — o Functions emulator intercepta essa chamada via proxy para configurar auth emulator support (setJwtVerificationEnabled). Sem ela, verifyIdToken rejeita tokens do emulador com 401 mesmo com FIREBASE_AUTH_EMULATOR_HOST setado.",
-    "memory_type": "episodic",
-    "scope": "project",
-    "tags": [
-      "firebase",
-      "nestjs",
-      "login",
-      "fix",
-      "emulator",
-      "initializeApp",
-      "global-prefix",
-      "vite-proxy"
-    ],
-    "importance": 0.95
-  },
-  {
-    "id": "e2fbd0fa-0779-4e3f-b4da-1e42eb8674e8",
-    "content": "Phase 10.1 (Architecture Refactor Express → NestJS) validada e funcionando em dev local em 2026-03-13. Login, dashboard, simulado, admin, analytics — tudo navegando sem erro. Pendências resolvidas: setGlobalPrefix('api'), initializeApp() em main.ts, vite.config.ts proxy target com /api no final.",
+    "id": "7f5cea45-0268-4518-bcf2-ffb1917d2b45",
+    "content": "Phase 10.1 validada em dev local 2026-03-13. Login, dashboard, simulado, admin, analytics funcionando. Pendências resolvidas: setGlobalPrefix, initializeApp, vite proxy.",
     "memory_type": "episodic",
     "scope": "project",
     "tags": [
@@ -980,5 +625,144 @@
       "migration"
     ],
     "importance": 0.8
+  },
+  {
+    "id": "8f095733-0d78-4dd0-8c38-ff9a6f40d68a",
+    "content": "valida.doctor login fix pós Phase 10.1: app.setGlobalPrefix('api') em main.ts+createTestApp, vite proxy target com /api no final, admin.initializeApp() explícito em main.ts.",
+    "memory_type": "episodic",
+    "scope": "project",
+    "tags": [
+      "firebase",
+      "nestjs",
+      "login",
+      "fix",
+      "emulator"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "9a337761-5291-4a32-b73d-9e2e308cc919",
+    "content": "512MiB bug: Phase 10.1 planner hardcoded memory:'512MiB' em main.ts. autonomous:true = executor aplicou sem review. Corrigido para 256MiB.",
+    "memory_type": "episodic",
+    "scope": "project",
+    "tags": [
+      "bug",
+      "phase-10.1",
+      "memory",
+      "post-mortem"
+    ],
+    "importance": 0.7
+  },
+  {
+    "id": "a033d36d-d18c-4d6b-b52a-c2fe1631ccf8",
+    "content": "Firebase Hosting rewrites passam path completo /api/... para a function. NestJS precisa de app.setGlobalPrefix('api') antes de app.init(). Vite proxy target precisa /api no final.",
+    "memory_type": "episodic",
+    "scope": "project",
+    "tags": [
+      "nestjs",
+      "firebase",
+      "routing",
+      "login",
+      "global-prefix",
+      "vite-proxy"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "d5c743d8-479a-4fa8-ad71-c9d030b20a01",
+    "content": "valida.doctor Phase 10.1 (Express→NestJS) validada e funcionando em dev local em 2026-03-13. 12 módulos NestJS. 361 testes passando.",
+    "memory_type": "episodic",
+    "scope": "project",
+    "tags": [
+      "phase-10.1",
+      "nestjs",
+      "migration",
+      "validated"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "f7a4c86c-4f78-4b9b-9171-c8a72a223eba",
+    "content": "local-rag issue #1 aberta em github.com/13W/local-rag — pergunta sobre limite 200 chars no recall. Truncagem está em dist/tools/recall.js linha 79: content.slice(0,200). Patchado localmente via Nix.",
+    "memory_type": "episodic",
+    "scope": "global",
+    "tags": [
+      "local-rag",
+      "issue",
+      "github",
+      "patch",
+      "recall",
+      "truncation"
+    ],
+    "importance": 0.8
+  },
+  {
+    "id": "f9ae092d-6efe-47d2-91d6-9d14df1757e0",
+    "content": "Phase 10.1-06: 12 NestJS modules, 4 test files migrados. Bugs: DashboardEntity missing fields, POST /auth/profile @HttpCode(200), firebase-admin vi.mock(). 361 tests.",
+    "memory_type": "episodic",
+    "scope": "project",
+    "tags": [
+      "nestjs",
+      "10.1-06",
+      "testing"
+    ],
+    "importance": 0.7
+  },
+  {
+    "id": "6a9043e0-b570-4dc2-9a68-86c77653d5ba",
+    "content": "README.md e .env.example devem SEMPRE refletir o estado atual do projeto. Verificar antes de declarar fase completa: stack, diretórios, scripts, variáveis de ambiente.",
+    "memory_type": "procedural",
+    "scope": "project",
+    "tags": [
+      "documentation",
+      "readme",
+      "env",
+      "phase-closure",
+      "checklist"
+    ],
+    "importance": 0.9
+  },
+  {
+    "id": "a712fd68-dca8-4852-a635-c25963395af5",
+    "content": "NestJS architecture: shared/schemas/ só contratos HTTP. db/schema.ts exclusivo do repository. Controller→Service→Repository→Domain. Repository nunca expõe tipos Drizzle.",
+    "memory_type": "procedural",
+    "scope": "project",
+    "tags": [
+      "nestjs",
+      "architecture",
+      "layering",
+      "repository",
+      "shared-schemas"
+    ],
+    "importance": 0.95
+  },
+  {
+    "id": "b0d7caa6-08f1-44ee-965b-d35453417674",
+    "content": "REGRA CRÍTICA: NUNCA executar ações irreversíveis ou públicas (criar issues, PRs, comentários, commits, push) sem mostrar o conteúdo completo ao usuário e aguardar confirmação explícita. Silêncio não é confirmação.",
+    "memory_type": "procedural",
+    "scope": "global",
+    "tags": [
+      "regra",
+      "critico",
+      "github",
+      "issues",
+      "confirmacao",
+      "irreversivel"
+    ],
+    "importance": 1
+  },
+  {
+    "id": "c7d4c63b-a61b-43bc-8ff0-423894367996",
+    "content": "REGRA: memory_remember não trunca mais — local-rag patchado via Nix (slice(0,200) removido em dist/tools/recall.js). PATCH TEMPORÁRIO — solução definitiva é escrever MCP próprio (side project). Verificar com recall após salvar.",
+    "memory_type": "procedural",
+    "scope": "global",
+    "tags": [
+      "memory",
+      "regra",
+      "critico",
+      "patch",
+      "local-rag"
+    ],
+    "importance": 1
   }
 ]

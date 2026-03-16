@@ -9,7 +9,17 @@ let
     if pkgs.stdenv.isDarwin then
       "pbcopy"
     else
-      "sh -c 'if [ \"$XDG_SESSION_TYPE\" = x11 ]; then xclip -selection clipboard; else wl-copy; fi'";
+      # writeShellScript avoids nested quote issues in fzf bind options.
+      # Handles WSL (clip.exe), X11 (xclip) and Wayland (wl-copy) at runtime.
+      "${pkgs.writeShellScript "fzf-clipboard" ''
+        if command -v clip.exe >/dev/null 2>&1; then
+          clip.exe
+        elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
+          xclip -selection clipboard
+        else
+          wl-copy
+        fi
+      ''}";
 in
 {
   home.packages = with pkgs; [

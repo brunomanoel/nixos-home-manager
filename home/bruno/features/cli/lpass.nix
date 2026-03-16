@@ -1,30 +1,34 @@
 { pkgs, lib, ... }:
 let
-  # Bootstrap SSH keys from LastPass vault based on hostname.
+  # Bootstrap secrets from LastPass vault based on hostname.
   # Vault entries:
   #   GitHub/<host>      → GitHub deploy key (per-machine isolation)
   #   SSH/cloudarm       → Oracle Cloud server access key
   #   WireGuard/<host>   → WireGuard private key (stored, not auto-deployed)
-  # Each SSH entry is a Secure Note of type "SSH Key" with fields:
-  #   "Private Key" → private key content
-  #   "Public Key"  → public key content
+  #   github.com         → GitHub MCP token (field: mcp-predabook)
   bootstrapScript = ''
-    _lpass_bootstrap_ssh() {
+    _lpass_bootstrap() {
       local host
       host=$(hostname -s)
 
-      # Skip if all keys already present and loaded
-      if [[ -f "$HOME/.ssh/github.pub" ]] && ssh-add -l 2>/dev/null | grep -qF "$(ssh-keygen -lf "$HOME/.ssh/github.pub" 2>/dev/null | awk '{print $2}')" && [[ -f "$HOME/.ssh/cloudarm.key" ]]; then
-        return 0
-      fi
+      local need_lpass=0
+      [[ ! -f "$HOME/.ssh/github.key" ]] && need_lpass=1
+      [[ ! -f "$HOME/.ssh/github.pub" ]] && need_lpass=1
+      [[ ! -f "$HOME/.ssh/cloudarm.key" ]] && need_lpass=1
+      [[ ! -f "$HOME/.config/github-mcp/token" ]] && need_lpass=1
 
-      echo "🔑 Bootstrapping SSH keys for $host..."
+      [[ $need_lpass -eq 0 ]] && return 0
+
+      echo "🔑 Bootstrapping secrets for $host..."
       mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
 
-      # Authenticate if needed
       if ! lpass status --quiet 2>/dev/null; then
         echo "  ⏳ LastPass login required..."
-        lpass login --trust || { echo "  ❌ LastPass login failed"; return 1; }
+        if ! lpass login --trust 2>/dev/null; then
+          local lpass_user
+          read -r -p "  📧 LastPass username: " lpass_user
+          lpass login --trust "$lpass_user" || { echo "  ❌ LastPass login failed"; return 1; }
+        fi
         echo "  ✅ LastPass authenticated"
       fi
 
@@ -58,7 +62,7 @@ let
         ssh-add "$gh_priv" 2>/dev/null && echo "  ✅ GitHub key loaded in agent"
       fi
 
-      # --- Cloudarm key (shared across machines) ---
+      # --- Cloudarm key ---
       local ca_priv="$HOME/.ssh/cloudarm.key"
 
       if [[ ! -f "$ca_priv" ]]; then
@@ -72,10 +76,26 @@ let
         fi
       fi
 
-      echo "🔑 SSH bootstrap complete"
+      # --- GitHub MCP token ---
+      local mcp_token_file="$HOME/.config/github-mcp/token"
+
+      if [[ ! -f "$mcp_token_file" ]]; then
+        local token
+        token=$(lpass show --field="mcp-predabook" "github.com" 2>/dev/null)
+        if [[ -n "$token" ]]; then
+          mkdir -p "$HOME/.config/github-mcp"
+          echo -n "$token" > "$mcp_token_file"
+          chmod 600 "$mcp_token_file"
+          echo "  ✅ GitHub MCP token cached"
+        else
+          echo "  ❌ Could not fetch GitHub MCP token"
+        fi
+      fi
+
+      echo "🔑 Bootstrap complete"
     }
 
-    _lpass_bootstrap_ssh
+    _lpass_bootstrap
   '';
   # Script to bootstrap WireGuard key from LastPass (requires sudo)
   # Usage: wg-bootstrap

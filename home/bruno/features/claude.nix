@@ -8,6 +8,56 @@ let
       exec ${pkgs.uv}/bin/uvx ${name} "$@"
     '';
 
+  localRagSrc = pkgs.fetchFromGitHub {
+    owner = "13W";
+    repo = "local-rag";
+    rev = "fb04f9191a24dec7a5d0d53431a6ef05732355d9";
+    hash = "sha256-xjPWpd6kNBSs0FeD3dNeexKW1H2HjCanaPCqIZVVeYo=";
+  };
+
+  localRagPackage = pkgs.stdenv.mkDerivation (finalAttrs: {
+    pname = "local-rag";
+    version = "1.7.0";
+    src = localRagSrc;
+
+    nativeBuildInputs = [
+      pkgs.pnpm_9
+      pkgs.pnpmConfigHook
+      pkgs.nodejs_22
+    ];
+
+    pnpmDeps = pkgs.fetchPnpmDeps {
+      inherit (finalAttrs) pname version src;
+      fetcherVersion = 1;
+      hash = "sha256-ZSlJ+SsI+8K/FVz7xuIbbD74XbJUZLC4besiNo9ADUw=";
+    };
+
+    buildPhase = ''
+      export HOME=$TMPDIR
+      export NG_CLI_ANALYTICS=false
+      pnpm build
+      substituteInPlace dist/tools/recall.js \
+        --replace-fail 'content.slice(0, 200)' 'content'
+    '';
+
+    dontFixup = true;
+
+    installPhase = ''
+      mkdir -p $out
+      cp -r dist node_modules package.json $out/
+    '';
+  });
+
+  githubMcpScript = pkgs.writeShellScript "github-mcp" ''
+    token=$(cat "$HOME/.config/github-mcp/token" 2>/dev/null)
+    if [[ -z "$token" ]]; then
+      echo "github-mcp: token not found at ~/.config/github-mcp/token" >&2
+      exit 1
+    fi
+    export GITHUB_PERSONAL_ACCESS_TOKEN="$token"
+    exec ${pkgs.github-mcp-server}/bin/github-mcp-server stdio
+  '';
+
   localRagScript = pkgs.writeShellScript "local-rag" ''
     PORT=4242
     while (echo >/dev/tcp/localhost/$PORT) 2>/dev/null; do
@@ -30,7 +80,7 @@ let
     }
     JSONEOF
 
-    ${pkgs.nodejs_22}/bin/npx -y @13w/local-rag serve \
+    ${pkgs.nodejs_22}/bin/node ${localRagPackage}/dist/bin.js serve \
       --config "$CONFIG" \
       --project-root "$PWD" \
       --project-id "$(basename "$PWD")"
@@ -162,6 +212,10 @@ in
           "@neuledge/context"
           "serve"
         ];
+      };
+      github = {
+        command = "${githubMcpScript}";
+        args = [ ];
       };
       playwright = {
         type = "remote";

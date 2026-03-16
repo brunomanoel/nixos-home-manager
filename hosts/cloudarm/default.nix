@@ -144,18 +144,25 @@
       echo "Waiting for container to start..."
       sleep 10
 
-      echo "Mounting Docker socket..."
-      incus config device add casaos docker-sock disk \
-        source=/var/run/docker.sock \
-        path=/var/run/docker.sock
+      echo "Mounting persistent data directory..."
+      incus config device add casaos appdata disk \
+        source=/srv/casaos/data \
+        path=/DATA
 
-      echo "Installing Docker client and CasaOS..."
+      echo "Installing Docker and CasaOS..."
       incus exec casaos -- bash -c 'apt-get update -qq && apt-get install -y -qq curl docker.io > /dev/null 2>&1'
       incus exec casaos -- bash -c 'curl -fsSL https://get.casaos.io | bash'
 
       echo "CasaOS provisioned successfully"
     '';
   };
+
+  # --- CasaOS persistent storage ---
+  systemd.tmpfiles.rules = [
+    "d /srv/casaos/data 0755 root root -"
+  ];
+
+  security.sudo.wheelNeedsPassword = false;
 
   # --- SSH hardening ---
   services.openssh = {

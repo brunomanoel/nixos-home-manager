@@ -80,6 +80,10 @@
         { key = '9', mods = 'LEADER', action = act.ActivateTab(8) },
       }
 
+      -- Disable kitty keyboard protocol: ctrl+r sends CSI 114;5u instead of
+      -- ^R, breaking fzf-history-widget and other traditional zsh bindings.
+      config.enable_kitty_keyboard = false
+
       return config
     '';
   };

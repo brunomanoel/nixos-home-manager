@@ -10,7 +10,10 @@
   programs.keychain = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     keys = [ "github.key" ];
-    extraFlags = [ "--quiet" ];
+    extraFlags = [
+      "--quiet"
+      "--noask"
+    ];
   };
 
   programs.ssh = {

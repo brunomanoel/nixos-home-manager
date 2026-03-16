@@ -16,6 +16,7 @@
       nvd
       nix-output-monitor
       nh # Nice wrapper for NixOS and Home Manager
+      nodejs_22
     ];
   };
 }

@@ -11,5 +11,6 @@
     gnupg # GPG — required for YubiKey OpenPGP operations
     yubikey-manager # ykman CLI for YubiKey management
     yubikey-personalization # udev rules + personalization tool
+    yubico-piv-tool # PIV tool + libykcs11.so for PKCS#11
   ];
 }

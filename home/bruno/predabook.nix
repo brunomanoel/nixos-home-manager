@@ -20,7 +20,7 @@
     ./features/dev
     ./features/games
     ./features/gnome.nix
-    ./features/hyprland
+    # ./features/hyprland
     ./features/obs-studio.nix
     ./features/video-edit.nix
   ];

@@ -30,7 +30,10 @@ in
     openssh.authorizedKeys.keys = [
       # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
     ];
-    packages = [ pkgs.home-manager ];
+    packages = [
+      pkgs.home-manager
+      pkgs.xdg-desktop-portal-gnome
+    ];
   };
 
   home-manager.users.bruno = import ../../../../home/bruno/${config.networking.hostName}.nix;

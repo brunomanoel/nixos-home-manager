@@ -21,10 +21,10 @@
     enableScDaemon = true;
     enableExtraSocket = true;
     pinentry.package =
-      if config.wayland.windowManager.hyprland.enable then
-        pkgs.pinentry-rofi
-      else if config.gtk.enable then
+      if config.gtk.enable then
         pkgs.pinentry-gnome3
+      else if config.wayland.windowManager.hyprland.enable then
+        pkgs.pinentry-rofi
       else
         pkgs.pinentry-curses;
   };

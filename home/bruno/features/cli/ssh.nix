@@ -20,13 +20,7 @@
     enable = true;
     enableScDaemon = true;
     enableExtraSocket = true;
-    pinentry.package =
-      if config.gtk.enable then
-        pkgs.pinentry-gnome3
-      else if config.wayland.windowManager.hyprland.enable then
-        pkgs.pinentry-rofi
-      else
-        pkgs.pinentry-curses;
+    pinentry.package = if pkgs.stdenv.isLinux then pkgs.pinentry-gnome3 else pkgs.pinentry-curses;
   };
 
   programs.ssh = {

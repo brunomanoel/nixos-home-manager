@@ -13,6 +13,22 @@
     extraFlags = [ "--quiet" ];
   };
 
+  # GPG — required for YubiKey OpenPGP operations and future gpg-agent SSH migration
+  programs.gpg.enable = true;
+
+  services.gpg-agent = lib.mkIf pkgs.stdenv.isLinux {
+    enable = true;
+    enableScDaemon = true;
+    enableExtraSocket = true;
+    pinentry.package =
+      if config.wayland.windowManager.hyprland.enable then
+        pkgs.pinentry-rofi
+      else if config.gtk.enable then
+        pkgs.pinentry-gnome3
+      else
+        pkgs.pinentry-curses;
+  };
+
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;

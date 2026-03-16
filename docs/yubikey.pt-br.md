@@ -26,12 +26,11 @@ Faça isso em uma máquina air-gapped ou no mínimo em um Live USB. A chave mest
 ```bash
 # Gerar chave mestra (apenas certificação, sem expiração)
 gpg --expert --full-generate-key
-# Escolha: (11) ECC (defina suas próprias capacidades)
-# Alterne capacidades: 's' para remover Sign, 'a' para remover Authenticate
-# Apenas 'Certify' deve permanecer — confirme com 'q'
-# Curva: (1) Curve 25519
-# Expiração: 0 (sem expiração)
-# Nome real, email: sua identidade pessoal (email principal)
+# Escolha: (8) RSA (defina suas próprias capacidades) → apenas certificar
+# Ou: (9) ECC e ECC → Curve 25519
+# Tamanho: 4096 (RSA) ou padrão (ECC)
+# Expiração: 0 (sem expiração para a chave mestra)
+# Nome real, email: sua identidade pessoal
 ```
 
 ### 1.2 Adicionar User ID do GitHub (email noreply)
@@ -52,29 +51,19 @@ save
 
 ### 1.3 Adicionar subchaves
 
-Duas subchaves — sem expiração (a YubiKey é a barreira de segurança):
-
 ```bash
 gpg --expert --edit-key SEU_KEY_ID
 # No prompt do gpg:
-
-# Subchave 1: GitHub (Sign + Authenticate — para commits GPG e SSH no GitHub)
 addkey
-# Escolha: (11) ECC (defina suas próprias capacidades)
-# Alterne: 's' para adicionar Sign, 'a' para adicionar Authenticate, 'e' para remover Encrypt
-# Apenas Sign + Authenticate deve permanecer — confirme com 'q'
-# Curva: (1) Curve 25519
-# Expiração: 0 (sem expiração — YubiKey é a barreira de segurança)
-
-# Subchave 2: Servidores (Authenticate only — para SSH no cloudarm e outros servidores)
+# Subchave de autenticação: (8) RSA → apenas autenticar → 4096 → 1a
 addkey
-# Escolha: (11) ECC (defina suas próprias capacidades)
-# Alterne: 'a' para adicionar Authenticate — apenas Authenticate deve permanecer — confirme com 'q'
-# Curva: (1) Curve 25519
-# Expiração: 0
-
+# Subchave de assinatura: (4) RSA (apenas assinar) → 4096 → 1a
+addkey
+# Subchave de encriptação: (6) RSA (apenas encriptar) → 4096 → 1a
 save
 ```
+
+> Defina expiração de 1-2 anos. Rotacionar subchaves periodicamente é boa prática.
 
 ### 1.4 Exportar e fazer backup da chave mestra
 

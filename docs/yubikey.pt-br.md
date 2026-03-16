@@ -13,7 +13,7 @@ Este guia documenta o workflow completo com YubiKey para gerenciar chaves GPG e 
 - **Admin PIN** — usado para operações administrativas na YubiKey (alterar PINs, importar chaves). Padrão: `12345678`. Altere no primeiro uso.
 - **PUK** — desbloqueia o User PIN após 3 tentativas erradas. Armazene no LastPass. Se o PUK também for bloqueado, a YubiKey fica permanentemente inutilizada para GPG.
 
-> **Armazene no LastPass:** User PIN, Admin PIN, PUK de ambas as YubiKeys e a passphrase da chave mestra.
+> **Armazene no LastPass:** User PIN, Admin PIN, PUK de ambas as YubiKeys, a passphrase da chave mestra e a própria chave mestra (como anexo em nota segura). O LastPass protegido por YubiKey 2FA é um modelo de segurança suficiente para a maioria dos casos. Alternativa: pendrive criptografado mantido fisicamente seguro.
 
 ---
 
@@ -65,18 +65,28 @@ save
 
 > Defina expiração de 1-2 anos. Rotacionar subchaves periodicamente é boa prática.
 
-### 1.4 Exportar e fazer backup offline da chave mestra
+### 1.4 Exportar e fazer backup da chave mestra
 
 ```bash
-# Exportar chave mestra (manter OFFLINE — armazenamento criptografado ou impresso com paperkey)
+# Exportar chave mestra
 gpg --armor --export-secret-keys SEU_KEY_ID > master-key-backup.asc
 gpg --armor --export SEU_KEY_ID > public-key.asc
 
-# Backup em papel (opcional mas recomendado)
+# Backup em papel (opcional)
 paperkey --secret-key master-key-backup.asc --output master-key-papel.txt
 ```
 
-Armazene `master-key-backup.asc` em um pendrive criptografado mantido offline. Nunca armazene na nuvem ou em máquinas de uso diário.
+**Opção A (recomendada para este setup): Armazenar no LastPass**
+- Crie uma nota segura no LastPass
+- Anexe `master-key-backup.asc` como arquivo
+- Armazene a passphrase na mesma nota
+- O LastPass está protegido por YubiKey 2FA — segurança suficiente para este modelo de ameaça
+
+**Opção B: Pendrive criptografado**
+- Armazene `master-key-backup.asc` em um pendrive criptografado mantido fisicamente seguro
+- Nunca armazene sem criptografia na nuvem ou em máquinas de uso diário
+
+> Quando precisar da chave mestra para operações (adicionar UIDs, rotacionar subchaves), importe-a temporariamente, realize a operação e depois apague: `gpg --delete-secret-key SEU_KEY_ID`
 
 ### 1.5 Transferir subchaves para YubiKey 1
 
@@ -365,21 +375,52 @@ Se o backup offline da chave mestra foi exposto:
 
 ---
 
-## 14. Adicionar ou Remover User IDs (Mudança de Email)
+## 14. Adicionar um Endereço de Email
+
+Use quando quiser associar um novo email à sua chave existente (ex: novo emprego, nova conta GitHub) sem remover os existentes.
 
 ```bash
-# Restaurar chave mestra do backup offline
+# Passo 1: importar chave mestra do backup no LastPass
+gpg --import master-key-backup.asc
+
+# Passo 2: adicionar o novo User ID
+gpg --edit-key SEU_KEY_ID
+# No prompt do gpg:
+adduid
+# Digite: seu nome, novo endereço de email
+uid N          # selecionar o novo uid (N = seu número na lista)
+trust          # definir confiança: escolha 5 (ultimate, pois é sua própria chave)
+save
+
+# Passo 3: re-exportar e publicar chave pública atualizada
+gpg --armor --export SEU_KEY_ID > public-key.asc
+gpg --keyserver keys.openpgp.org --send-keys SEU_KEY_ID
+
+# Passo 4: atualizar o LastPass com o novo public-key.asc
+
+# Passo 5: apagar chave mestra da máquina local
+gpg --delete-secret-key SEU_KEY_ID
+```
+
+> A YubiKey continua funcionando após isso — as subchaves não mudaram. Apenas a chave pública precisa ser re-exportada e re-enviada aos serviços.
+
+## 14b. Remover um Endereço de Email (Mudança de Email)
+
+```bash
+# Passo 1: importar chave mestra do backup no LastPass
 gpg --import master-key-backup.asc
 
 gpg --edit-key SEU_KEY_ID
-adduid    # adicionar novo email
-uid N     # selecionar uid antigo a remover
-deluid    # remover uid antigo
+uid N          # selecionar uid a remover
+deluid         # remover
 save
 
 # Re-exportar e atualizar chave pública
 gpg --armor --export SEU_KEY_ID > public-key.asc
 gpg --keyserver keys.openpgp.org --send-keys SEU_KEY_ID
+
+# Apagar chave mestra da máquina local
+gpg --delete-secret-key SEU_KEY_ID
 ```
 
 ---

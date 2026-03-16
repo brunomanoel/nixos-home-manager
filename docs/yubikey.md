@@ -13,7 +13,7 @@ This guide documents the complete YubiKey workflow for managing GPG keys and SSH
 - **Admin PIN** — used for administrative YubiKey operations (changing PINs, importing keys). Default: `12345678`. Change on first use.
 - **PUK** — unblocks the User PIN after 3 failed attempts. Store in LastPass. If PUK is also blocked, the YubiKey is permanently locked for GPG.
 
-> **Store in LastPass:** User PIN, Admin PIN, PUK for both YubiKeys, and the master key passphrase.
+> **Store in LastPass:** User PIN, Admin PIN, PUK for both YubiKeys, the master key passphrase, and the master key itself (as a secure note attachment). LastPass protected by YubiKey 2FA is a sufficient security model for most use cases. Alternative: encrypted USB drive kept physically secure.
 
 ---
 
@@ -65,18 +65,28 @@ save
 
 > Set expiration to 1-2 years. Rotating subkeys periodically is good practice.
 
-### 1.4 Export and back up the master key offline
+### 1.4 Export and back up the master key
 
 ```bash
-# Export master key (keep this OFFLINE — encrypted storage or printed with paperkey)
+# Export master key
 gpg --armor --export-secret-keys YOUR_KEY_ID > master-key-backup.asc
 gpg --armor --export YOUR_KEY_ID > public-key.asc
 
-# Print a paper backup (optional but recommended)
+# Print a paper backup (optional)
 paperkey --secret-key master-key-backup.asc --output master-key-paper.txt
 ```
 
-Store `master-key-backup.asc` on an encrypted USB drive kept offline. Never store on cloud or daily-use machines.
+**Option A (recommended for this setup): Store in LastPass**
+- Create a secure note in LastPass
+- Attach `master-key-backup.asc` as a file attachment
+- Store the passphrase in the same note
+- LastPass is protected by YubiKey 2FA — sufficient security for this threat model
+
+**Option B: Encrypted USB drive**
+- Store `master-key-backup.asc` on an encrypted USB drive kept physically secure
+- Never store unencrypted on cloud or daily-use machines
+
+> When you need the master key for operations (adding UIDs, rotating subkeys), import it temporarily, perform the operation, then delete it: `gpg --delete-secret-key YOUR_KEY_ID`
 
 ### 1.5 Transfer subkeys to YubiKey 1
 
@@ -365,21 +375,52 @@ If the offline master key backup was exposed:
 
 ---
 
-## 14. Adding or Removing User IDs (Email Change)
+## 14. Adding an Email Address
+
+Use this when you want to associate a new email with your existing key (e.g. new job, new GitHub account) without removing existing ones.
 
 ```bash
-# Restore master key from offline backup
+# Step 1: import master key from LastPass backup
+gpg --import master-key-backup.asc
+
+# Step 2: add the new User ID
+gpg --edit-key YOUR_KEY_ID
+# In gpg prompt:
+adduid
+# Enter: your name, new email address
+uid N          # select the new uid (N = its number in the list)
+trust          # set trust: choose 5 (ultimate, since it's your own key)
+save
+
+# Step 3: re-export and publish updated public key
+gpg --armor --export YOUR_KEY_ID > public-key.asc
+gpg --keyserver keys.openpgp.org --send-keys YOUR_KEY_ID
+
+# Step 4: update LastPass with the new public-key.asc
+
+# Step 5: delete master key from local machine
+gpg --delete-secret-key YOUR_KEY_ID
+```
+
+> The YubiKey still works after this — subkeys haven't changed. Only the public key needs to be re-exported and re-uploaded to services.
+
+## 14b. Removing an Email Address (Email Change)
+
+```bash
+# Step 1: import master key from LastPass backup
 gpg --import master-key-backup.asc
 
 gpg --edit-key YOUR_KEY_ID
-adduid    # add new email
-uid N     # select old uid to remove
-deluid    # remove old uid
+uid N          # select uid to remove
+deluid         # remove it
 save
 
 # Re-export and update public key
 gpg --armor --export YOUR_KEY_ID > public-key.asc
 gpg --keyserver keys.openpgp.org --send-keys YOUR_KEY_ID
+
+# Delete master key from local machine
+gpg --delete-secret-key YOUR_KEY_ID
 ```
 
 ---

@@ -8,6 +8,7 @@
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
   environment.systemPackages = with pkgs; [
+    gnupg # GPG — required for YubiKey OpenPGP operations
     yubikey-manager # ykman CLI for YubiKey management
     yubikey-personalization # udev rules + personalization tool
   ];

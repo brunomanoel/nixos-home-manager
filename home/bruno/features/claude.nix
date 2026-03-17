@@ -48,6 +48,11 @@ let
     '';
   });
 
+  serenaMcpScript = pkgs.writeShellScript "mcp-serena" ''
+    unset PYTHONPATH
+    exec ${pkgs.uv}/bin/uvx --from serena serena-mcp-server --context ide-assistant --project "$PWD" "$@"
+  '';
+
   githubMcpScript = pkgs.writeShellScript "github-mcp" ''
     token=$(cat "$HOME/.config/github-mcp/token" 2>/dev/null)
     if [[ -z "$token" ]]; then
@@ -169,6 +174,10 @@ in
     servers = {
       memory = {
         command = "${localRagScript}";
+        args = [ ];
+      };
+      serena = {
+        command = "${serenaMcpScript}";
         args = [ ];
       };
       context7 = {

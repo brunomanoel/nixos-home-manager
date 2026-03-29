@@ -53,18 +53,20 @@
     "i915.enable_fbc=1"
     "i915.enable_psr=0"
     # "intel_idle.max_cstate=1" # In case your laptop hangs randomly
+    "resume=UUID=8e09cba4-9bd2-4a99-b46a-6fbcb480a742" # hibernation target: /dev/sda1
   ];
 
   boot.kernel.sysctl = {
-    "vm.swappiness" = 150; # zram-aware: favors zram over disk, but less aggressive than 180
-    "vm.vfs_cache_pressure" = 50;
+    "vm.swappiness" = 0; # não inicia swap enquanto houver page cache liberável
+    "vm.vfs_cache_pressure" = 150; # prefere descartar cache a swapear
+    "vm.watermark_scale_factor" = 500; # começa a reclamar com ~800MB de antecedência
     "vm.dirty_ratio" = 10;
     "vm.dirty_background_ratio" = 5;
   };
 
   zramSwap = {
     enable = true;
-    memoryPercent = 75; # ~12GB compressed — safe without disk swap (OOM kills vs freeze)
+    memoryPercent = 50; # ~8 GiB comprimido — absorve picos sem encher e derramar pro SSD
   };
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [

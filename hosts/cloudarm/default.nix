@@ -106,6 +106,14 @@
     };
   };
 
+  # --- ThingsBoard CE ---
+  # Caddy virtualhost for ThingsBoard (WireGuard only)
+  services.caddy.virtualHosts."http://thingsboard.local" = {
+    extraConfig = ''
+      reverse_proxy localhost:8090
+    '';
+  };
+
   # --- CasaOS ---
   # Caddy virtualhost for CasaOS (via hostname routing)
   services.caddy.virtualHosts."http://casaos.local" = {
@@ -187,7 +195,7 @@
   # Oracle Cloud default user — kept for console/compatibility access
   users.users.ubuntu = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
     ];

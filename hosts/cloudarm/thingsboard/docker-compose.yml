@@ -1,0 +1,50 @@
+# ThingsBoard CE — Oracle Cloud ARM (Ampere A1)
+# Access: http://thingsboard.local via WireGuard (Caddy proxy on port 80)
+# Direct: http://10.100.0.1:8090
+#
+# First-time setup:
+#   cd ~/thingsboard && docker compose run --rm -e INSTALL_TB=true -e LOAD_DEMO=true thingsboard-ce
+#
+# Start:
+#   docker compose up -d
+#
+# Default credentials:
+#   System Admin:    sysadmin@thingsboard.org / sysadmin
+#   Tenant Admin:    tenant@thingsboard.org / tenant
+#   Customer User:   customer@thingsboard.org / customer
+
+services:
+  postgres:
+    restart: always
+    image: "postgres:16"
+    ports:
+      - "127.0.0.1:5433:5432"
+    environment:
+      POSTGRES_DB: thingsboard
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  thingsboard-ce:
+    restart: always
+    image: "thingsboard/tb-node:4.3.1"
+    ports:
+      - "8090:8080"
+      - "1883:1883"
+      - "7070:7070"
+      - "5683-5688:5683-5688/udp"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    environment:
+      TB_SERVICE_ID: tb-ce-node
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/thingsboard
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
+    name: tb-postgres-data
+    driver: local

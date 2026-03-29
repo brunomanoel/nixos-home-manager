@@ -80,7 +80,7 @@
 
   # Cloudarm services via WireGuard
   networking.extraHosts = ''
-    10.100.0.1 cloudarm casaos.local pelican.local
+    10.100.0.1 cloudarm casaos.local pelican.local thingsboard.local
   '';
 
   # --- WireGuard to cloudarm ---

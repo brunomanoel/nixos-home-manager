@@ -50,7 +50,12 @@
     ];
   };
 
-  swapDevices = [ ]; # Disabled — zram only. SATA SSD swap caused system freezes under load.
+  swapDevices = [
+    {
+      device = "/dev/disk/by-uuid/8e09cba4-9bd2-4a99-b46a-6fbcb480a742";
+      priority = 0; # baixa prioridade — zram (100) absorve primeiro, SSD só como fallback e hibernação
+    }
+  ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

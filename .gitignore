@@ -1,2 +1,5 @@
 result
 result-*
+.claude/settings.local.json
+
+.direnv/

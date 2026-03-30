@@ -6,7 +6,6 @@
     obsidian
     spotify
     libgtop
-    noisetorch
     qalculate-gtk
     krita # painting app
     stremio-linux-shell
@@ -26,8 +25,6 @@
     #   };
     # };
   };
-
-  services.easyeffects.enable = true;
 
   programs.vesktop = {
     enable = true;

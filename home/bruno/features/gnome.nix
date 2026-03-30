@@ -26,5 +26,6 @@
     gnomeExtensions.no-overview
     gnomeExtensions.caffeine
     gnomeExtensions.gamemode-shell-extension
+    gnomeExtensions.claude-code-usage
   ];
 }

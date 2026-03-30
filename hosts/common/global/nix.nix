@@ -9,6 +9,9 @@ let
 in
 {
   nix = {
+    daemonCPUSchedPolicy = "batch"; # builds não competem com processos interativos
+    daemonIOSchedClass = "idle"; # I/O do build só quando o disco está livre
+
     settings = {
       trusted-users = [
         "root"

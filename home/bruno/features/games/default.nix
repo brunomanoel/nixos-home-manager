@@ -1,9 +1,11 @@
 { config, pkgs, ... }:
 {
   home.packages = with pkgs; [
-    heroic
+    # Override to inject gamemode into FHS env so launchers detect and use it
+    (heroic.override { extraPkgs = p: [ p.gamemode ]; })
     prismlauncher
-    lutris
+    (lutris.override { extraLibraries = p: [ p.gamemode ]; })
+    hydralauncher
   ];
 
   programs.mangohud = {

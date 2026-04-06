@@ -212,6 +212,22 @@
         "type": "indirect"
       }
     },
+    "opencode-anthropic-auth": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775352162,
+        "narHash": "sha256-BcMoaNdfN20zvtbPDUuTACGEs4BzQTc+HaIBtUz8jSI=",
+        "owner": "ex-machina-co",
+        "repo": "opencode-anthropic-auth",
+        "rev": "043588ff952ff87e0be0b1aa56cdd6851f21a261",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ex-machina-co",
+        "repo": "opencode-anthropic-auth",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "hardware": "hardware",
@@ -222,6 +238,7 @@
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-stable": "nixpkgs-stable",
+        "opencode-anthropic-auth": "opencode-anthropic-auth",
         "systems": "systems",
         "vscode-server": "vscode-server"
       }

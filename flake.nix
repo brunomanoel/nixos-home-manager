@@ -27,6 +27,12 @@
 
     # Common hardware modules
     hardware.url = "github:nixos/nixos-hardware";
+
+    # OpenCode Anthropic OAuth plugin (community workaround)
+    opencode-anthropic-auth = {
+      url = "github:ex-machina-co/opencode-anthropic-auth";
+      flake = false;
+    };
   };
 
   outputs =

@@ -1,6 +1,47 @@
-{ lib, pkgs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 let
+  # OpenCode Anthropic OAuth plugin (community workaround for Claude Max)
+  opencodeAnthropicAuthDeps = pkgs.stdenvNoCC.mkDerivation {
+    pname = "opencode-anthropic-auth-deps";
+    version = "0.1.0";
+    src = inputs.opencode-anthropic-auth;
+    nativeBuildInputs = [ pkgs.bun ];
+    buildPhase = ''
+      bun install --frozen-lockfile --no-progress --ignore-scripts --no-cache
+      rm -rf node_modules/.cache
+    '';
+    installPhase = ''
+      mkdir -p $out
+      cp -r node_modules $out/
+    '';
+    outputHashAlgo = "sha256";
+    outputHashMode = "recursive";
+    outputHash = "sha256-KuJgqiHPGvj7matYLcdLzNHLGHcRdj3A+jUBJHmRFrs=";
+  };
+
+  opencodeAnthropicAuth = pkgs.stdenvNoCC.mkDerivation {
+    pname = "opencode-anthropic-auth";
+    version = "0.1.0";
+    src = inputs.opencode-anthropic-auth;
+    nativeBuildInputs = [
+      pkgs.bun
+      pkgs.nodejs
+    ];
+    configurePhase = ''
+      cp -r ${opencodeAnthropicAuthDeps}/node_modules .
+      chmod -R +w node_modules
+      patchShebangs node_modules
+    '';
+    buildPhase = ''
+      bun run build
+    '';
+    installPhase = ''
+      mkdir -p $out
+      cp -r dist package.json node_modules $out/
+    '';
+  };
+
   mkUvxMcp =
     name:
     pkgs.writeShellScript "mcp-${name}" ''
@@ -331,6 +372,9 @@ in
     enableMcpIntegration = true;
     rules = memoryInstructions;
     settings = {
+      plugin = [
+        "file://${opencodeAnthropicAuth}"
+      ];
       permission = {
         read."~/.config/opencode/get-shit-done/*" = "allow";
         external_directory."~/.config/opencode/get-shit-done/*" = "allow";
@@ -339,12 +383,14 @@ in
   };
 
   # Ollama + Qdrant + Open WebUI disponíveis como CLI no Mac (serviços são NixOS-only)
-  home.packages = lib.mkIf pkgs.stdenv.isDarwin (
-    with pkgs;
-    [
-      ollama
-      qdrant
-      open-webui
-    ]
-  );
+  home.packages =
+    [ pkgs.openclaw ]
+    ++ lib.optionals pkgs.stdenv.isDarwin (
+      with pkgs;
+      [
+        ollama
+        qdrant
+        open-webui
+      ]
+    );
 }

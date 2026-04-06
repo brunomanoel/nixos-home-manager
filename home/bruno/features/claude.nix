@@ -366,6 +366,7 @@ in
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
+    package = pkgs.claude-code-bin;
     memory.text = memoryInstructions;
   };
 

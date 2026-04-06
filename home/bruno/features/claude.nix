@@ -1,4 +1,9 @@
-{ inputs, lib, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   # OpenCode Anthropic OAuth plugin (community workaround for Claude Max)
@@ -371,6 +376,294 @@ in
     enable = true;
     enableMcpIntegration = true;
     rules = memoryInstructions;
+    tui = {
+      theme = "dracula";
+    };
+    themes.dracula = {
+      defs = {
+        bgPrimary = "#282A36";
+        bgSecondary = "#44475A";
+        bgSelection = "#44475A";
+        foreground = "#F8F8F2";
+        comment = "#6272A4";
+        red = "#FF5555";
+        orange = "#FFB86C";
+        yellow = "#F1FA8C";
+        green = "#50FA7B";
+        cyan = "#8BE9FD";
+        purple = "#BD93F9";
+        pink = "#FF79C6";
+        bgDiffAdded = "#2B3A2F";
+        bgDiffRemoved = "#3D2A2E";
+      };
+      theme = {
+        primary = "purple";
+        secondary = "cyan";
+        accent = "pink";
+        error = "red";
+        warning = "orange";
+        success = "green";
+        info = "cyan";
+        text = "foreground";
+        textMuted = "comment";
+        background = "bgPrimary";
+        backgroundPanel = "bgSecondary";
+        backgroundElement = "bgSecondary";
+        border = "bgSelection";
+        borderActive = "purple";
+        borderSubtle = "bgSelection";
+        diffAdded = "green";
+        diffRemoved = "red";
+        diffContext = "foreground";
+        diffHunkHeader = "comment";
+        diffHighlightAdded = "green";
+        diffHighlightRemoved = "red";
+        diffAddedBg = "bgDiffAdded";
+        diffRemovedBg = "bgDiffRemoved";
+        diffContextBg = "bgSecondary";
+        diffLineNumber = "comment";
+        diffAddedLineNumberBg = "bgDiffAdded";
+        diffRemovedLineNumberBg = "bgDiffRemoved";
+        markdownText = "foreground";
+        markdownHeading = "purple";
+        markdownLink = "cyan";
+        markdownLinkText = "pink";
+        markdownCode = "green";
+        markdownBlockQuote = "comment";
+        markdownEmph = "yellow";
+        markdownStrong = "orange";
+        markdownHorizontalRule = "comment";
+        markdownListItem = "cyan";
+        markdownListEnumeration = "purple";
+        markdownImage = "pink";
+        markdownImageText = "yellow";
+        markdownCodeBlock = "green";
+        syntaxComment = "comment";
+        syntaxKeyword = "pink";
+        syntaxFunction = "green";
+        syntaxVariable = "foreground";
+        syntaxString = "yellow";
+        syntaxNumber = "purple";
+        syntaxType = "cyan";
+        syntaxOperator = "pink";
+        syntaxPunctuation = "foreground";
+      };
+    };
+    themes.dracula-transparent = {
+      defs = {
+        bgSecondary = "#44475A";
+        bgSelection = "#44475A";
+        foreground = "#F8F8F2";
+        comment = "#6272A4";
+        red = "#FF5555";
+        orange = "#FFB86C";
+        yellow = "#F1FA8C";
+        green = "#50FA7B";
+        cyan = "#8BE9FD";
+        purple = "#BD93F9";
+        pink = "#FF79C6";
+        bgDiffAdded = "#2B3A2F";
+        bgDiffRemoved = "#3D2A2E";
+      };
+      theme = {
+        primary = "purple";
+        secondary = "cyan";
+        accent = "pink";
+        error = "red";
+        warning = "orange";
+        success = "green";
+        info = "cyan";
+        text = "foreground";
+        textMuted = "comment";
+        background = "none";
+        backgroundPanel = "none";
+        backgroundElement = "none";
+        border = "bgSelection";
+        borderActive = "purple";
+        borderSubtle = "bgSelection";
+        diffAdded = "green";
+        diffRemoved = "red";
+        diffContext = "foreground";
+        diffHunkHeader = "comment";
+        diffHighlightAdded = "green";
+        diffHighlightRemoved = "red";
+        diffAddedBg = "bgDiffAdded";
+        diffRemovedBg = "bgDiffRemoved";
+        diffContextBg = "bgSecondary";
+        diffLineNumber = "comment";
+        diffAddedLineNumberBg = "bgDiffAdded";
+        diffRemovedLineNumberBg = "bgDiffRemoved";
+        markdownText = "foreground";
+        markdownHeading = "purple";
+        markdownLink = "cyan";
+        markdownLinkText = "pink";
+        markdownCode = "green";
+        markdownBlockQuote = "comment";
+        markdownEmph = "yellow";
+        markdownStrong = "orange";
+        markdownHorizontalRule = "comment";
+        markdownListItem = "cyan";
+        markdownListEnumeration = "purple";
+        markdownImage = "pink";
+        markdownImageText = "yellow";
+        markdownCodeBlock = "green";
+        syntaxComment = "comment";
+        syntaxKeyword = "pink";
+        syntaxFunction = "green";
+        syntaxVariable = "foreground";
+        syntaxString = "yellow";
+        syntaxNumber = "purple";
+        syntaxType = "cyan";
+        syntaxOperator = "pink";
+        syntaxPunctuation = "foreground";
+      };
+    };
+    themes.catppuccin-transparent = {
+      defs = {
+        accent = "#b4befe";
+        pink = "#f5c2e7";
+        red = "#f38ba8";
+        peach = "#fab387";
+        yellow = "#f9e2af";
+        green = "#a6e3a1";
+        teal = "#94e2d5";
+        sky = "#89dceb";
+        blue = "#89b4fa";
+        text = "#cdd6f4";
+        subtext1 = "#bac2de";
+        subtext0 = "#a6adc8";
+        overlay2 = "#9399b2";
+        surface2 = "#585b70";
+        surface1 = "#45475a";
+        surface0 = "#313244";
+        mantle = "#181825";
+      };
+      theme = {
+        primary = "accent";
+        secondary = "accent";
+        accent = "pink";
+        error = "red";
+        warning = "yellow";
+        success = "green";
+        info = "teal";
+        text = "text";
+        textMuted = "subtext1";
+        background = "none";
+        backgroundPanel = "none";
+        backgroundElement = "none";
+        border = "surface0";
+        borderActive = "surface1";
+        borderSubtle = "surface2";
+        diffAdded = "green";
+        diffRemoved = "red";
+        diffContext = "overlay2";
+        diffHunkHeader = "peach";
+        diffHighlightAdded = "green";
+        diffHighlightRemoved = "red";
+        diffAddedBg = "#a6e3a180";
+        diffRemovedBg = "#f38ba880";
+        diffContextBg = "mantle";
+        diffLineNumber = "surface1";
+        diffAddedLineNumberBg = "#a6e3a140";
+        diffRemovedLineNumberBg = "#f38ba840";
+        markdownText = "text";
+        markdownHeading = "accent";
+        markdownLink = "blue";
+        markdownLinkText = "sky";
+        markdownCode = "green";
+        markdownBlockQuote = "yellow";
+        markdownEmph = "yellow";
+        markdownStrong = "peach";
+        markdownHorizontalRule = "subtext0";
+        markdownListItem = "blue";
+        markdownListEnumeration = "sky";
+        markdownImage = "blue";
+        markdownImageText = "sky";
+        markdownCodeBlock = "text";
+        syntaxComment = "overlay2";
+        syntaxKeyword = "accent";
+        syntaxFunction = "blue";
+        syntaxVariable = "red";
+        syntaxString = "green";
+        syntaxNumber = "peach";
+        syntaxType = "yellow";
+        syntaxOperator = "sky";
+        syntaxPunctuation = "text";
+      };
+    };
+    themes.catppuccin-macchiato-transparent = {
+      defs = {
+        accent = "#b7bdf8";
+        pink = "#f5bde6";
+        red = "#ed8796";
+        peach = "#f5a97f";
+        yellow = "#eed49f";
+        green = "#a6da95";
+        teal = "#8bd5ca";
+        sky = "#91d7e3";
+        blue = "#8aadf4";
+        text = "#cad3f5";
+        subtext1 = "#b8c0e0";
+        subtext0 = "#a5adcb";
+        overlay2 = "#939ab7";
+        surface2 = "#5b6078";
+        surface1 = "#494d64";
+        surface0 = "#363a4f";
+        mantle = "#1e2030";
+      };
+      theme = {
+        primary = "accent";
+        secondary = "accent";
+        accent = "pink";
+        error = "red";
+        warning = "yellow";
+        success = "green";
+        info = "teal";
+        text = "text";
+        textMuted = "subtext1";
+        background = "none";
+        backgroundPanel = "none";
+        backgroundElement = "none";
+        border = "surface0";
+        borderActive = "surface1";
+        borderSubtle = "surface2";
+        diffAdded = "green";
+        diffRemoved = "red";
+        diffContext = "overlay2";
+        diffHunkHeader = "peach";
+        diffHighlightAdded = "green";
+        diffHighlightRemoved = "red";
+        diffAddedBg = "#a6da9580";
+        diffRemovedBg = "#ed879680";
+        diffContextBg = "mantle";
+        diffLineNumber = "surface1";
+        diffAddedLineNumberBg = "#a6da9540";
+        diffRemovedLineNumberBg = "#ed879640";
+        markdownText = "text";
+        markdownHeading = "accent";
+        markdownLink = "blue";
+        markdownLinkText = "sky";
+        markdownCode = "green";
+        markdownBlockQuote = "yellow";
+        markdownEmph = "yellow";
+        markdownStrong = "peach";
+        markdownHorizontalRule = "subtext0";
+        markdownListItem = "blue";
+        markdownListEnumeration = "sky";
+        markdownImage = "blue";
+        markdownImageText = "sky";
+        markdownCodeBlock = "text";
+        syntaxComment = "overlay2";
+        syntaxKeyword = "accent";
+        syntaxFunction = "blue";
+        syntaxVariable = "red";
+        syntaxString = "green";
+        syntaxNumber = "peach";
+        syntaxType = "yellow";
+        syntaxOperator = "sky";
+        syntaxPunctuation = "text";
+      };
+    };
     settings = {
       plugin = [
         "file://${opencodeAnthropicAuth}"
@@ -383,14 +676,15 @@ in
   };
 
   # Ollama + Qdrant + Open WebUI disponíveis como CLI no Mac (serviços são NixOS-only)
-  home.packages =
-    [ pkgs.openclaw ]
-    ++ lib.optionals pkgs.stdenv.isDarwin (
-      with pkgs;
-      [
-        ollama
-        qdrant
-        open-webui
-      ]
-    );
+  home.packages = [
+    pkgs.openclaw
+  ]
+  ++ lib.optionals pkgs.stdenv.isDarwin (
+    with pkgs;
+    [
+      ollama
+      qdrant
+      open-webui
+    ]
+  );
 }

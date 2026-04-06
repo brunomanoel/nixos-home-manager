@@ -26,6 +26,7 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
+      allowInsecurePredicate = pkg: pkg.pname == "openclaw";
     };
   };
 

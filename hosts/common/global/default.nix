@@ -11,6 +11,7 @@
     ./nix.nix
   ];
 
+  home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
   home-manager.extraSpecialArgs = {
     inherit inputs outputs;
@@ -21,6 +22,7 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
+      allowInsecurePredicate = pkg: pkg.pname == "openclaw";
     };
   };
 }

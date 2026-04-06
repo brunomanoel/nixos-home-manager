@@ -8,10 +8,6 @@
     protontricks.enable = true;
     extraCompatPackages = [ pkgs.proton-ge-bin ];
     gamescopeSession.enable = true;
-    # Inject libgamemodeauto.so so all games activate gamemode automatically
-    package = pkgs.steam.override {
-      extraEnv.LD_PRELOAD = "${pkgs.gamemode.lib}/lib/libgamemodeauto.so";
-    };
   };
 
   programs.gamemode = {

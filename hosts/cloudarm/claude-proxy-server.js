@@ -40,7 +40,6 @@ function runClaude(prompt, schema, model) {
       "--model",
       model,
       "--no-session-persistence",
-      "--web-search",
     ];
     let stdout = "",
       stderr = "";

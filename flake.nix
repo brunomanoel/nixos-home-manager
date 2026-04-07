@@ -67,6 +67,7 @@
         in
         {
           chromium = unstable.chromium;
+          claude-code-bin = unstable.claude-code-bin;
         };
     in
     {

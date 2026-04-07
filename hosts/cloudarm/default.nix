@@ -233,6 +233,28 @@
     };
   };
 
+  # --- Claude Max Proxy ---
+  # Servidor HTTP local que executa claude -p e retorna JSON estruturado.
+  # Permite que o backend (Firebase Functions) use o plano Claude Max via proxy.
+  # Token em /root/claude-proxy/token.env (não versionado).
+  systemd.services.claude-proxy = {
+    description = "Claude Max Proxy";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.claude-code-bin ];
+    environment = {
+      HOME = "/root";
+    };
+    serviceConfig = {
+      Type = "simple";
+      WorkingDirectory = "/root/claude-proxy";
+      ExecStart = "${pkgs.nodejs_22}/bin/node /root/claude-proxy/server.js";
+      EnvironmentFile = "/root/claude-proxy/token.env";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+
   # --- System packages ---
   environment.systemPackages = with pkgs; [
     vim

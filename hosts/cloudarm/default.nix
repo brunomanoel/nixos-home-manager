@@ -237,6 +237,13 @@
   # Servidor HTTP local que executa claude -p e retorna JSON estruturado.
   # Permite que o backend (Firebase Functions) use o plano Claude Max via proxy.
   # Token em /root/claude-proxy/token.env (não versionado).
+  # server.js é versionado em hosts/cloudarm/claude-proxy-server.js e
+  # copiado declarativamente pelo NixOS para /root/claude-proxy/server.js.
+  environment.etc."claude-proxy/server.js" = {
+    source = ./claude-proxy-server.js;
+    mode = "0755";
+  };
+
   systemd.services.claude-proxy = {
     description = "Claude Max Proxy";
     after = [ "network.target" ];
@@ -248,7 +255,7 @@
     serviceConfig = {
       Type = "simple";
       WorkingDirectory = "/root/claude-proxy";
-      ExecStart = "${pkgs.nodejs_22}/bin/node /root/claude-proxy/server.js";
+      ExecStart = "${pkgs.nodejs_22}/bin/node /etc/claude-proxy/server.js";
       EnvironmentFile = "/root/claude-proxy/token.env";
       Restart = "on-failure";
       RestartSec = 5;

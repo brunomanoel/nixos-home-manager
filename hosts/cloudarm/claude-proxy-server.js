@@ -7,7 +7,7 @@ const TOKEN = process.env.CLAUDE_PROXY_TOKEN;
 const CLAUDE_BIN = "/run/current-system/sw/bin/claude";
 const ALLOWED_MODELS = ["claude-sonnet-4-6", "claude-opus-4-6"];
 const DEFAULT_MODEL = "claude-sonnet-4-6";
-const TIMEOUT_MS = 300_000; // 5 min
+const TIMEOUT_MS = 120_000; // 2 min
 if (!TOKEN) {
   console.error("CLAUDE_PROXY_TOKEN required");
   process.exit(1);
@@ -40,6 +40,7 @@ function runClaude(prompt, schema, model) {
       "--model",
       model,
       "--no-session-persistence",
+      "--web-search",
     ];
     let stdout = "",
       stderr = "";

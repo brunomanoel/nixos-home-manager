@@ -45,7 +45,7 @@ function runClaude(prompt, schema, model) {
       stderr = "";
 
     const child = spawn(CLAUDE_BIN, args, {
-      env: { ...process.env, HOME: "/root" },
+      env: { ...process.env, HOME: "/root/claude-proxy/home" },
       stdio: ["ignore", "pipe", "pipe"],
     });
 

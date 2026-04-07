@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 const http = require("http");
 const { spawn } = require("child_process");
-const fs = require("fs");
-const path = require("path");
 
 const PORT = 3333;
 const TOKEN = process.env.CLAUDE_PROXY_TOKEN;
@@ -15,14 +13,6 @@ const PROXY_HOME = "/root/claude-proxy/home";
 if (!TOKEN) {
   console.error("CLAUDE_PROXY_TOKEN required");
   process.exit(1);
-}
-
-fs.mkdirSync(path.join(PROXY_HOME, ".claude"), { recursive: true });
-const credsSrc = "/root/.claude/.credentials.json";
-const credsDst = path.join(PROXY_HOME, ".claude", ".credentials.json");
-if (fs.existsSync(credsSrc)) {
-  fs.copyFileSync(credsSrc, credsDst);
-  fs.chmodSync(credsDst, 0o600);
 }
 
 function readBody(req) {

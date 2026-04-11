@@ -33,6 +33,16 @@
       url = "github:ex-machina-co/opencode-anthropic-auth";
       flake = false;
     };
+
+    # GSD (Get Shit Done) for Claude Code — npm release tarball, pinned by version.
+    # The npm tarball is used (instead of the github tag) because it ships with
+    # `hooks/dist/` pre-built via `prepublishOnly` — the github tag does not.
+    # Bump with: edit the version in the URL below, then `nix flake update gsd`.
+    gsd = {
+      url = "https://registry.npmjs.org/get-shit-done-cc/-/get-shit-done-cc-1.34.2.tgz";
+      type = "tarball";
+      flake = false;
+    };
   };
 
   outputs =
@@ -47,12 +57,14 @@
     let
       inherit (self) outputs;
       lib = nixpkgs.lib // home-manager.lib;
+      overlays = import ./overlays { inherit inputs; };
       forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
       pkgsFor = lib.genAttrs (import systems) (
         system:
         import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = builtins.attrValues overlays;
         }
       );
 
@@ -71,7 +83,7 @@
         };
     in
     {
-      inherit lib;
+      inherit lib overlays;
 
       devShells = forEachSystem (pkgs: import ./shell.nix { inherit pkgs; });
 
@@ -112,17 +124,17 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
         "bruno@predabook" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          pkgs = pkgsFor.x86_64-linux; # carries the project overlays
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [ ./home/bruno/predabook.nix ];
         };
         "bruno@wsl" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+          pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [ ./home/bruno/wsl.nix ];
         };
         "bruno@mac" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin; # Home-manager requires 'pkgs' instance
+          pkgs = pkgsFor.aarch64-darwin;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [ ./home/bruno/mac.nix ];
         };

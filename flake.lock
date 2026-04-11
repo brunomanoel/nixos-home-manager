@@ -34,6 +34,19 @@
         "type": "github"
       }
     },
+    "gsd": {
+      "flake": false,
+      "locked": {
+        "lastModified": 499162500,
+        "narHash": "sha256-/0SYTqwEJZkArKagKMkvZIW1ZvZsnma5l3qVSjG7GvY=",
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/get-shit-done-cc/-/get-shit-done-cc-1.34.2.tgz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://registry.npmjs.org/get-shit-done-cc/-/get-shit-done-cc-1.34.2.tgz"
+      }
+    },
     "hardware": {
       "locked": {
         "lastModified": 1772972630,
@@ -230,6 +243,7 @@
     },
     "root": {
       "inputs": {
+        "gsd": "gsd",
         "hardware": "hardware",
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",

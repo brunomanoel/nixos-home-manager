@@ -35,6 +35,9 @@ runCommand "gsd-${version}"
     # is only useful to the installer itself.
     rm -f $out/share/claude-code/settings.json
     rm -f $out/share/claude-code/gsd-file-manifest.json
+    rm -f $out/share/claude-code/package.json
     rm -f $out/share/opencode/settings.json
     rm -f $out/share/opencode/gsd-file-manifest.json
+    rm -f $out/share/opencode/opencode.json
+    rm -f $out/share/opencode/package.json
   ''

@@ -5,7 +5,9 @@
 {
   default = pkgs.mkShell {
     NIX_CONFIG = "extra-experimental-features = nix-command flakes ca-derivations";
-    NH_FLAKE = "$HOME/dotfiles";
+    shellHook = ''
+      export NH_FLAKE="$HOME/dotfiles"
+    '';
     nativeBuildInputs = with pkgs; [
       fastfetch
       pfetch

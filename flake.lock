@@ -103,6 +103,23 @@
         "type": "github"
       }
     },
+    "local-rag": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772721959,
+        "narHash": "sha256-xjPWpd6kNBSs0FeD3dNeexKW1H2HjCanaPCqIZVVeYo=",
+        "owner": "13W",
+        "repo": "local-rag",
+        "rev": "fb04f9191a24dec7a5d0d53431a6ef05732355d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "13W",
+        "repo": "local-rag",
+        "rev": "fb04f9191a24dec7a5d0d53431a6ef05732355d9",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -228,15 +245,16 @@
     "opencode-anthropic-auth": {
       "flake": false,
       "locked": {
-        "lastModified": 1775352162,
-        "narHash": "sha256-BcMoaNdfN20zvtbPDUuTACGEs4BzQTc+HaIBtUz8jSI=",
+        "lastModified": 1775873168,
+        "narHash": "sha256-4lB6b8PCfaLIaZsnN8CKRpALvpzOB2FwxSAIJvv7Z8E=",
         "owner": "ex-machina-co",
         "repo": "opencode-anthropic-auth",
-        "rev": "043588ff952ff87e0be0b1aa56cdd6851f21a261",
+        "rev": "d7b67363e5fa8ee62c7384d35bd914a2f9812711",
         "type": "github"
       },
       "original": {
         "owner": "ex-machina-co",
+        "ref": "v1.5.1",
         "repo": "opencode-anthropic-auth",
         "type": "github"
       }
@@ -247,6 +265,7 @@
         "hardware": "hardware",
         "home-manager": "home-manager",
         "home-manager-stable": "home-manager-stable",
+        "local-rag": "local-rag",
         "nix-darwin": "nix-darwin",
         "nix-index-database": "nix-index-database",
         "nixos-wsl": "nixos-wsl",

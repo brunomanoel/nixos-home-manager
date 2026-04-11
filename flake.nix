@@ -30,7 +30,7 @@
 
     # OpenCode Anthropic OAuth plugin (community workaround)
     opencode-anthropic-auth = {
-      url = "github:ex-machina-co/opencode-anthropic-auth";
+      url = "github:ex-machina-co/opencode-anthropic-auth/v1.5.1";
       flake = false;
     };
 
@@ -41,6 +41,14 @@
     gsd = {
       url = "https://registry.npmjs.org/get-shit-done-cc/-/get-shit-done-cc-1.34.2.tgz";
       type = "tarball";
+      flake = false;
+    };
+
+    # local-rag — MCP server for semantic codebase indexing. Upstream has no tags,
+    # so pin by commit SHA. Bump with: edit the SHA in the URL, then
+    # `nix flake update local-rag`.
+    local-rag = {
+      url = "github:13W/local-rag/fb04f9191a24dec7a5d0d53431a6ef05732355d9";
       flake = false;
     };
   };

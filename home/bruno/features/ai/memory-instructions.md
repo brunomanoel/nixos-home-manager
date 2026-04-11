@@ -1,0 +1,91 @@
+## Memory — regras obrigatórias
+
+Há um índice vetorial do codebase e das sessões anteriores (via MCP memory/local-rag),
+alimentado por Qdrant + Ollama locais. **Sempre consulte o memory antes de qualquer outra fonte.**
+
+### Leitura — ordem obrigatória
+
+1. **memory_recall** — sempre a primeira chamada de qualquer sessão. Busca decisões,
+   padrões e contexto de sessões anteriores. Não pule mesmo que a tarefa pareça simples.
+2. **memory_search_code** — para localizar funções, tipos, componentes ou qualquer
+   símbolo no codebase. Usar antes de abrir qualquer arquivo.
+3. **memory_get_file_context** — para ler ao redor de um símbolo específico já localizado.
+4. **memory_get_dependencies** — antes de refatorar, para entender o grafo de imports.
+5. **memory_find_usages** — para encontrar todos os callers de uma função ou tipo.
+6. **memory_project_overview** — para orientação inicial num codebase desconhecido.
+
+**Só leia arquivos markdown (CLAUDE.md, CONTEXT.md, planos) se o memory não trouxer
+contexto suficiente.** Leitura de arquivo é fallback, não ponto de partida.
+
+### Anti-padrões — nunca faça isso
+
+Estas ações são **erros**, não opções:
+
+- Abrir um arquivo com `Read` para localizar uma função → use `memory_search_code` primeiro
+- Usar `Bash grep` ou `mcp_grep` para encontrar onde um símbolo é usado → use `memory_find_usages`
+- Usar `Task` agent para explorar o codebase → use `memory_search_code` + `memory_get_file_context`
+- Iniciar uma sessão sem chamar `memory_recall` → sempre a primeira chamada, sem exceção
+- Ler um arquivo inteiro para entender o contexto ao redor de um símbolo → use `memory_get_file_context`
+- Acumular descobertas para registrar no final da sessão → registre com `memory_remember` imediatamente
+
+O índice vetorial existe, está populado e é mais rápido que qualquer busca em arquivo.
+Ignorá-lo desperdiça tokens e tempo sem nenhum benefício.
+
+### Escrita — quando registrar
+
+Após qualquer descoberta não-óbvia, chame `memory_remember` imediatamente:
+- Decisões de arquitetura ou padrões adotados
+- Causa raiz de bugs encontrados e como foram resolvidos
+- Comportamentos não-documentados de libs ou do ambiente
+- Qualquer coisa que você teria que redescobrir se a sessão reiniciasse
+
+Não acumule para registrar no final — registre assim que descobrir.
+
+### Limite de tamanho — regra crítica, não negociável
+
+O `memory_remember` **trunca silenciosamente** conteúdo longo sem aviso.
+Dados perdidos não são recuperáveis. Para garantir integridade:
+
+1. **Máximo 280 caracteres por memória.** Uma decisão = uma memória.
+2. **Após cada `memory_remember`, faça `memory_recall` imediato** com termo do
+   final do conteúdo salvo. Se não encontrar, deletar e resalvar menor.
+3. **Nunca salvar um plano inteiro numa memória.** Quebrar em itens atômicos.
+4. **Se o usuário pedir para salvar algo grande**, avisar que será quebrado
+   em partes e salvar cada parte com tags consistentes para reagrupar.
+
+Violação desta regra causa perda permanente de contexto entre sessões.
+
+## MCPs — use automaticamente, sem precisar ser solicitado
+
+**context / context7** — sempre que precisar de documentação de biblioteca ou framework, siga esta ordem sem pular etapas:
+1. `context` (neuledge) — buscar no registry local
+2. Se não encontrado: usar a tool `install` do MCP context para baixar do registry da comunidade (ex: `npm/next`)
+3. Se não disponível no registry: usar a tool `add` do MCP context com a URL do repositório GitHub da biblioteca (ex: `https://github.com/vercel/next.js`) para construir o pacote localmente
+4. Último recurso: `context7` (upstash)
+Não pergunte ao usuário — siga a ordem automaticamente.
+
+**fetch** — sempre que precisar acessar uma URL externa (doc, repo, issue), use o MCP fetch.
+
+**nixos** — sempre que a pergunta envolver NixOS, Home Manager, nixpkgs ou flakes, use o MCP nixos para buscar opções e pacotes atualizados.
+
+**sequential-thinking** — use automaticamente em tarefas complexas de planejamento ou debugging que exigem raciocínio em múltiplos passos.
+
+**serena** — ferramentas semânticas de código. Preferir sobre Read/Edit direto:
+- `get_symbols_overview` antes de explorar arquivo novo
+- `find_symbol(name_path, include_body=true)` para ler símbolo específico
+- `find_referencing_symbols` para encontrar callers antes de refatorar
+- `replace_symbol_body` para substituir implementação completa
+- `insert_after_symbol` / `insert_before_symbol` para adicionar código
+- `find_file` / `list_dir` para navegação
+- `search_for_pattern` para regex em arquivos não-código
+- `think_about_*` para raciocinar antes de agir
+
+**filesystem** — operações de arquivo quando as ferramentas nativas não bastam. Root: `/home/bruno/workspaces`.
+
+**git** — operações git diretas: `git_status`, `git_diff_unstaged`, `git_diff_staged`, `git_add`, `git_commit`, `git_log`, `git_show`, `git_branch`, `git_checkout`, `git_create_branch`, `git_reset`.
+
+**github** — GitHub API. Chamar `get_me` primeiro para verificar permissões. Usar `search_*` para queries filtradas, `list_*` para listagem simples.
+
+**playwright** — automação de browser (servidor remoto). Usar para testes E2E e inspeção visual: `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, `browser_fill_form`, `browser_click`, `browser_evaluate`, `browser_network_requests`, `browser_console_messages`.
+
+**chrome-devtools** — Chrome headless local. Usar para testes visuais, performance e auditoria: `navigate_page`, `take_screenshot`, `evaluate_script`, `lighthouse_audit`, `performance_start_trace` / `stop_trace` / `analyze_insight`.

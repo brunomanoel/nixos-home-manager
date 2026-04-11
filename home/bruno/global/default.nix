@@ -9,7 +9,7 @@
 {
   imports = [
     inputs.nix-index-database.homeModules.nix-index
-    ../features/claude.nix
+    ../features/ai
   ];
 
   nix = {

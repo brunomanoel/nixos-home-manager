@@ -29,30 +29,35 @@ Usa `nixpkgs-stable` (25.11) com overlay unstable para chromium (Playwright).
 ```
 home/bruno/
   features/
-    cli/        # zsh, starship, fzf, ssh, lpass (legacy)...
+    ai/         # opencode, claude-code, MCP servers
+    cli/        # zsh, starship, fzf, ssh...
     cli/wezterm.nix  # terminal (desktop only)
     dev/        # neovim, vscode, ghidra, reverse-engineer
-    claude.nix  # MCP servers config (opencode)
   global/       # config HM compartilhada (universal)
   global/fonts.nix  # fontes (desktop only)
 
 hosts/
   predabook/    # Desktop NixOS
+    secrets.yaml  # sops-nix (wireguard, github-mcp-token)
   cloudarm/     # Server NixOS (Oracle ARM)
-    pelican.nix # Pelican Panel + Wings + Caddy
+    pelican.nix   # Pelican Panel + Wings + Caddy
+    secrets.yaml  # sops-nix (wireguard)
   wsl/          # WSL2
+    secrets.yaml  # sops-nix (wireguard, github-mcp-token)
   mac/          # macOS (nix-darwin)
   common/
     global/         # config NixOS universal (todos os hosts)
+    global/sops.nix     # sops-nix + host key ed25519
     global/desktop.nix  # só desktops (fonts, cuda, xkb, firmware)
     users/
     optional/
-      ai-services.nix   # Ollama + Qdrant (desktop only)
+      openssh.nix     # sshd com hardening (só cloudarm)
+      ai-services.nix # Ollama + Qdrant (desktop only)
 ```
 
 ## Bootstrap (sistema novo)
 
-Em um sistema sem as ferramentas instaladas, entre no dev shell primeiro:
+Entre no dev shell (traz KeePassXC, sops, age, ssh-to-age):
 
 ```shell
 nix develop
@@ -60,9 +65,17 @@ nix develop
 nix-shell
 ```
 
-KeePassXC está disponível no dev shell. Faça o download do `pessoal.kdbx` do Google Drive
-e abra com KeePassXC para ter acesso às chaves SSH e demais credenciais necessárias
-para o bootstrap completo.
+1. Baixar `pessoal.kdbx` do Google Drive e abrir com KeePassXC
+2. O primeiro `nixos-rebuild switch` gera a SSH host key ed25519
+3. Derivar a age key e atualizar `.sops.yaml`:
+   ```shell
+   ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
+   ```
+4. Criar `hosts/<host>/secrets.yaml` com os valores do KeePassXC:
+   ```shell
+   sops hosts/<host>/secrets.yaml
+   ```
+5. Rebuild novamente para decriptar os secrets via sops-nix
 
 ### NixOS / WSL (desktop)
 
@@ -96,6 +109,18 @@ nh darwin switch --configuration mac ~/dotfiles
 NH_FLAKE=~/dotfiles nh darwin switch --configuration mac
 ```
 
+## Reinstalação
+
+Ao reinstalar o OS num host que já tinha sops-nix configurado:
+
+1. A SSH host key muda — derivar a nova age key com `ssh-to-age`
+2. Atualizar `.sops.yaml` com a nova key
+3. Re-encriptar os secrets do host para a nova key:
+   ```shell
+   sops updatekeys hosts/<host>/secrets.yaml
+   ```
+4. Commit, push e rebuild
+
 ## Aplicar mudanças
 
 > `--ask` é opcional — faz dry run e pede confirmação antes de aplicar.
@@ -113,7 +138,7 @@ nh darwin switch --configuration mac
 ### Cloudarm (server remoto)
 
 ```shell
-ssh -i ~/.ssh/cloudarm.key root@137.131.233.96
+ssh root@cloudarm
 cd /root/dotfiles && git pull && nixos-rebuild switch --flake .#cloudarm
 ```
 

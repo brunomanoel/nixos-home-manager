@@ -13,7 +13,7 @@ let
 
   serenaMcpScript = pkgs.writeShellScript "mcp-serena" ''
     unset PYTHONPATH
-    exec ${pkgs.uv}/bin/uvx --python 3.11 --from serena-agent serena-mcp-server --context ide-assistant --project "$PWD" "$@"
+    exec ${pkgs.uv}/bin/uvx --python 3.11 --from serena-agent serena start-mcp-server --context ide-assistant --project-from-cwd "$@"
   '';
 
   githubMcpScript = pkgs.writeShellScript "github-mcp" ''

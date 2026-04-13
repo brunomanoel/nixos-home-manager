@@ -13,5 +13,6 @@
     ./features/cli
     ./features/cli/wezterm.nix
     ./features/git.nix
+    ./features/keepassxc.nix
   ];
 }

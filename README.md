@@ -29,7 +29,7 @@ Usa `nixpkgs-stable` (25.11) com overlay unstable para chromium (Playwright).
 ```
 home/bruno/
   features/
-    cli/        # zsh, starship, fzf, ssh, lpass...
+    cli/        # zsh, starship, fzf, ssh, lpass (legacy)...
     cli/wezterm.nix  # terminal (desktop only)
     dev/        # neovim, vscode, ghidra, reverse-engineer
     claude.nix  # MCP servers config (opencode)
@@ -59,6 +59,10 @@ nix develop
 # ou
 nix-shell
 ```
+
+KeePassXC está disponível no dev shell. Faça o download do `pessoal.kdbx` do Google Drive
+e abra com KeePassXC para ter acesso às chaves SSH e demais credenciais necessárias
+para o bootstrap completo.
 
 ### NixOS / WSL (desktop)
 

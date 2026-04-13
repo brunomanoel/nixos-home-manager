@@ -16,6 +16,9 @@
     ./features/cli
     ./features/cli/wezterm.nix
     ./features/git.nix
+    ./features/keepassxc.nix
+    ./features/syncthing.nix
+    ./features/rclone-backup.nix
     ./features/utils.nix
     ./features/dev
     ./features/games

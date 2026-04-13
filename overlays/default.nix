@@ -6,6 +6,11 @@
     inherit inputs;
   };
 
+  # Modifications to upstream packages.
+  modifications = _final: prev: {
+    keepassxc = import ./keepassxc-wrapper.nix { inherit prev; };
+  };
+
   # Adds custom packages (Misterio77-style `additions` overlay).
   additions = final: _prev: {
     gsd = final.callPackage ../pkgs/gsd {

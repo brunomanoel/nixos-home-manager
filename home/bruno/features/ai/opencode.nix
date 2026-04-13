@@ -31,6 +31,9 @@ in
         read."~/.config/opencode/get-shit-done/*" = "allow";
         external_directory."~/.config/opencode/get-shit-done/*" = "allow";
       };
+      tools = {
+        lsp = true;
+      };
     };
   };
 

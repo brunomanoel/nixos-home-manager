@@ -43,10 +43,12 @@
 
   programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 
-  # needed for store VS Code auth token
-  services.gnome.gnome-keyring.enable = true;
-  # Disable gcr-ssh-agent — keychain manages SSH agent instead
-  systemd.user.services.gcr-ssh-agent.enable = false;
+  # gnome-keyring disabled — KeePassXC provides Secret Service (org.freedesktop.secrets)
+  # VS Code auth tokens, Chromium Safe Storage, etc. are served by KeePassXC.
+  services.gnome.gnome-keyring.enable = false;
+
+  # Disable GNOME's SSH agent — OpenSSH agent is used instead (programs.ssh.startAgent)
+  services.gnome.gcr-ssh-agent.enable = false;
 
   services.gnome.gnome-browser-connector.enable = true;
 }

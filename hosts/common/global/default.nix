@@ -9,6 +9,7 @@
     ./locale.nix
     ./zsh.nix
     ./nix.nix
+    ./sops.nix
   ];
 
   home-manager.useGlobalPkgs = true;

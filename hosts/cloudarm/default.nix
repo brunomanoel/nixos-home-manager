@@ -13,6 +13,7 @@
 
     inputs.home-manager-stable.nixosModules.home-manager
     ../common/global
+    ../common/optional/openssh.nix
     ../common/users/bruno
     ./pelican.nix
   ];
@@ -41,12 +42,14 @@
   # All other services (Ollama, Qdrant, MCPs) are accessible only via WireGuard tunnel.
   networking.firewall.enable = false;
 
+  # --- Secrets (sops-nix) ---
+  sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
+
   # --- WireGuard ---
-  # Private key stored at /etc/wireguard/private.key (not in repo)
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.100.0.1/24" ];
     listenPort = 51820;
-    privateKeyFile = "/etc/wireguard/private.key";
+    privateKeyFile = config.sops.secrets.wireguard-private-key.path;
 
     peers = [
       {
@@ -172,14 +175,7 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  # --- SSH hardening ---
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-    };
-  };
+  # SSH hardening — sshd enabled via ../common/optional/openssh.nix
 
   # Add bruno to container/docker groups
   users.users.bruno.extraGroups = [

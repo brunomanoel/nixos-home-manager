@@ -9,7 +9,6 @@
     ./starship.nix
     ./fzf.nix
     ./ssh.nix
-    ./lpass.nix
   ];
 
   home.packages =

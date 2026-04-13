@@ -1,0 +1,23 @@
+keys:
+  - &predabook age1l4ra2h5ea0r8844z3fw4vza6d0vneeq5xls44vfj6x9xxxgnqsmqccu3tj
+  - &wsl age1ahjg6ta3grdxxprjer53v4uyc56kgpttmcu600st08u8eea4098qe83sng
+  - &cloudarm age1pyf2q7w6w2eswam0wc6020yp4gvm2m278mdw4tfg8jfjzd2e3c9srctnt5
+creation_rules:
+  - path_regex: hosts/predabook/secrets\.yaml$
+    key_groups:
+    - age:
+      - *predabook
+  - path_regex: hosts/wsl/secrets\.yaml$
+    key_groups:
+    - age:
+      - *wsl
+  - path_regex: hosts/cloudarm/secrets\.yaml$
+    key_groups:
+    - age:
+      - *cloudarm
+  - path_regex: hosts/common/secrets\.yaml$
+    key_groups:
+    - age:
+      - *predabook
+      - *wsl
+      - *cloudarm

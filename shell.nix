@@ -20,6 +20,9 @@
       nh # Nice wrapper for NixOS and Home Manager
       nodejs_22
       keepassxc
+      sops
+      age
+      ssh-to-age
     ];
   };
 }

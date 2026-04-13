@@ -10,7 +10,6 @@
 {
   imports = [
     ./features/git.nix
-    ./features/cli/lpass.nix
     ./features/cli/ssh.nix
   ];
 

@@ -24,11 +24,17 @@
 
   networking.hostName = "wsl";
 
+  # --- Secrets (sops-nix) ---
+  sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
+  sops.secrets.github-mcp-token = {
+    sopsFile = ./secrets.yaml;
+    owner = "bruno";
+  };
+
   # --- WireGuard to cloudarm ---
-  # Private key stored at /etc/wireguard/private.key (not in repo)
   networking.wireguard.interfaces.wg0 = {
     ips = [ "10.100.0.4/24" ];
-    privateKeyFile = "/etc/wireguard/private.key";
+    privateKeyFile = config.sops.secrets.wireguard-private-key.path;
 
     peers = [
       {

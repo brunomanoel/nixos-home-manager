@@ -28,6 +28,10 @@
     # Common hardware modules
     hardware.url = "github:nixos/nixos-hardware";
 
+    # Secrets management
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # OpenCode Anthropic OAuth plugin (community workaround)
     opencode-anthropic-auth = {
       url = "github:ex-machina-co/opencode-anthropic-auth/v1.5.1";

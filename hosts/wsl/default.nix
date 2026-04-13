@@ -24,6 +24,9 @@
 
   networking.hostName = "wsl";
 
+  # --- Host key generation (no sshd, only for sops-nix age derivation) ---
+  services.openssh.generateHostKeys = true;
+
   # --- Secrets (sops-nix) ---
   sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
   sops.secrets.github-mcp-token = {

@@ -1,6 +1,7 @@
 # sops-nix — declarative secret provisioning.
 # Age keys derived from SSH host keys (ed25519).
-# generateHostKeys ensures the key exists even without sshd enabled.
+# Hosts without sshd must set services.openssh.generateHostKeys = true
+# separately (available on nixpkgs-unstable only).
 {
   inputs,
   config,
@@ -13,15 +14,12 @@ in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
-  services.openssh = {
-    generateHostKeys = true;
-    hostKeys = [
-      {
-        path = "/etc/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
-  };
+  services.openssh.hostKeys = [
+    {
+      path = "/etc/ssh/ssh_host_ed25519_key";
+      type = "ed25519";
+    }
+  ];
 
   sops.age.sshKeyPaths = map (k: k.path) keys;
 }

@@ -20,6 +20,7 @@
     ./thingsboard.nix
     ./nextcloud.nix
     ./claude-proxy.nix
+    ./n8n.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

@@ -32,7 +32,10 @@
         "::1"
         "137.131.233.96"
       ];
+      maintenance_window_start = 2; # 2:00 UTC
     };
+
+    phpOptions."opcache.interned_strings_buffer" = "16";
 
     extraApps = {
       inherit (config.services.nextcloud.package.packages.apps)
@@ -85,7 +88,32 @@
   services.nextcloud.notify_push.enable = true;
 
   # --- Whiteboard Server ---
-  services.nextcloud-whiteboard-server.enable = true;
+  services.nextcloud-whiteboard-server = {
+    enable = true;
+    settings = {
+      NEXTCLOUD_URL = "https://cloud.brunomanoel.ninja";
+    };
+    secrets = [ config.sops.secrets.whiteboard-jwt-secret.path ];
+  };
+  sops.secrets.whiteboard-jwt-secret = {
+    sopsFile = ./secrets.yaml;
+  };
+
+  # Configure whiteboard app in Nextcloud via occ (semi-declarative)
+  systemd.services.nextcloud-whiteboard-config = {
+    path = [ config.services.nextcloud.occ ];
+    script = ''
+      nextcloud-occ config:app:set whiteboard collabBackendUrl --value="http://localhost:3002"
+      nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path} | cut -d= -f2)"
+    '';
+    after = [ "nextcloud-setup.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      User = "nextcloud";
+    };
+  };
 
   # --- Collabora Online (document editing, alternative to OnlyOffice) ---
   services.collabora-online = {

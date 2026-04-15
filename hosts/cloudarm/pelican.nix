@@ -81,9 +81,23 @@ in
     };
   };
 
-  # Caddy virtualhost for Pelican Panel (default, IP público + pelican.local)
+  # Caddy virtualhosts for Pelican Panel
   services.caddy.enable = true;
   services.caddy.virtualHosts.":80" = {
+    extraConfig = ''
+      root * ${panelDir}/public
+      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
+      file_server
+    '';
+  };
+  services.caddy.virtualHosts."http://pelican.local" = {
+    extraConfig = ''
+      root * ${panelDir}/public
+      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
+      file_server
+    '';
+  };
+  services.caddy.virtualHosts."games.brunomanoel.ninja" = {
     extraConfig = ''
       root * ${panelDir}/public
       php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}

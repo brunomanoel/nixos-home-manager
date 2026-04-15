@@ -1,14 +1,14 @@
 # ThingsBoard CE — IoT platform
 # Runs as Docker container on localhost:8090
 {
-  services.caddy.virtualHosts."http://thingsboard.local" = {
-    extraConfig = ''
-      reverse_proxy localhost:8090
-    '';
+  # VPN access
+  services.nginx.virtualHosts."thingsboard.local" = {
+    locations."/".proxyPass = "http://localhost:8090";
   };
-  services.caddy.virtualHosts."thingsboard.brunomanoel.ninja" = {
-    extraConfig = ''
-      reverse_proxy localhost:8090
-    '';
+  # Public HTTPS
+  services.nginx.virtualHosts."thingsboard.brunomanoel.ninja" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/".proxyPass = "http://localhost:8090";
   };
 }

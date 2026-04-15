@@ -18,7 +18,7 @@
     ./pelican.nix
     ./casaos.nix
     ./thingsboard.nix
-    ./nextcloud.nix
+    # ./nextcloud.nix  # nixificado, ativar quando migrar do CasaOS
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change
@@ -71,6 +71,13 @@
 
   # --- Docker ---
   virtualisation.docker.enable = true;
+
+  # --- Nginx + ACME ---
+  services.nginx.enable = true;
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "acme@brunomanoel.ninja";
+  };
 
   security.sudo.wheelNeedsPassword = false;
 

@@ -1,6 +1,6 @@
 # Pelican Panel + Wings — game server management
 #
-# NixOS provides: Caddy, PHP-FPM, systemd services (queue worker, scheduler, wings)
+# NixOS provides: Nginx, PHP-FPM, systemd services (queue worker, scheduler, wings)
 # Panel code is installed MANUALLY (Laravel app, not nixified).
 #
 # === First-time setup ===
@@ -60,6 +60,22 @@ let
     ])
   );
   panelDir = "/var/www/pelican";
+  pelicanNginxConfig = {
+    root = "${panelDir}/public";
+    locations."/" = {
+      tryFiles = "$uri $uri/ /index.php?$query_string";
+    };
+    locations."~ \\.php$" = {
+      extraConfig = ''
+        fastcgi_pass unix:${config.services.phpfpm.pools.pelican.socket};
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include ${pkgs.nginx}/conf/fastcgi_params;
+      '';
+    };
+    locations."~ /\\.(?!well-known).*" = {
+      extraConfig = "deny all;";
+    };
+  };
 in
 {
   # PHP-FPM pool for Pelican
@@ -68,8 +84,8 @@ in
     group = "pelican";
     phpPackage = php;
     settings = {
-      "listen.owner" = config.services.caddy.user;
-      "listen.group" = config.services.caddy.group;
+      "listen.owner" = config.services.nginx.user;
+      "listen.group" = config.services.nginx.group;
       "pm" = "dynamic";
       "pm.max_children" = 4;
       "pm.start_servers" = 2;
@@ -81,28 +97,17 @@ in
     };
   };
 
-  # Caddy virtualhosts for Pelican Panel
-  services.caddy.enable = true;
-  services.caddy.virtualHosts.":80" = {
-    extraConfig = ''
-      root * ${panelDir}/public
-      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
-      file_server
-    '';
+  # Nginx virtualhosts for Pelican Panel
+  # Default catch-all (IP direto)
+  services.nginx.virtualHosts."_" = pelicanNginxConfig // {
+    default = true;
   };
-  services.caddy.virtualHosts."http://pelican.local" = {
-    extraConfig = ''
-      root * ${panelDir}/public
-      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
-      file_server
-    '';
-  };
-  services.caddy.virtualHosts."games.brunomanoel.ninja" = {
-    extraConfig = ''
-      root * ${panelDir}/public
-      php_fastcgi unix${config.services.phpfpm.pools.pelican.socket}
-      file_server
-    '';
+  # VPN access
+  services.nginx.virtualHosts."pelican.local" = pelicanNginxConfig;
+  # Public HTTPS
+  services.nginx.virtualHosts."games.brunomanoel.ninja" = pelicanNginxConfig // {
+    forceSSL = true;
+    enableACME = true;
   };
 
   # Pelican queue worker (background jobs)

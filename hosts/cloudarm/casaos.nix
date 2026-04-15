@@ -42,11 +42,19 @@
     };
   };
 
-  # Caddy virtualhost (WireGuard only)
-  services.caddy.virtualHosts."http://casaos.local" = {
-    extraConfig = ''
-      reverse_proxy 10.200.0.166:80
-    '';
+  # Nginx virtualhost (WireGuard only)
+  services.nginx.virtualHosts."casaos.local" = {
+    locations."/".proxyPass = "http://10.200.0.166:80";
+  };
+
+  # Nextcloud (via CasaOS container, until nixified nextcloud.nix is activated)
+  services.nginx.virtualHosts."nextcloud.local" = {
+    locations."/".proxyPass = "http://10.200.0.166:10081";
+  };
+  services.nginx.virtualHosts."cloud.brunomanoel.ninja" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/".proxyPass = "http://10.200.0.166:10081";
   };
 
   # Auto-provision container

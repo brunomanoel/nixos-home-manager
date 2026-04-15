@@ -110,7 +110,7 @@
   systemd.services.nextcloud-whiteboard-config = {
     path = [ config.services.nextcloud.occ ];
     script = ''
-      nextcloud-occ config:app:set whiteboard collabBackendUrl --value="http://localhost:3002"
+      nextcloud-occ config:app:set whiteboard collabBackendUrl --value="https://cloud.brunomanoel.ninja/whiteboard/"
       nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path})"
     '';
     after = [ "nextcloud-setup.service" ];
@@ -190,6 +190,16 @@
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
+    locations."/whiteboard/" = {
+      proxyPass = "http://localhost:3002/";
+      extraConfig = ''
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+      '';
+    };
   };
   # VPN access — proxy to the main Nextcloud vhost (no SSL)
   services.nginx.virtualHosts."nextcloud.local" = {

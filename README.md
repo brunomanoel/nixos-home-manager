@@ -4,27 +4,31 @@ NixOS + nix-darwin + Home Manager — personal configuration
 
 ## Hosts
 
-| Host        | Tipo                           | Sistema            | Perfil            |
+| Host        | Type                           | System             | Profile           |
 |-------------|--------------------------------|--------------------|-------------------|
 | `predabook` | Desktop                        | NixOS unstable     | `bruno@predabook` |
-| `cloudarm`  | Server (Oracle ARM A1.Flex)     | NixOS 25.11 stable | `bruno@cloudarm`  |
+| `cloudarm`  | Server (Oracle ARM A1.Flex)    | NixOS 25.11 stable | `bruno@cloudarm`  |
 | `wsl`       | WSL2                           | NixOS unstable     | `bruno@wsl`       |
 | `mac`       | macOS (Apple Silicon)          | nix-darwin         | `bruno@mac`       |
 
 ### Cloudarm — Oracle Cloud ARM (4 cores, 24GB RAM)
 
-Game server + self-hosted services. Acesso via WireGuard (`10.100.0.1`).
+Self-hosted services hub. Accessed via WireGuard (`10.100.0.1`).
 
-| Serviço | Acesso | Stack |
+| Service | Access | Stack |
 |---------|--------|-------|
-| Pelican Panel | `http://pelican.local` / IP público porta 80 | Caddy + PHP-FPM + SQLite |
-| Pelican Wings | porta 8080 | binário Go, gerencia Docker containers |
-| CasaOS | `http://casaos.local` | Incus container (Debian 12), Docker compartilhado |
-| Playwright MCP | `http://10.100.0.1:8002/mcp` | Chromium headless |
+| Pelican Panel | `http://pelican.local` / public IP port 80 | Nginx + PHP-FPM + SQLite |
+| Pelican Wings | port 8080 | Go binary, manages Docker containers |
+| CasaOS | `http://casaos.local` | Incus container (Debian 12), shared Docker |
+| Nextcloud | `https://cloud.brunomanoel.ninja` / `nextcloud.local` | Nginx + PostgreSQL + PHP-FPM |
+| ThingsBoard | `http://thingsboard.local` / `thingsboard.brunomanoel.ninja` | Docker container |
+| Collabora Online | internal (consumed by Nextcloud) | Native NixOS service |
+| Paperless-ngx | `http://paperless.local` | Native NixOS service |
+| Playwright MCP | `http://10.100.0.1:8002/mcp` | Headless Chromium |
 
-Usa `nixpkgs-stable` (25.11) com overlay unstable para chromium (Playwright).
+Uses `nixpkgs-stable` (25.11) with unstable overlay for Chromium (Playwright).
 
-## Estrutura
+## Structure
 
 ```
 home/bruno/
@@ -33,97 +37,101 @@ home/bruno/
     cli/        # zsh, starship, fzf, ssh...
     cli/wezterm.nix  # terminal (desktop only)
     dev/        # neovim, vscode, ghidra, reverse-engineer
-  global/       # config HM compartilhada (universal)
-  global/fonts.nix  # fontes (desktop only)
+  global/       # shared HM config (universal)
+  global/fonts.nix  # fonts (desktop only)
 
 hosts/
   predabook/    # Desktop NixOS
-    secrets.yaml  # sops-nix (wireguard, github-mcp-token)
-  cloudarm/     # Server NixOS (Oracle ARM)
-    pelican.nix   # Pelican Panel + Wings + Caddy
     secrets.yaml  # sops-nix (wireguard)
+  cloudarm/     # Server NixOS (Oracle ARM)
+    pelican.nix     # Pelican Panel + Wings
+    casaos.nix      # CasaOS (Incus + provisioning)
+    thingsboard.nix # ThingsBoard CE
+    nextcloud.nix   # Nextcloud + Collabora + Paperless
+    secrets.yaml    # sops-nix (wireguard, nextcloud, paperless)
   wsl/          # WSL2
-    secrets.yaml  # sops-nix (wireguard, github-mcp-token)
+    secrets.yaml  # sops-nix (wireguard)
   mac/          # macOS (nix-darwin)
   common/
-    global/         # config NixOS universal (todos os hosts)
-    global/sops.nix     # sops-nix + host key ed25519
-    global/desktop.nix  # só desktops (fonts, cuda, xkb, firmware)
+    global/         # universal NixOS config (all hosts)
+    global/sops.nix     # sops-nix + ed25519 host key
+    global/desktop.nix  # desktop only (fonts, cuda, xkb, firmware)
     users/
     optional/
-      openssh.nix     # sshd com hardening (só cloudarm)
+      openssh.nix     # hardened sshd (cloudarm only)
+      gnome.nix       # GNOME + gpaste (desktop only)
       ai-services.nix # Ollama + Qdrant (desktop only)
 ```
 
-## Bootstrap (sistema novo)
+## Bootstrap (new system)
 
-Entre no dev shell (traz KeePassXC, sops, age, ssh-to-age):
+Enter the dev shell (provides KeePassXC, sops, age, ssh-to-age):
 
 ```shell
 nix develop
-# ou
+# or
 nix-shell
 ```
 
-1. Baixar `pessoal.kdbx` do Google Drive e abrir com KeePassXC
-2. O primeiro `nixos-rebuild switch` gera a SSH host key ed25519
-3. Derivar a age key e atualizar `.sops.yaml`:
+1. Download `pessoal.kdbx` from Google Drive and open with KeePassXC
+2. First `nixos-rebuild switch` generates the SSH ed25519 host key
+3. Derive the age key and update `.sops.yaml`:
    ```shell
    ssh-to-age -i /etc/ssh/ssh_host_ed25519_key.pub
    ```
-4. Criar `hosts/<host>/secrets.yaml` com os valores do KeePassXC:
+4. Create `hosts/<host>/secrets.yaml` with values from KeePassXC:
    ```shell
    sops hosts/<host>/secrets.yaml
    ```
-5. Rebuild novamente para decriptar os secrets via sops-nix
+5. Rebuild again to decrypt secrets via sops-nix
 
 ### NixOS / WSL (desktop)
 
-Aplica o sistema e o Home Manager juntos (HM é um módulo NixOS):
+Applies system and Home Manager together (HM is a NixOS module):
 
 ```shell
 nh os switch . --ask
-# ou com NH_FLAKE
+# or with NH_FLAKE
 NH_FLAKE=/home/bruno/dotfiles nh os switch --ask
 ```
 
 ### macOS (nix-darwin)
 
-Instale o Nix primeiro (caso ainda não esteja instalado):
+Install Nix first (if not already installed):
 
 ```shell
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-Na primeira vez, use `nix run` diretamente (antes de `nh` estar disponível):
+First time, use `nix run` directly (before `nh` is available):
 
 ```shell
 nix run nix-darwin -- switch --flake ~/dotfiles#mac
 ```
 
-Nas próximas vezes:
+Subsequent times:
 
 ```shell
 nh darwin switch --configuration mac ~/dotfiles
-# ou com NH_FLAKE
+# or with NH_FLAKE
 NH_FLAKE=~/dotfiles nh darwin switch --configuration mac
 ```
 
-## Reinstalação
+## Reinstallation
 
-Ao reinstalar o OS num host que já tinha sops-nix configurado:
+When reinstalling the OS on a host that already had sops-nix configured:
 
-1. A SSH host key muda — derivar a nova age key com `ssh-to-age`
-2. Atualizar `.sops.yaml` com a nova key
-3. Re-encriptar os secrets do host para a nova key:
+1. SSH host key changes — derive the new age key with `ssh-to-age`
+2. Update `.sops.yaml` with the new key
+3. Re-encrypt the host's secrets for the new key:
    ```shell
    sops updatekeys hosts/<host>/secrets.yaml
    ```
-4. Commit, push e rebuild
+4. Commit, push and rebuild
 
-## Aplicar mudanças
+## Applying changes
 
-> `--ask` é opcional — faz dry run e pede confirmação antes de aplicar.
+> `--ask` is optional — performs a dry run and asks for confirmation before applying.
 
 ### NixOS / WSL
 ```shell
@@ -135,7 +143,7 @@ nh os switch
 nh darwin switch --configuration mac
 ```
 
-### Cloudarm (server remoto)
+### Cloudarm (remote server)
 
 ```shell
 ssh root@cloudarm
@@ -144,8 +152,8 @@ cd /root/dotfiles && git pull && nixos-rebuild switch --flake .#cloudarm
 
 ### Home Manager (standalone)
 
-> Use apenas se quiser gerenciar o ambiente do usuário sem reconstruir o sistema
-> (sem acesso a root, ou em sistemas onde apenas o HM está instalado).
+> Use only if you want to manage the user environment without rebuilding the system
+> (no root access, or on systems where only HM is installed).
 
 ```shell
 nh home switch --configuration=bruno@wsl

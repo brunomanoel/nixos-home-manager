@@ -36,7 +36,7 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
 
   boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 3;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.systemd-boot.rebootForBitlocker = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
@@ -88,10 +88,6 @@
 
   # --- Secrets (sops-nix) ---
   sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
-  sops.secrets.github-mcp-token = {
-    sopsFile = ./secrets.yaml;
-    owner = "bruno";
-  };
 
   # --- WireGuard to cloudarm ---
   networking.wireguard.interfaces.CloudArm = {
@@ -148,6 +144,7 @@
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia # GPU monitoring TUI
     gpustat # GPU status one-liner
+    libnotify # notify-send para opencode-notifier
   ];
 
   programs.kdeconnect.enable = true;

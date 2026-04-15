@@ -11,14 +11,15 @@
         AutoReloadOnChange = true;
         AutoSaveOnExit = true;
         OpenPreviousDatabasesOnStartup = true;
-        MinimizeAfterUnlock = true;
+        MinimizeAfterUnlock = false;
+        MinimizeOnCopy = true;
       };
 
       Security = {
         ClearClipboard = true;
         ClearClipboardTimeout = 10;
         LockDatabaseIdle = false;
-        LockDatabaseScreenLock = true;
+        LockDatabaseScreenLock = false;
         LockDatabaseOnUserSwitch = true;
       };
 
@@ -38,7 +39,7 @@
       FdoSecrets = lib.mkIf pkgs.stdenv.isLinux {
         Enabled = true;
         ShowNotification = true;
-        ConfirmAccessItem = true;
+        ConfirmAccessItem = false;
       };
 
       GUI = {
@@ -46,19 +47,11 @@
         ShowTrayIcon = true;
         MinimizeToTray = true;
         MinimizeOnClose = true;
-        MinimizeOnStartup = true;
+        MinimizeOnStartup = false;
         HidePasswords = true;
-        CompactMode = true;
+        CompactMode = false;
         CheckForUpdates = false; # managed by Nix
       };
     };
-  };
-
-  programs.git-credential-keepassxc = {
-    enable = true;
-    # hosts = [ "https://github.com" ];
-    # Bug in home-manager: misplaced parenthesis in module breaks with specified hosts.
-    # https://github.com/nix-community/home-manager/blob/master/modules/programs/git-credential-keepassxc.nix#L55
-    # Without hosts, the credential helper applies globally (acceptable).
   };
 }

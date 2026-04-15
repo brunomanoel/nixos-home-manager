@@ -29,10 +29,6 @@
 
   # --- Secrets (sops-nix) ---
   sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
-  sops.secrets.github-mcp-token = {
-    sopsFile = ./secrets.yaml;
-    owner = "bruno";
-  };
 
   # --- WireGuard to cloudarm ---
   networking.wireguard.interfaces.wg0 = {

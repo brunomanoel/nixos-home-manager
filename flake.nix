@@ -34,7 +34,7 @@
 
     # OpenCode Anthropic OAuth plugin (community workaround)
     opencode-anthropic-auth = {
-      url = "github:ex-machina-co/opencode-anthropic-auth/v1.5.1";
+      url = "github:ex-machina-co/opencode-anthropic-auth/v1.7.0";
       flake = false;
     };
 

@@ -26,6 +26,7 @@ in
       plugin = [
         "file://${pkgs.opencode-anthropic-auth}"
         "file://${blockGitCommitsPlugin}"
+        "@mohak34/opencode-notifier"
       ];
       permission = {
         read."~/.config/opencode/get-shit-done/*" = "allow";

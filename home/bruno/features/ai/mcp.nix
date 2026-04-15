@@ -16,6 +16,9 @@ let
     exec ${pkgs.uv}/bin/uvx --python 3.11 --from serena-agent serena start-mcp-server --context ide-assistant --project-from-cwd "$@"
   '';
 
+  # GitHub MCP token: manually placed at ~/.config/github-mcp/token (chmod 600).
+  # Not managed by sops-nix — this is a session-level secret, not boot infrastructure.
+  # Generate at: https://github.com/settings/tokens
   githubMcpScript = pkgs.writeShellScript "github-mcp" ''
     token=$(cat "$HOME/.config/github-mcp/token" 2>/dev/null)
     if [[ -z "$token" ]]; then

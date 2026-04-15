@@ -51,4 +51,6 @@
   services.gnome.gcr-ssh-agent.enable = false;
 
   services.gnome.gnome-browser-connector.enable = true;
+
+  programs.gpaste.enable = true;
 }

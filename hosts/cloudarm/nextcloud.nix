@@ -33,6 +33,8 @@
         "137.131.233.96"
       ];
       maintenance_window_start = 2; # 2:00 UTC
+      default_phone_region = "BR";
+      "integrity.check.disabled" = true; # extraApps via nix breaks integrity check
     };
 
     phpOptions."opcache.interned_strings_buffer" = "16";
@@ -93,10 +95,15 @@
     settings = {
       NEXTCLOUD_URL = "https://cloud.brunomanoel.ninja";
     };
-    secrets = [ config.sops.secrets.whiteboard-jwt-secret.path ];
+    secrets = [ config.sops.templates.whiteboard-jwt-env.path ];
   };
   sops.secrets.whiteboard-jwt-secret = {
     sopsFile = ./secrets.yaml;
+    owner = "nextcloud";
+    group = "nextcloud";
+  };
+  sops.templates.whiteboard-jwt-env = {
+    content = "JWT_SECRET_KEY=${config.sops.placeholder.whiteboard-jwt-secret}";
   };
 
   # Configure whiteboard app in Nextcloud via occ (semi-declarative)
@@ -104,7 +111,7 @@
     path = [ config.services.nextcloud.occ ];
     script = ''
       nextcloud-occ config:app:set whiteboard collabBackendUrl --value="http://localhost:3002"
-      nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path} | cut -d= -f2)"
+      nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path})"
     '';
     after = [ "nextcloud-setup.service" ];
     wantedBy = [ "multi-user.target" ];

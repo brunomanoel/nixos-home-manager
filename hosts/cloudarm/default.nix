@@ -125,6 +125,13 @@
     '';
   };
 
+  # Nextcloud (via CasaOS)
+  services.caddy.virtualHosts."http://nextcloud.local" = {
+    extraConfig = ''
+      reverse_proxy 10.200.0.166:10081
+    '';
+  };
+
   # Auto-provision container
   # Creates Debian 12 container with CasaOS if not exists
   systemd.services.casaos-provision = {

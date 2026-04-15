@@ -114,6 +114,7 @@
       nextcloud-occ config:app:set whiteboard collabBackendUrl --value="https://cloud.brunomanoel.ninja/whiteboard/"
       nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path})"
       nextcloud-occ config:app:set richdocuments wopi_url --value="https://cloud.brunomanoel.ninja/"
+      nextcloud-occ config:app:set richdocuments wopi_allowlist --value="127.0.0.1"
     '';
     after = [ "nextcloud-setup.service" ];
     wantedBy = [ "multi-user.target" ];

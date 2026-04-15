@@ -146,10 +146,21 @@
   };
 
   # --- Nginx virtualhosts ---
-  # Public HTTPS + VPN access via alias
+  # Public HTTPS
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
-    serverAliases = [ "nextcloud.local" ];
+  };
+  # VPN access — proxy to the main Nextcloud vhost (no SSL)
+  services.nginx.virtualHosts."nextcloud.local" = {
+    locations."/" = {
+      proxyPass = "https://cloud.brunomanoel.ninja";
+      extraConfig = ''
+        proxy_set_header Host cloud.brunomanoel.ninja;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_ssl_verify off;
+      '';
+    };
   };
 }

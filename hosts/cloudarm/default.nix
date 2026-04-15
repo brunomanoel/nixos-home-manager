@@ -19,6 +19,7 @@
     ./casaos.nix
     ./thingsboard.nix
     ./nextcloud.nix
+    ./claude-proxy.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change
@@ -130,35 +131,6 @@
       Type = "simple";
       StateDirectory = "playwright-mcp";
       ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0 --allowed-hosts '*' --executable-path ${pkgs.chromium}/bin/chromium --no-sandbox";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-  };
-
-  # --- Claude Max Proxy ---
-  # Servidor HTTP local que executa claude -p e retorna JSON estruturado.
-  # Permite que o backend (Firebase Functions) use o plano Claude Max via proxy.
-  # Token em /root/claude-proxy/token.env (não versionado).
-  # server.js é versionado em hosts/cloudarm/claude-proxy-server.js e
-  # copiado declarativamente pelo NixOS para /root/claude-proxy/server.js.
-  environment.etc."claude-proxy/server.js" = {
-    source = ./claude-proxy-server.js;
-    mode = "0755";
-  };
-
-  systemd.services.claude-proxy = {
-    description = "Claude Max Proxy";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.claude-code-bin ];
-    environment = {
-      HOME = "/root";
-    };
-    serviceConfig = {
-      Type = "simple";
-      WorkingDirectory = "/root/claude-proxy";
-      ExecStart = "${pkgs.nodejs_22}/bin/node /etc/claude-proxy/server.js";
-      EnvironmentFile = "/root/claude-proxy/token.env";
       Restart = "on-failure";
       RestartSec = 5;
     };

@@ -8,6 +8,7 @@
     enable = true;
     environment = {
       GENERIC_TIMEZONE = "America/Sao_Paulo";
+      N8N_SECURE_COOKIE = "false"; # VPN only, no HTTPS
     };
   };
 

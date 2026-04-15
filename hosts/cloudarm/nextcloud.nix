@@ -193,6 +193,10 @@
     forceSSL = true;
     enableACME = true;
     # Collabora Online proxy (SSL termination)
+    # The collabora-online NixOS module doesn't configure Nginx automatically.
+    # These locations follow the official Collabora proxy docs:
+    # https://sdk.collaboraonline.com/docs/installation/Proxy_settings.html
+    # Community NixOS configs confirm this is the standard approach.
     locations."^~ /browser" = {
       proxyPass = "http://127.0.0.1:9980";
       extraConfig = "proxy_set_header Host $host;";

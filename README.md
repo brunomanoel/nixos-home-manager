@@ -6,27 +6,10 @@ NixOS + nix-darwin + Home Manager — personal configuration
 
 | Host        | Type                           | System             | Profile           |
 |-------------|--------------------------------|--------------------|-------------------|
-| `predabook` | Desktop                        | NixOS unstable     | `bruno@predabook` |
+| `predabook` | Laptop                         | NixOS unstable     | `bruno@predabook` |
 | `cloudarm`  | Server (Oracle ARM A1.Flex)    | NixOS 25.11 stable | `bruno@cloudarm`  |
 | `wsl`       | WSL2                           | NixOS unstable     | `bruno@wsl`       |
 | `mac`       | macOS (Apple Silicon)          | nix-darwin         | `bruno@mac`       |
-
-### Cloudarm — Oracle Cloud ARM (4 cores, 24GB RAM)
-
-Self-hosted services hub. Accessed via WireGuard (`10.100.0.1`).
-
-| Service | Access | Stack |
-|---------|--------|-------|
-| Pelican Panel | `http://pelican.local` / public IP port 80 | Nginx + PHP-FPM + SQLite |
-| Pelican Wings | port 8080 | Go binary, manages Docker containers |
-| CasaOS | `http://casaos.local` | Incus container (Debian 12), shared Docker |
-| Nextcloud | `https://cloud.brunomanoel.ninja` / `nextcloud.local` | Nginx + PostgreSQL + PHP-FPM |
-| ThingsBoard | `http://thingsboard.local` / `thingsboard.brunomanoel.ninja` | Docker container |
-| Collabora Online | internal (consumed by Nextcloud) | Native NixOS service |
-| Paperless-ngx | `http://paperless.local` | Native NixOS service |
-| Playwright MCP | `http://10.100.0.1:8002/mcp` | Headless Chromium |
-
-Uses `nixpkgs-stable` (25.11) with unstable overlay for Chromium (Playwright).
 
 ## Structure
 

@@ -113,6 +113,7 @@
     script = ''
       nextcloud-occ config:app:set whiteboard collabBackendUrl --value="https://cloud.brunomanoel.ninja/whiteboard/"
       nextcloud-occ config:app:set whiteboard jwt_secret_key --value="$(cat ${config.sops.secrets.whiteboard-jwt-secret.path})"
+      nextcloud-occ config:app:set richdocuments wopi_url --value="https://cloud.brunomanoel.ninja/"
     '';
     after = [ "nextcloud-setup.service" ];
     wantedBy = [ "multi-user.target" ];
@@ -191,6 +192,42 @@
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
+    # Collabora Online proxy (SSL termination)
+    locations."^~ /browser" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = "proxy_set_header Host $host;";
+    };
+    locations."^~ /hosting/discovery" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = "proxy_set_header Host $host;";
+    };
+    locations."^~ /hosting/capabilities" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = "proxy_set_header Host $host;";
+    };
+    locations."~ ^/cool/(.*)/ws$" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = ''
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_read_timeout 36000s;
+      '';
+    };
+    locations."^~ /cool/adminws" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = ''
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+        proxy_read_timeout 36000s;
+      '';
+    };
+    locations."~ ^/cool" = {
+      proxyPass = "http://127.0.0.1:9980";
+      extraConfig = "proxy_set_header Host $host;";
+    };
+    # Whiteboard websocket proxy
     locations."/whiteboard/" = {
       proxyPass = "http://localhost:3002/";
       extraConfig = ''

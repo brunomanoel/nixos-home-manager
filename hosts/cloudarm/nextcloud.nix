@@ -94,6 +94,7 @@
     enable = true;
     settings = {
       NEXTCLOUD_URL = "https://cloud.brunomanoel.ninja";
+      CHROME_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
     };
     secrets = [ config.sops.templates.whiteboard-jwt-env.path ];
   };

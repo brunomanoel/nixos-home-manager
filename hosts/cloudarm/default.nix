@@ -18,7 +18,7 @@
     ./pelican.nix
     ./casaos.nix
     ./thingsboard.nix
-    # ./nextcloud.nix  # nixificado, ativar quando migrar do CasaOS
+    ./nextcloud.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

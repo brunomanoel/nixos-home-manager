@@ -47,30 +47,6 @@
     locations."/".proxyPass = "http://10.200.0.166:80";
   };
 
-  # Nextcloud (via CasaOS container, until nixified nextcloud.nix is activated)
-  services.nginx.virtualHosts."nextcloud.local" = {
-    locations."/" = {
-      proxyPass = "http://10.200.0.166:10081";
-      extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      '';
-    };
-  };
-  services.nginx.virtualHosts."cloud.brunomanoel.ninja" = {
-    forceSSL = true;
-    enableACME = true;
-    locations."/" = {
-      proxyPass = "http://10.200.0.166:10081";
-      extraConfig = ''
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      '';
-    };
-  };
-
   # Auto-provision container
   # Creates Debian 12 container with CasaOS if not exists
   systemd.services.casaos-provision = {

@@ -9,7 +9,7 @@
   # --- Nextcloud ---
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud33;
+    package = pkgs.nextcloud32;
     hostName = "cloud.brunomanoel.ninja";
     https = true;
     maxUploadSize = "1G";
@@ -37,7 +37,6 @@
         tasks
 
         # Sync & performance
-        notify_push
         previewgenerator
         dav_push
 
@@ -81,7 +80,7 @@
   services.nextcloud.notify_push.enable = true;
 
   # --- Whiteboard Server ---
-  services.nextcloud-whiteboard.enable = true;
+  services.nextcloud-whiteboard-server.enable = true;
 
   # --- Collabora Online (document editing, alternative to OnlyOffice) ---
   services.collabora-online = {
@@ -147,16 +146,10 @@
   };
 
   # --- Nginx virtualhosts ---
-  # Public HTTPS (Nextcloud module already configures this vhost, just add TLS)
+  # Public HTTPS + VPN access via alias
   services.nginx.virtualHosts.${config.services.nextcloud.hostName} = {
     forceSSL = true;
     enableACME = true;
+    serverAliases = [ "nextcloud.local" ];
   };
-  # VPN access — same config as public vhost but without SSL
-  services.nginx.virtualHosts."nextcloud.local" =
-    config.services.nginx.virtualHosts.${config.services.nextcloud.hostName}
-    // {
-      forceSSL = false;
-      enableACME = false;
-    };
 }

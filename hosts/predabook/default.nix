@@ -28,6 +28,7 @@
     ../common/optional/gaming.nix
     ../common/optional/ai-services.nix
     ../common/optional/yubikey.nix
+    ../common/optional/btrfs-maintenance.nix
   ];
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion

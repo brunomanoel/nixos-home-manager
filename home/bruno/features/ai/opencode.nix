@@ -17,7 +17,7 @@ in
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
-    rules = memoryInstructions;
+    context = memoryInstructions;
     tui = {
       theme = "dracula";
     };

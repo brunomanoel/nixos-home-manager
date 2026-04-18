@@ -222,8 +222,12 @@
     # Nginx evaluates regex locations in declaration order, and Nix orders attrset keys
     # alphabetically. So we use a negative lookahead on the generic /cool so it doesn't
     # swallow /cool/*/ws and /cool/adminws (which need Upgrade headers).
+    #
+    # The WS URI embeds a WOPI URL with encoded slashes (%2F). Nginx decodes %2F by
+    # default in proxy_pass, which breaks coolwsd's URI parsing ("Invalid URI"). Using
+    # $request_uri preserves the original, undecoded path.
     locations."~ ^/cool/(.*)/ws$" = {
-      proxyPass = "http://127.0.0.1:9980";
+      proxyPass = "http://127.0.0.1:9980$request_uri";
       extraConfig = ''
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "Upgrade";

@@ -218,6 +218,10 @@
       proxyPass = "http://127.0.0.1:9980";
       extraConfig = "proxy_set_header Host $host;";
     };
+    # Order matters: the WebSocket location must match BEFORE the generic /cool fallback.
+    # Nginx evaluates regex locations in declaration order, and Nix orders attrset keys
+    # alphabetically. So we use a negative lookahead on the generic /cool so it doesn't
+    # swallow /cool/*/ws and /cool/adminws (which need Upgrade headers).
     locations."~ ^/cool/(.*)/ws$" = {
       proxyPass = "http://127.0.0.1:9980";
       extraConfig = ''
@@ -236,7 +240,8 @@
         proxy_read_timeout 36000s;
       '';
     };
-    locations."~ ^/cool" = {
+    # Generic /cool (downloads, image upload, etc) — exclude /cool/*/ws so WS upgrade wins.
+    locations."~ ^/cool(?!/.*/ws$)" = {
       proxyPass = "http://127.0.0.1:9980";
       extraConfig = "proxy_set_header Host $host;";
     };

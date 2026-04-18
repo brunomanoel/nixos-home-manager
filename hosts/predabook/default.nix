@@ -80,8 +80,12 @@
   networking.networkmanager.enable = true;
 
   # Cloudarm services via WireGuard
+  # casaos.local aponta direto pro container Incus (10.200.0.166) pra permitir
+  # acesso a apps CasaOS em qualquer porta (casaos.local:8100, etc). Requer rota
+  # pra subnet 10.200.0.0/24 via wg0 (allowedIPs abaixo).
   networking.extraHosts = ''
-    10.100.0.1 cloudarm casaos.local pelican.local thingsboard.local nextcloud.local paperless.local n8n.local uptime.local beszel.local
+    10.100.0.1 cloudarm pelican.local thingsboard.local nextcloud.local paperless.local n8n.local uptime.local beszel.local
+    10.200.0.166 casaos.local
   '';
 
   # --- Host key generation (no sshd, only for sops-nix age derivation) ---
@@ -99,7 +103,11 @@
       {
         # cloudarm
         publicKey = "pCMb0Db+WhhYqvDVqtAcat/ACxMt+FAWa1/Fmml6LlM=";
-        allowedIPs = [ "10.100.0.0/24" ];
+        # 10.200.0.0/24 = subnet Incus do cloudarm (containers CasaOS)
+        allowedIPs = [
+          "10.100.0.0/24"
+          "10.200.0.0/24"
+        ];
         endpoint = "137.131.233.96:51820";
         persistentKeepalive = 25;
       }

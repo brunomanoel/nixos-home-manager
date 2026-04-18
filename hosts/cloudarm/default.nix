@@ -49,6 +49,11 @@
   # All other services (Ollama, Qdrant, MCPs) are accessible only via WireGuard tunnel.
   networking.firewall.enable = false;
 
+  # IP forwarding — roteia pacotes entre wg0 (10.100.0.0/24) e incusbr0
+  # (10.200.0.0/24). Permite que peers WG acessem containers Incus (ex:
+  # predabook → casaos.local:8100 → container CasaOS).
+  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+
   # --- Secrets (sops-nix) ---
   sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
 

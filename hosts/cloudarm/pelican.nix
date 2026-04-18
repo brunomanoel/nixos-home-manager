@@ -62,6 +62,9 @@ let
   panelDir = "/var/www/pelican";
   pelicanNginxConfig = {
     root = "${panelDir}/public";
+    extraConfig = ''
+      index index.php;
+    '';
     locations."/" = {
       tryFiles = "$uri $uri/ /index.php?$query_string";
     };

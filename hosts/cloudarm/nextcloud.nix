@@ -6,6 +6,14 @@
 # - onlyoffice: better MSOffice compatibility than Collabora, but no official ARM image
 { config, pkgs, ... }:
 {
+  # Route cloud.brunomanoel.ninja to loopback so Collabora (coolwsd) hits Nginx
+  # directly without the hairpin through the public IP. This keeps the WOPI
+  # allowlist tight (127.0.0.1 only) — otherwise requests come from the public
+  # IP and get denied by richdocuments.wopi_allowlist.
+  networking.extraHosts = ''
+    127.0.0.1 cloud.brunomanoel.ninja
+  '';
+
   # --- Nextcloud ---
   services.nextcloud = {
     enable = true;

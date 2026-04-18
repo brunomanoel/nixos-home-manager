@@ -1,6 +1,6 @@
 # ThingsBoard CE — Oracle Cloud ARM (Ampere A1)
 # Access: http://thingsboard.local via WireGuard (Caddy proxy on port 80)
-# Direct: http://10.100.0.1:8090
+# Direct: http://10.100.0.1:18090
 #
 # First-time setup:
 #   cd ~/thingsboard && docker compose run --rm -e INSTALL_TB=true -e LOAD_DEMO=true thingsboard-ce
@@ -29,7 +29,7 @@ services:
     restart: always
     image: "thingsboard/tb-node:4.3.1"
     ports:
-      - "8090:8080"
+      - "18090:8080"
       - "1883:1883"
       - "7070:7070"
       - "5683-5688:5683-5688/udp"

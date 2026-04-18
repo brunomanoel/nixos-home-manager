@@ -21,6 +21,8 @@
     ./nextcloud.nix
     ./claude-proxy.nix
     ./n8n.nix
+    ./uptime-kuma.nix
+    ./beszel.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

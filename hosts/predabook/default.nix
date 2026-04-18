@@ -81,7 +81,7 @@
 
   # Cloudarm services via WireGuard
   networking.extraHosts = ''
-    10.100.0.1 cloudarm casaos.local pelican.local thingsboard.local nextcloud.local paperless.local n8n.local
+    10.100.0.1 cloudarm casaos.local pelican.local thingsboard.local nextcloud.local paperless.local n8n.local uptime.local beszel.local
   '';
 
   # --- Host key generation (no sshd, only for sops-nix age derivation) ---

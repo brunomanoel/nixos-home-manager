@@ -218,21 +218,25 @@
       proxyPass = "http://127.0.0.1:9980";
       extraConfig = "proxy_set_header Host $host;";
     };
-    # Order matters: the WebSocket location must match BEFORE the generic /cool fallback.
-    # Nginx evaluates regex locations in declaration order, and Nix orders attrset keys
-    # alphabetically. So we use a negative lookahead on the generic /cool so it doesn't
-    # swallow /cool/*/ws and /cool/adminws (which need Upgrade headers).
+    # All /cool/* paths go to Collabora. Using ^~ (prefix with priority) to prevent
+    # Nextcloud's regex locations (e.g. ~ \.php(?:$|/)) from matching first — the WS
+    # URI embeds a WOPI URL with %2Findex.php%2F, and nginx decodes %2F before regex
+    # evaluation, which made /cool/.../ws match the PHP handler.
     #
-    # The WS URI embeds a WOPI URL with encoded slashes (%2F). Nginx decodes %2F by
-    # default in proxy_pass, which breaks coolwsd's URI parsing ("Invalid URI"). Using
-    # $request_uri preserves the original, undecoded path.
-    locations."~ ^/cool/(.*)/ws$" = {
-      proxyPass = "http://127.0.0.1:9980$request_uri";
+    # Nested location ~ for WebSocket upgrade headers. $request_uri preserves the
+    # original path with encoded slashes intact (coolwsd rejects decoded slashes).
+    locations."^~ /cool/" = {
+      proxyPass = "http://127.0.0.1:9980";
       extraConfig = ''
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "Upgrade";
         proxy_set_header Host $host;
-        proxy_read_timeout 36000s;
+
+        location ~ ^/cool/(.*)/ws$ {
+          proxy_pass http://127.0.0.1:9980$request_uri;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "Upgrade";
+          proxy_set_header Host $host;
+          proxy_read_timeout 36000s;
+        }
       '';
     };
     locations."^~ /cool/adminws" = {
@@ -243,11 +247,6 @@
         proxy_set_header Host $host;
         proxy_read_timeout 36000s;
       '';
-    };
-    # Generic /cool (downloads, image upload, etc) — exclude /cool/*/ws so WS upgrade wins.
-    locations."~ ^/cool(?!/.*/ws$)" = {
-      proxyPass = "http://127.0.0.1:9980";
-      extraConfig = "proxy_set_header Host $host;";
     };
     # Whiteboard websocket proxy
     locations."/whiteboard/" = {

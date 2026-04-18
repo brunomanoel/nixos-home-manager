@@ -8,10 +8,15 @@
     port = 8090; # default; ThingsBoard moved to :18090 to free this port
   };
 
-  services.beszel.agent = {
-    enable = true;
-    # Listens on :45876 by default, hub connects via SSH
-  };
+  # Agent disabled until hub generates SSH key.
+  # Flow: access beszel.local → create admin → add "cloudarm" system →
+  # copy generated public key → add to sops (beszel-agent-key) →
+  # uncomment below with environmentFile pointing to sops secret.
+  #
+  # services.beszel.agent = {
+  #   enable = true;
+  #   environmentFile = config.sops.secrets.beszel-agent-key.path;
+  # };
 
   # Nginx — VPN only
   services.nginx.virtualHosts."beszel.local" = {

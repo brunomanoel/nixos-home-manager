@@ -20,11 +20,7 @@
       telescope-fzf-native-nvim
       telescope-ui-select-nvim
       nvim-web-devicons
-      # {
-      #   plugin = ;
-      #   config = ''
-      #   '';
-      # }
+
       lualine-nvim
       which-key-nvim
 
@@ -32,6 +28,11 @@
       dracula-nvim
       catppuccin-nvim
     ];
-    initLua = builtins.readFile (./init.lua);
+    extraLuaConfig = builtins.readFile ./init.lua;
+  };
+
+  xdg.configFile."nvim/lua" = {
+    source = ./lua;
+    recursive = true;
   };
 }

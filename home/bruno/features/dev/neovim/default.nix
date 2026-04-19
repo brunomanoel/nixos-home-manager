@@ -11,7 +11,61 @@
     withPython3 = false;
     plugins = with pkgs.vimPlugins; [
       vim-nix
-      nvim-treesitter.withAllGrammars
+
+      # Treesitter: curated grammars + textobjects queries
+      (nvim-treesitter.withPlugins (
+        p: with p; [
+          # Main languages
+          typescript
+          tsx
+          javascript
+          jsdoc
+          go
+          gomod
+          gosum
+          gowork
+          python
+          lua
+          luadoc
+          luap
+          nix
+          php
+          java
+          javadoc
+          c_sharp
+
+          # Ubiquitous formats
+          json
+          yaml
+          toml
+          markdown
+          markdown_inline
+          html
+          xml
+          css
+          bash
+          zsh
+          dockerfile
+          nginx
+          latex
+          csv
+
+          # Git / diff
+          gitignore
+          gitcommit
+          gitattributes
+          git_rebase
+          diff
+
+          # Utilities
+          regex
+          sql
+          vim
+          query
+        ]
+      ))
+      nvim-treesitter-textobjects
+
       nvim-tree-lua
 
       # Telescope
@@ -24,11 +78,17 @@
       lualine-nvim
       which-key-nvim
 
+      # mini.nvim — modular suite (ai, pairs, surround, bracketed, indentscope, splitjoin)
+      mini-nvim
+
+      # Notifications
+      nvim-notify
+
       # Themes
       dracula-nvim
       catppuccin-nvim
     ];
-    extraLuaConfig = builtins.readFile ./init.lua;
+    initLua = builtins.readFile ./init.lua;
   };
 
   xdg.configFile."nvim/lua" = {

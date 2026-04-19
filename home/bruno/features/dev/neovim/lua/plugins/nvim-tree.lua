@@ -1,4 +1,4 @@
--- Desabilita netrw (nvim-tree substitui)
+-- Disable netrw (replaced by nvim-tree)
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 

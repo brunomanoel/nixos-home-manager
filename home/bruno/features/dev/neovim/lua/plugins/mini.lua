@@ -43,6 +43,24 @@ require('mini.indentscope').setup({
     },
 })
 
+-- Disable mini.indentscope in special buffers (tree, telescope, help, etc.)
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = {
+        'help',
+        'NvimTree',
+        'TelescopePrompt',
+        'TelescopeResults',
+        'checkhealth',
+        'gitcommit',
+        'lazygit',
+        'man',
+        'notify',
+    },
+    callback = function()
+        vim.b.miniindentscope_disable = true
+    end,
+})
+
 -- mini.splitjoin: toggle between single-line and multiline blocks
 -- gS = split/join the block under the cursor
 require('mini.splitjoin').setup()

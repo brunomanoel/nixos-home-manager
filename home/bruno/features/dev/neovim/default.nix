@@ -84,6 +84,13 @@
       # Notifications
       nvim-notify
 
+      # Git
+      gitsigns-nvim
+      lazygit-nvim
+
+      # Code navigation / hints
+      todo-comments-nvim
+
       # Themes
       dracula-nvim
       catppuccin-nvim

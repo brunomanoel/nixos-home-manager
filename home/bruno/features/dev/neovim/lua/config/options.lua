@@ -5,6 +5,9 @@ vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.g.have_nerd_font = true
 
+-- Global statusline (single statusline at the bottom)
+vim.opt.laststatus = 3
+
 -- Enable mouse (useful for resizing splits)
 vim.opt.mouse = 'a'
 
@@ -30,3 +33,6 @@ vim.opt.scrolloff = 10
 -- Case-insensitive unless \C or uppercase in pattern
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+-- Sync with system clipboard (`yy` copies to system, `p` pastes from system)
+vim.opt.clipboard = 'unnamedplus'

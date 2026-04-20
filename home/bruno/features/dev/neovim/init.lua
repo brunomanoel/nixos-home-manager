@@ -12,6 +12,9 @@ require('plugins.nvim-tree')
 require('plugins.lualine')
 require('plugins.mini')
 require('plugins.notify')
+require('plugins.gitsigns')
+require('plugins.lazygit')
+require('plugins.todo-comments')
 
 -- Theme
 vim.cmd.colorscheme("dracula")

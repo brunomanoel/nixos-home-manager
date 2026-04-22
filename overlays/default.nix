@@ -16,7 +16,6 @@
     gsd = final.callPackage ../pkgs/gsd {
       gsd-src = inputs.gsd;
     };
-    opencode-anthropic-auth = final.callPackage ../pkgs/opencode-anthropic-auth { };
     local-rag = final.callPackage ../pkgs/local-rag { };
   };
 }

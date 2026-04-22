@@ -12,6 +12,7 @@ let
   blockGitCommitsPlugin = pkgs.writeText "block-git-commits.ts" (
     builtins.readFile ./block-git-commits.ts
   );
+
 in
 {
   programs.opencode = {
@@ -24,7 +25,6 @@ in
     inherit themes;
     settings = {
       plugin = [
-        # "file://${pkgs.opencode-anthropic-auth}"
         "@ex-machina/opencode-anthropic-auth@1.7.5"
         "file://${blockGitCommitsPlugin}"
         "@mohak34/opencode-notifier"

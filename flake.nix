@@ -32,12 +32,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
-    # OpenCode Anthropic OAuth plugin (community workaround)
-    opencode-anthropic-auth = {
-      url = "github:ex-machina-co/opencode-anthropic-auth/v1.7.0";
-      flake = false;
-    };
-
     # GSD (Get Shit Done) for Claude Code — npm release tarball, pinned by version.
     # The npm tarball is used (instead of the github tag) because it ships with
     # `hooks/dist/` pre-built via `prepublishOnly` — the github tag does not.

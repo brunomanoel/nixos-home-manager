@@ -6,6 +6,11 @@
     prismlauncher
     (lutris.override { extraLibraries = p: [ p.gamemode ]; })
     hydralauncher
+
+    # Gamepad tooling
+    jstest-gtk # GUI tester (axes, buttons, calibration)
+    sdl-jstest # SDL2-based CLI tester, matches what games actually see
+    gamepad-tool # edit/generate SDL2 controller mappings
   ];
 
   programs.mangohud = {

@@ -14,6 +14,7 @@ in
     ./hyprlock.nix
     ./hypridle.nix
     ./hyprpaper.nix
+    ./wljoywake.nix
   ];
 
   home.packages = with pkgs; [

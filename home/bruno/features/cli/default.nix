@@ -15,6 +15,8 @@
     with pkgs;
     [
       unzip
+      _7zz
+      unrar
       tldr
       pfetch
       ncdu

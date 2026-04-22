@@ -36,3 +36,6 @@ vim.opt.smartcase = true
 
 -- Sync with system clipboard (`yy` copies to system, `p` pastes from system)
 vim.opt.clipboard = 'unnamedplus'
+
+-- Faster CursorHold (triggers LSP document highlight, etc.). Default 4000ms is too slow.
+vim.opt.updatetime = 250

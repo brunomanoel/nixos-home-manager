@@ -7,6 +7,13 @@
       local act = wezterm.action
       local config = wezterm.config_builder()
 
+      -- Detect whether the active process in the pane is nvim, so we can
+      -- forward Ctrl+hjkl to it (unified navigation via smart-splits.nvim).
+      local function is_nvim(pane)
+        local proc = pane:get_foreground_process_name() or ""
+        return proc:match("n?vim$") ~= nil
+      end
+
       -- Appearance
       config.font = wezterm.font('FiraCode Nerd Font')
       config.font_size = 16.0
@@ -37,11 +44,37 @@
         { key = '|', mods = 'LEADER|SHIFT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
         { key = '-', mods = 'LEADER',       action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
 
-        -- Pane navigation with Ctrl+h/j/k/l (like vim-tmux-navigator)
-        { key = 'h', mods = 'CTRL', action = act.ActivatePaneDirection 'Left' },
-        { key = 'j', mods = 'CTRL', action = act.ActivatePaneDirection 'Down' },
-        { key = 'k', mods = 'CTRL', action = act.ActivatePaneDirection 'Up' },
-        { key = 'l', mods = 'CTRL', action = act.ActivatePaneDirection 'Right' },
+      -- Pane navigation with Ctrl+h/j/k/l via smart-splits integration
+      -- (forwards the key to nvim when it's the active process, so splits
+      -- and panes share the same nav key)
+      { key = 'h', mods = 'CTRL', action = wezterm.action_callback(function(win, pane)
+          if is_nvim(pane) then
+            win:perform_action(act.SendKey { key = 'h', mods = 'CTRL' }, pane)
+          else
+            win:perform_action(act.ActivatePaneDirection 'Left', pane)
+          end
+        end) },
+      { key = 'j', mods = 'CTRL', action = wezterm.action_callback(function(win, pane)
+          if is_nvim(pane) then
+            win:perform_action(act.SendKey { key = 'j', mods = 'CTRL' }, pane)
+          else
+            win:perform_action(act.ActivatePaneDirection 'Down', pane)
+          end
+        end) },
+      { key = 'k', mods = 'CTRL', action = wezterm.action_callback(function(win, pane)
+          if is_nvim(pane) then
+            win:perform_action(act.SendKey { key = 'k', mods = 'CTRL' }, pane)
+          else
+            win:perform_action(act.ActivatePaneDirection 'Up', pane)
+          end
+        end) },
+      { key = 'l', mods = 'CTRL', action = wezterm.action_callback(function(win, pane)
+          if is_nvim(pane) then
+            win:perform_action(act.SendKey { key = 'l', mods = 'CTRL' }, pane)
+          else
+            win:perform_action(act.ActivatePaneDirection 'Right', pane)
+          end
+        end) },
 
         -- Pane navigation with Ctrl+Alt+Arrow keys
         { key = 'LeftArrow',  mods = 'CTRL|ALT', action = act.ActivatePaneDirection 'Left' },

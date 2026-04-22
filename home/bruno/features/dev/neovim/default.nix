@@ -81,6 +81,18 @@
       # mini.nvim — modular suite (ai, pairs, surround, bracketed, indentscope, splitjoin)
       mini-nvim
 
+      # Unified split/pane navigation (nvim + wezterm)
+      smart-splits-nvim
+
+      # Autocompletion
+      blink-cmp
+
+      # Formatter
+      conform-nvim
+
+      # Inline diagnostics (Error Lens-like)
+      tiny-inline-diagnostic-nvim
+
       # Notifications
       nvim-notify
 
@@ -96,6 +108,29 @@
       catppuccin-nvim
     ];
     initLua = builtins.readFile ./init.lua;
+
+    extraPackages = with pkgs; [
+      # LSP servers
+      vtsls
+      gopls
+      basedpyright
+      lua-language-server
+      nixd
+      bash-language-server
+      marksman
+      docker-language-server
+      emmet-language-server
+      vscode-langservers-extracted
+      biome
+
+      # Formatters (used by conform.nvim)
+      prettierd
+      stylua
+      gofumpt
+      ruff
+      nixfmt
+      shfmt
+    ];
   };
 
   xdg.configFile."nvim/lua" = {

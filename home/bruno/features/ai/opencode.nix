@@ -24,7 +24,8 @@ in
     inherit themes;
     settings = {
       plugin = [
-        "file://${pkgs.opencode-anthropic-auth}"
+        # "file://${pkgs.opencode-anthropic-auth}"
+        "@ex-machina/opencode-anthropic-auth@1.7.5"
         "file://${blockGitCommitsPlugin}"
         "@mohak34/opencode-notifier"
       ];

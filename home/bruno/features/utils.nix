@@ -9,6 +9,7 @@
     qalculate-gtk
     krita # painting app
     stremio-linux-shell
+    peazip # archive manager GUI (testing for multi-part RAR)
   ];
 
   programs.chromium = {

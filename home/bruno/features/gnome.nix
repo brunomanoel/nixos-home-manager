@@ -12,6 +12,7 @@
 
   home.packages = with pkgs; [
     gnome-tweaks
+    file-roller # Archive manager (integra com Nautilus, usa _7zz como backend)
     # gnomeExtensions.tray-icons-reloaded
     gnomeExtensions.vitals
     gnomeExtensions.sound-output-device-chooser

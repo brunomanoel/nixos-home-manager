@@ -192,6 +192,8 @@
     nvtopPackages.nvidia # GPU monitoring TUI
     gpustat # GPU status one-liner
     libnotify # notify-send para opencode-notifier
+    dmidecode # SMBIOS/DIMM info
+    hardinfo2 # hardware info + benchmarks GUI
   ];
 
   programs.kdeconnect.enable = true;

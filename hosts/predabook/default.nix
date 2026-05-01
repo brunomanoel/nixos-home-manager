@@ -57,18 +57,56 @@
     "resume=UUID=8e09cba4-9bd2-4a99-b46a-6fbcb480a742" # hibernation target: /dev/sda1
   ];
 
+  # VM tuning calibrated for 64 GiB RAM. Previous values targeted 16 GiB and
+  # scaled poorly when RAM grew (percentual settings became absolute giants).
   boot.kernel.sysctl = {
-    "vm.swappiness" = 0; # não inicia swap enquanto houver page cache liberável
-    "vm.vfs_cache_pressure" = 150; # prefere descartar cache a swapear
-    "vm.watermark_scale_factor" = 500; # começa a reclamar com ~800MB de antecedência
-    "vm.dirty_ratio" = 10;
-    "vm.dirty_background_ratio" = 5;
+    # 0 means "prefer OOM kill over swap" since kernel 5.8; 1 keeps the original
+    # intent ("swap only as last resort, but before OOM").
+    "vm.swappiness" = 1;
+    # With 64 GiB free metadata cache is cheap; favor keeping inode/dentry cache
+    # over page cache to speed up filesystem-heavy operations (git, find, builds).
+    "vm.vfs_cache_pressure" = 50;
+    # 125 = 1.25% of RAM ≈ 800 MiB of headroom before kswapd kicks in,
+    # matching the original ~800 MiB intent on 16 GiB.
+    "vm.watermark_scale_factor" = 125;
+    # Use absolute byte limits instead of percentages: with 64 GiB RAM, the
+    # default 10%/5% would allow up to ~6 GiB of dirty pages, causing long
+    # writeback stalls on SATA SSD and large data loss on crash. 1 GiB / 256 MiB
+    # gives predictable ~2s stalls and bounded crash exposure.
+    "vm.dirty_bytes" = 1073741824; # 1 GiB
+    "vm.dirty_background_bytes" = 268435456; # 256 MiB
   };
 
   zramSwap = {
     enable = true;
-    memoryPercent = 50; # ~8 GiB comprimido — absorve picos sem encher e derramar pro SSD
+    # 10% of RAM ≈ 6 GiB. With 64 GiB physical RAM and ~30 GiB typical usage,
+    # zram is mostly idle; this keeps a modest compressed buffer for spikes
+    # without wasting half of RAM on a swap reserve we rarely need.
+    memoryPercent = 10;
   };
+
+  # Mount /tmp as tmpfs (RAM-backed). Speeds up build/temp-heavy workloads and
+  # avoids wear on /. NOTE: tmpfs contents live in RAM and are therefore part
+  # of the hibernation image; large files in /tmp increase the hibernation
+  # image size and may push it over the swap partition limit.
+  boot.tmp.useTmpfs = true;
+  boot.tmp.cleanOnBoot = true;
+
+  # Nix build parallelism tuned for predabook (12 threads, 64 GiB RAM).
+  # Profile: many small builds with occasional large ones. 6 jobs × 2 cores
+  # = 12 threads (no oversubscription per upstream tuning docs), favoring
+  # parallelism between derivations over per-build core count.
+  nix.settings = {
+    max-jobs = 6;
+    cores = 2;
+  };
+
+  # Intel Thermal Daemon. Reads OEM DPTF tables (Lenovo populates rich thermal
+  # data for this gaming laptop) and acts preventively on temperature trends
+  # via P-state and RAPL, reducing throttling spikes during sustained loads
+  # (long builds, gaming). No conflict with power-profiles-daemon or intel_pstate.
+  services.thermald.enable = true;
+
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [
     v4l2loopback # OBS Studio virtual camera requirement https://nixos.wiki/wiki/OBS_Studio

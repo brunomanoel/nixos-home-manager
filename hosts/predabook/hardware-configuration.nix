@@ -53,7 +53,10 @@
   swapDevices = [
     {
       device = "/dev/disk/by-uuid/8e09cba4-9bd2-4a99-b46a-6fbcb480a742";
-      priority = 0; # baixa prioridade — zram (100) absorve primeiro, SSD só como fallback e hibernação
+      # Low priority: zram (kernel default priority 5) is preferred for general
+      # swap; this SSD partition exists primarily as a hibernation target and
+      # as fallback when zram fills up.
+      priority = 0;
     }
   ];
 

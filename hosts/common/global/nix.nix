@@ -23,8 +23,8 @@ in
         "flakes"
         "ca-derivations"
       ];
-      max-jobs = 4;
-      cores = 3;
+      # max-jobs / cores are configured per-host (see hosts/<host>/default.nix)
+      # since optimal values depend on CPU thread count and RAM.
       #   warn-dirty = false;
       #   flake-registry = ""; # Disable global flake registry
     };

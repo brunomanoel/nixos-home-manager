@@ -25,9 +25,9 @@ in
     inherit themes;
     settings = {
       plugin = [
-        "@ex-machina/opencode-anthropic-auth@1.7.5"
+        "@ex-machina/opencode-anthropic-auth@1.8.0"
         "file://${blockGitCommitsPlugin}"
-        "@mohak34/opencode-notifier"
+        "@mohak34/opencode-notifier@0.2.4"
       ];
       permission = {
         read."~/.config/opencode/get-shit-done/*" = "allow";

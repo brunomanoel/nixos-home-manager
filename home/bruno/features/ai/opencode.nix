@@ -8,15 +8,31 @@ let
   mcpReferenceDoc = builtins.readFile ./mcp-reference.md;
   themes = import ./opencode-themes.nix;
 
-  # Plugin que bloqueia git commit sem --author="Claude <noreply@anthropic.com>"
+  # Plugin that blocks git commits without --author="Claude <noreply@anthropic.com>"
   blockGitCommitsPlugin = pkgs.writeText "block-git-commits.ts" (
     builtins.readFile ./block-git-commits.ts
   );
+
+  # Opencode plugins (oh-my-openagent, msgpackr-extract from auth/notifier
+  # plugins) ship native .node bindings linked against system libstdc++.
+  # The opencode binary itself is nix-native, so dlopen() of these bindings
+  # bypasses nix-ld and hits the bare LD_LIBRARY_PATH. Forward the
+  # nix-ld-managed lib path so plugin bindings resolve.
+  opencodeWrapped = pkgs.symlinkJoin {
+    name = "opencode-nix-ld-wrapped";
+    paths = [ pkgs.opencode ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/opencode \
+        --suffix LD_LIBRARY_PATH : "/run/current-system/sw/share/nix-ld/lib"
+    '';
+  };
 
 in
 {
   programs.opencode = {
     enable = true;
+    package = opencodeWrapped;
     enableMcpIntegration = true;
     context = memoryInstructions;
     tui = {

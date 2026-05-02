@@ -1,6 +1,7 @@
 result
 result-*
-.claude/settings.local.json
+.claude/
+.vscode/
 
 .direnv/
 .envrc

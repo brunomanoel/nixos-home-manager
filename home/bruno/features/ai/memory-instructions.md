@@ -1,91 +1,137 @@
-## Memory — regras obrigatórias
+## Tooling — when to reach for what
 
-Há um índice vetorial do codebase e das sessões anteriores (via MCP memory/local-rag),
-alimentado por Qdrant + Ollama locais. **Sempre consulte o memory antes de qualquer outra fonte.**
+This file is the routing guide for MCP tools available across all sessions.
+It is not exhaustive documentation; it tells you which tool to pick first
+for a given intent.
 
-### Leitura — ordem obrigatória
+---
 
-1. **memory_recall** — sempre a primeira chamada de qualquer sessão. Busca decisões,
-   padrões e contexto de sessões anteriores. Não pule mesmo que a tarefa pareça simples.
-2. **memory_search_code** — para localizar funções, tipos, componentes ou qualquer
-   símbolo no codebase. Usar antes de abrir qualquer arquivo.
-3. **memory_get_file_context** — para ler ao redor de um símbolo específico já localizado.
-4. **memory_get_dependencies** — antes de refatorar, para entender o grafo de imports.
-5. **memory_find_usages** — para encontrar todos os callers de uma função ou tipo.
-6. **memory_project_overview** — para orientação inicial num codebase desconhecido.
+### Memory MCP (local-rag) + Serena — division of labor
 
-**Só leia arquivos markdown (CLAUDE.md, CONTEXT.md, planos) se o memory não trouxer
-contexto suficiente.** Leitura de arquivo é fallback, não ponto de partida.
+Both indexes the codebase, but each is good at a different thing:
 
-### Anti-padrões — nunca faça isso
+- **Memory MCP (local-rag)** indexes by *meaning* (semantic vectors via Qdrant
+  + Ollama). It also persists cross-session memory and the import graph.
+- **Serena** indexes by *symbol structure* (LSP per language). It is the
+  surgical reader/editor.
 
-Estas ações são **erros**, não opções:
+Routing table:
 
-- Abrir um arquivo com `Read` para localizar uma função → use `memory_search_code` primeiro
-- Usar `Bash grep` ou `mcp_grep` para encontrar onde um símbolo é usado → use `memory_find_usages`
-- Usar `Task` agent para explorar o codebase → use `memory_search_code` + `memory_get_file_context`
-- Iniciar uma sessão sem chamar `memory_recall` → sempre a primeira chamada, sem exceção
-- Ler um arquivo inteiro para entender o contexto ao redor de um símbolo → use `memory_get_file_context`
-- Acumular descobertas para registrar no final da sessão → registre com `memory_remember` imediatamente
+| Intent | Tool |
+|---|---|
+| "Find code about X" (concept, you don't know the name) | `memory_search_code` |
+| "Find symbol named X" | `serena.find_symbol` |
+| Read a symbol's body | `serena.find_symbol(include_body=true)` |
+| Overview of symbols in an unknown file | `serena.get_symbols_overview` |
+| Find callers/references by name | `serena.find_referencing_symbols` |
+| Find usages of a symbol you found via search_code | `memory_find_usages(uuid)` |
+| Read a symbol by UUID without file I/O | `memory_get_symbol(uuid)` |
+| Import graph (who imports this, what does it import) | `memory_get_dependencies` |
+| Project orientation (tree, entry points, top imports) | `memory_project_overview` |
+| Edit / replace a symbol body | `serena.replace_symbol_body` |
+| Insert before/after a symbol | `serena.insert_before_symbol` / `insert_after_symbol` |
+| Rename a symbol across the codebase | `serena.rename_symbol` |
+| Regex over non-code files (yaml, md, configs) | `serena.search_for_pattern` |
+| Persistent memory across sessions (decisions, bugs, patterns) | `memory_recall` / `memory_remember` |
 
-O índice vetorial existe, está populado e é mais rápido que qualquer busca em arquivo.
-Ignorá-lo desperdiça tokens e tempo sem nenhum benefício.
+Rule of thumb: **start with Memory MCP when you're discovering. Switch to
+Serena when you know the symbol and want to read or edit it.**
 
-### Escrita — quando registrar
+---
 
-Após qualquer descoberta não-óbvia, chame `memory_remember` imediatamente:
-- Decisões de arquitetura ou padrões adotados
-- Causa raiz de bugs encontrados e como foram resolvidos
-- Comportamentos não-documentados de libs ou do ambiente
-- Qualquer coisa que você teria que redescobrir se a sessão reiniciasse
+### Recommended workflow for non-trivial tasks
 
-Não acumule para registrar no final — registre assim que descobrir.
+`recall → search_code → think → act → remember`
 
-### Limite de tamanho — regra crítica, não negociável
+1. `memory_recall(query)` — past decisions, incidents, patterns.
+2. `memory_search_code(query)` — find relevant code by meaning.
+   Use `rerank=true` for higher precision when initial results look noisy.
+3. Read precisely with `serena.find_symbol(include_body=true)`.
+4. Check blast radius with `memory_get_dependencies(...,
+   direction="imported_by")` and/or `serena.find_referencing_symbols`.
+5. Edit with Serena's symbolic editing tools.
+6. `memory_remember(...)` for anything non-obvious you discovered.
 
-O `memory_remember` **trunca silenciosamente** conteúdo longo sem aviso.
-Dados perdidos não são recuperáveis. Para garantir integridade:
+Trivial tasks (e.g. "rename this file", "what time is it", a one-line tweak)
+do not need the full workflow.
 
-1. **Máximo 280 caracteres por memória.** Uma decisão = uma memória.
-2. **Após cada `memory_remember`, faça `memory_recall` imediato** com termo do
-   final do conteúdo salvo. Se não encontrar, deletar e resalvar menor.
-3. **Nunca salvar um plano inteiro numa memória.** Quebrar em itens atômicos.
-4. **Se o usuário pedir para salvar algo grande**, avisar que será quebrado
-   em partes e salvar cada parte com tags consistentes para reagrupar.
+---
 
-Violação desta regra causa perda permanente de contexto entre sessões.
+### Memory writes — when to call `remember`
 
-## MCPs — use automaticamente, sem precisar ser solicitado
+Call `memory_remember` whenever you discover something a future session would
+have to rediscover from scratch:
 
-**context / context7** — sempre que precisar de documentação de biblioteca ou framework, siga esta ordem sem pular etapas:
-1. `context` (neuledge) — buscar no registry local
-2. Se não encontrado: usar a tool `install` do MCP context para baixar do registry da comunidade (ex: `npm/next`)
-3. Se não disponível no registry: usar a tool `add` do MCP context com a URL do repositório GitHub da biblioteca (ex: `https://github.com/vercel/next.js`) para construir o pacote localmente
-4. Último recurso: `context7` (upstash)
-Não pergunte ao usuário — siga a ordem automaticamente.
+- Architecture decisions and the reasoning behind them.
+- Root causes of bugs and how they were fixed.
+- Undocumented behavior of libraries, services, or the environment.
+- Conventions you inferred from the codebase that aren't written anywhere.
 
-**fetch** — sempre que precisar acessar uma URL externa (doc, repo, issue), use o MCP fetch.
+Pick `memory_type` honestly: `episodic` for events/incidents (decays),
+`semantic` for facts/architecture (long-lived), `procedural` for
+patterns/how-to (long-lived).
 
-**nixos** — sempre que a pergunta envolver NixOS, Home Manager, nixpkgs ou flakes, use o MCP nixos para buscar opções e pacotes atualizados.
+---
 
-**sequential-thinking** — use automaticamente em tarefas complexas de planejamento ou debugging que exigem raciocínio em múltiplos passos.
+### Mind Palace — `~/mind-palace`
 
-**serena** — ferramentas semânticas de código. Preferir sobre Read/Edit direto:
-- `get_symbols_overview` antes de explorar arquivo novo
-- `find_symbol(name_path, include_body=true)` para ler símbolo específico
-- `find_referencing_symbols` para encontrar callers antes de refatorar
-- `replace_symbol_body` para substituir implementação completa
-- `insert_after_symbol` / `insert_before_symbol` para adicionar código
-- `find_file` / `list_dir` para navegação
-- `search_for_pattern` para regex em arquivos não-código
-- `think_about_*` para raciocinar antes de agir
+Personal Obsidian vault with notes that span sessions and projects:
 
-**filesystem** — operações de arquivo quando as ferramentas nativas não bastam. Root: `/home/bruno/workspaces`.
+- `Daily Notes/` — date-stamped logs, often with client conversations.
+- `Projects/` — per-project context, decisions, follow-ups.
+- `Knowledge/` — durable notes on tools, concepts, references.
+- `Infra/` — homelab, servers, networking notes.
+- `Security/` — security posture, credentials hygiene, incident notes.
+- `TODO/` — actionable items not yet promoted to a project.
 
-**git** — operações git diretas: `git_status`, `git_diff_unstaged`, `git_diff_staged`, `git_add`, `git_commit`, `git_log`, `git_show`, `git_branch`, `git_checkout`, `git_create_branch`, `git_reset`.
+It is plain markdown. Use native `Read` / `Glob` / `Grep` directly — no
+special tool. Read it when:
 
-**github** — GitHub API. Chamar `get_me` primeiro para verificar permissões. Usar `search_*` para queries filtradas, `list_*` para listagem simples.
+- The user references a client, incident, or past conversation.
+- You need context about Bruno's preferences/setup that wouldn't be in a repo.
+- You're starting work that touches infra or security topics.
 
-**playwright** — automação de browser (servidor remoto). Usar para testes E2E e inspeção visual: `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, `browser_fill_form`, `browser_click`, `browser_evaluate`, `browser_network_requests`, `browser_console_messages`.
+Do not write to `~/mind-palace` without explicit permission — it is curated
+manually.
 
-**chrome-devtools** — Chrome headless local. Usar para testes visuais, performance e auditoria: `navigate_page`, `take_screenshot`, `evaluate_script`, `lighthouse_audit`, `performance_start_trace` / `stop_trace` / `analyze_insight`.
+---
+
+### Other MCPs — when to use them automatically
+
+**context / context7** — library/framework documentation. Order:
+1. `context.get_docs` — local registry.
+2. If missing: `context.search_packages` then `context.download_package`,
+   then retry `get_docs`.
+3. If still missing: `context7` (Upstash hosted).
+Don't ask the user — follow the order automatically.
+
+**fetch** — primary tool for fetching a URL (docs, repos, issues).
+
+**playwright** — fallback to `fetch` whenever the page needs JavaScript
+to render (SPAs, client-rendered docs, anything where `fetch` returns a
+shell HTML). Also the right tool for any UI inspection / screenshot task.
+
+**chrome-devtools** — Chrome headless. Use proactively when the task
+involves:
+- Frontend errors or console output (`list_console_messages`).
+- Network requests from a real page (`list_network_requests`).
+- Performance auditing (`performance_start_trace`,
+  `performance_analyze_insight`).
+- Lighthouse audits (`lighthouse_audit`).
+- Visual checks (`take_screenshot`, `take_snapshot`).
+
+**nixos** — any question about NixOS, Home Manager, nixpkgs, flakes:
+search packages/options through this MCP rather than guessing.
+
+**sequential-thinking** — reach for it on complex planning or debugging
+where you need to externalize multi-step reasoning.
+
+**git** — direct git operations (`git_status`, `git_diff_*`, `git_log`,
+`git_show`, etc.). Faster and more structured than shelling out to
+`git` via Bash for read-only inspection.
+
+**github** — GitHub API. Call `get_me` first when permissions are unclear.
+Prefer `search_*` for filtered queries, `list_*` for plain listing.
+
+**filesystem** — file ops outside repo conventions. Allowed root:
+`/home/bruno/workspaces`.

@@ -10,11 +10,17 @@
 #   16:02 → window active until 21:02
 #   21:03 → window active until 02:03
 #
-# Reuses the claude-proxy auth (HOME=/var/lib/claude-proxy/home) — no need
-# to log in again. `claude -p` is the non-interactive (print) mode, ideal
-# for cron-like execution.
+# Uses an isolated HOME (/var/lib/claude-keepalive/home) with its own OAuth
+# credentials so it does NOT share state with claude-proxy. This avoids
+# either service stepping on the other's `.credentials.json` during token
+# refresh. First-time setup: log in once interactively in this HOME (see
+# README in the file footer).
+#
+# `claude -p` is the non-interactive (print) mode, ideal for cron-like
+# execution.
 { config, pkgs, ... }:
 let
+  homeDir = "/var/lib/claude-keepalive/home";
   schedule = [
     "*-*-* 06:00:00"
     "*-*-* 11:01:00"
@@ -23,17 +29,23 @@ let
   ];
 in
 {
+  # Persistent state for this keepalive's own Claude CLI HOME.
+  systemd.tmpfiles.rules = [
+    "d /var/lib/claude-keepalive 0700 root root -"
+    "d ${homeDir} 0700 root root -"
+  ];
+
   systemd.services.claude-keepalive = {
     description = "Claude Max session keepalive ping";
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     path = [ pkgs.claude-code-bin ];
     environment = {
-      HOME = "/var/lib/claude-proxy/home";
+      HOME = homeDir;
     };
     serviceConfig = {
       Type = "oneshot";
-      WorkingDirectory = "/var/lib/claude-proxy";
+      WorkingDirectory = "/var/lib/claude-keepalive";
       # `hi` is the smallest useful message. --output-format json makes it
       # easy to parse auth/quota failures from logs (`journalctl -u
       # claude-keepalive`). Short timeout: if claude hangs, don't burn the
@@ -60,4 +72,14 @@ in
       Unit = "claude-keepalive.service";
     };
   };
+
+  # First-time setup (run once after `nixos-rebuild switch`):
+  #
+  #   sudo HOME=/var/lib/claude-keepalive/home \
+  #     /run/current-system/sw/bin/claude
+  #   # inside the REPL:
+  #   /login        # follow the OAuth URL
+  #   /exit
+  #   sudo systemctl start claude-keepalive.service
+  #   journalctl -u claude-keepalive -n 20 --no-pager
 }

@@ -20,6 +20,7 @@
     ./thingsboard.nix
     ./nextcloud.nix
     ./claude-proxy.nix
+    ./claude-keepalive.nix
     ./n8n.nix
     ./uptime-kuma.nix
     ./beszel.nix

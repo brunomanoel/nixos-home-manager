@@ -1,5 +1,5 @@
 # Beszel — lightweight host monitoring (CPU, RAM, disk, docker)
-# VPN only (beszel.local). Hub + local agent on cloudarm.
+# VPN only (beszel.lab). Hub + local agent on cloudarm.
 # Remote agents (predabook, wsl) added later via their own host configs.
 {
   services.beszel.hub = {
@@ -15,7 +15,7 @@
   };
 
   # Nginx — VPN only
-  services.nginx.virtualHosts."beszel.local" = {
+  services.nginx.virtualHosts."beszel.lab" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:8090";
       proxyWebsockets = true;

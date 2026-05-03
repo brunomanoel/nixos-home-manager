@@ -2,7 +2,7 @@
 # Runs as Docker container on localhost:18090
 {
   # VPN access
-  services.nginx.virtualHosts."thingsboard.local" = {
+  services.nginx.virtualHosts."thingsboard.lab" = {
     locations."/".proxyPass = "http://localhost:18090";
   };
   # Public HTTPS

@@ -15,6 +15,8 @@
     ../common/global
     ../common/optional/openssh.nix
     ../common/users/bruno
+    ./postgresql.nix # shared infra — used by nextcloud, paperclip
+    ./dnsmasq.nix # *.lab DNS resolver, wg0-only
     ./pelican.nix
     ./casaos.nix
     ./thingsboard.nix
@@ -24,6 +26,7 @@
     ./n8n.nix
     ./uptime-kuma.nix
     ./beszel.nix
+    ./paperclip.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

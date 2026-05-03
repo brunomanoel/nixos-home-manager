@@ -32,7 +32,7 @@
     settings = {
       trusted_domains = [
         "cloud.brunomanoel.ninja"
-        "nextcloud.local"
+        "nextcloud.lab"
       ];
       overwriteprotocol = "https";
       trusted_proxies = [
@@ -140,7 +140,7 @@
     aliasGroups = [
       {
         host = "https://cloud.brunomanoel.ninja:443";
-        aliases = [ "https://nextcloud\\.local" ];
+        aliases = [ "https://nextcloud\\.lab" ];
       }
     ];
     settings = {
@@ -163,7 +163,7 @@
         ".DS_STORE/*"
         "desktop.ini"
       ];
-      PAPERLESS_URL = "http://paperless.local";
+      PAPERLESS_URL = "http://paperless.lab";
     };
   };
   sops.secrets.paperless-admin-pass = {
@@ -172,7 +172,7 @@
     group = "paperless";
   };
   # Nginx reverse proxy for Paperless (VPN only)
-  services.nginx.virtualHosts."paperless.local" = {
+  services.nginx.virtualHosts."paperless.lab" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:28981";
       extraConfig = ''
@@ -190,11 +190,8 @@
     group = "nextcloud";
   };
 
-  # --- PostgreSQL (managed by Nextcloud module via createLocally) ---
-  services.postgresql = {
-    enable = true;
-    package = pkgs.postgresql_16;
-  };
+  # PostgreSQL: shared instance — see ./postgresql.nix
+  # Nextcloud DB/user provisioned automatically via services.nextcloud.database.createLocally
 
   # --- Nginx virtualhosts ---
   # Public HTTPS
@@ -261,7 +258,7 @@
     };
   };
   # VPN access — proxy to the main Nextcloud vhost (no SSL)
-  services.nginx.virtualHosts."nextcloud.local" = {
+  services.nginx.virtualHosts."nextcloud.lab" = {
     locations."/" = {
       proxyPass = "https://cloud.brunomanoel.ninja";
       extraConfig = ''

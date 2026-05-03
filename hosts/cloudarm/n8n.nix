@@ -13,7 +13,7 @@
   };
 
   # Nginx — VPN only
-  services.nginx.virtualHosts."n8n.local" = {
+  services.nginx.virtualHosts."n8n.lab" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:5678";
       extraConfig = ''

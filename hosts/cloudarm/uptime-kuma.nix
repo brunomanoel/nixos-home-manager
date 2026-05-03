@@ -1,5 +1,5 @@
 # Uptime Kuma — service availability monitoring
-# VPN only (uptime.local). Monitors all *.local and *.brunomanoel.ninja endpoints.
+# VPN only (uptime.lab). Monitors all *.local and *.brunomanoel.ninja endpoints.
 {
   services.uptime-kuma = {
     enable = true;
@@ -10,7 +10,7 @@
   };
 
   # Nginx — VPN only
-  services.nginx.virtualHosts."uptime.local" = {
+  services.nginx.virtualHosts."uptime.lab" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:3001";
       proxyWebsockets = true; # Kuma uses Socket.IO

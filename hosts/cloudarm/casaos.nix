@@ -43,7 +43,7 @@
   };
 
   # Nginx virtualhost (WireGuard only)
-  services.nginx.virtualHosts."casaos.local" = {
+  services.nginx.virtualHosts."casaos.lab" = {
     locations."/".proxyPass = "http://10.200.0.166:80";
   };
 

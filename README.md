@@ -129,6 +129,10 @@ nh darwin switch --configuration mac
 ### Cloudarm (remote server)
 
 ```shell
+# direto
+nixos-rebuild switch --flake .#cloudarm --target-host bruno@cloudarm --sudo
+
+#via ssh
 ssh root@cloudarm
 cd /root/dotfiles && git pull && nixos-rebuild switch --flake .#cloudarm
 ```

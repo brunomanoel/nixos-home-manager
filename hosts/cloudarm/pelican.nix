@@ -106,7 +106,7 @@ in
     default = true;
   };
   # VPN access
-  services.nginx.virtualHosts."pelican.local" = pelicanNginxConfig;
+  services.nginx.virtualHosts."pelican.lab" = pelicanNginxConfig;
   # Public HTTPS
   services.nginx.virtualHosts."games.brunomanoel.ninja" = pelicanNginxConfig // {
     forceSSL = true;

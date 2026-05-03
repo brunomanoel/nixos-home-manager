@@ -115,15 +115,34 @@
   ];
 
   networking.hostName = "predabook";
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    # Hand DNS to systemd-resolved for split DNS (per-domain routing)
+    dns = "systemd-resolved";
+  };
 
-  # Cloudarm services via WireGuard
-  # casaos.local aponta direto pro container Incus (10.200.0.166) pra permitir
-  # acesso a apps CasaOS em qualquer porta (casaos.local:8100, etc). Requer rota
-  # pra subnet 10.200.0.0/24 via wg0 (allowedIPs abaixo).
+  # systemd-resolved with split DNS:
+  # - *.lab queries → cloudarm dnsmasq (10.100.0.1) via WG
+  # - everything else → Cloudflare directly (no WG roundtrip)
+  # casaos.lab routes via dnsmasq exception → 10.200.0.166 (Incus subnet, WG routed).
+  # Future: replace dnsmasq with AdGuard+DoH for universal resolution
+  # (see TODO/Experimentar AdGuard Home + DoH para resolução .lab universal.md).
+  services.resolved = {
+    enable = true;
+    fallbackDns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
+    # Route ~lab domain to cloudarm dnsmasq
+    settings.Resolve = {
+      DNS = "10.100.0.1";
+      Domains = "~lab";
+    };
+  };
+
+  # Keep cloudarm hostname resolvable for SSH (independent of DNS, in case WG flaps)
   networking.extraHosts = ''
-    10.100.0.1 cloudarm pelican.local thingsboard.local nextcloud.local paperless.local n8n.local uptime.local beszel.local
-    10.200.0.166 casaos.local
+    10.100.0.1 cloudarm
   '';
 
   # --- Host key generation (no sshd, only for sops-nix age derivation) ---

@@ -145,6 +145,7 @@ in
   users.users.paperclip = {
     isSystemUser = true;
     group = "paperclip";
+    extraGroups = [ "docker" ];
     home = "/var/lib/paperclip";
     createHome = true;
   };

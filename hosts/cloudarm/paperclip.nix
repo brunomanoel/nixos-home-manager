@@ -2,7 +2,102 @@
 # VPN only (paperclip.lab). Native systemd service via npx (official npm package).
 # Database: shared Postgres instance (see ./postgresql.nix).
 # Coding agent CLIs available in service path: claude-code, codex, opencode.
+#
+# GitHub App identity: PrêdaCoder[bot] (App ID 3587738)
+# Agents commit/push as predacoder[bot] via GIT_ASKPASS + JWT token exchange.
+# Token is generated on-demand by git-askpass-github-app script, cached 55 min.
 { config, pkgs, ... }:
+let
+  # Claude Code MCP settings for the paperclip user.
+  # Generated declaratively — do not edit /var/lib/paperclip/.claude/settings.json manually.
+  claudeSettings = builtins.toJSON {
+    mcpServers = {
+      playwright = {
+        command = "${pkgs.nodejs_22}/bin/npx";
+        args = [
+          "-y"
+          "@playwright/mcp@latest"
+          "--headless"
+          "--executable-path"
+          "${pkgs.chromium}/bin/chromium"
+          "--no-sandbox"
+        ];
+      };
+      chrome-devtools = {
+        command = "${pkgs.nodejs_22}/bin/npx";
+        args = [
+          "-y"
+          "chrome-devtools-mcp@latest"
+          "--headless"
+          "--no-usage-statistics"
+          "--no-performance-crux"
+          "--executablePath"
+          "${pkgs.chromium}/bin/chromium"
+          "--no-sandbox"
+        ];
+      };
+      nixos = {
+        command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+        args = [ ];
+      };
+    };
+  };
+
+  # GIT_ASKPASS script: generates/caches GitHub App installation tokens on-demand.
+  # Called by git every time it needs a password (via URL rewrite with x-access-token).
+  # Uses openssl + curl to do the JWT dance — no external dependencies.
+  gitAskpassScript = pkgs.writeShellScript "git-askpass-github-app" ''
+    export PATH="${
+      pkgs.lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.openssl
+        pkgs.curl
+        pkgs.gnugrep
+      ]
+    }"
+
+    APP_ID="3587738"
+    INSTALLATION_ID="129183080"
+    PRIVATE_KEY_FILE="${config.sops.secrets.predacoder-app-private-key.path}"
+    TOKEN_FILE="/var/lib/paperclip/.github-app-token"
+    TOKEN_TTL=3300  # 55 min (token valid for 60)
+
+    # Return cached token if still fresh
+    if [ -f "$TOKEN_FILE" ]; then
+      token_age=$(( $(date +%s) - $(stat -c %Y "$TOKEN_FILE") ))
+      if [ "$token_age" -lt "$TOKEN_TTL" ]; then
+        cat "$TOKEN_FILE"
+        exit 0
+      fi
+    fi
+
+    # Generate JWT (valid 10 min)
+    NOW=$(date +%s)
+    IAT=$((NOW - 60))
+    EXP=$((NOW + 540))
+    HEADER=$(printf '{"alg":"RS256","typ":"JWT"}' | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
+    PAYLOAD=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' "$IAT" "$EXP" "$APP_ID" | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
+    SIGNATURE=$(printf '%s.%s' "$HEADER" "$PAYLOAD" | openssl dgst -sha256 -sign "$PRIVATE_KEY_FILE" | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
+    JWT="''${HEADER}.''${PAYLOAD}.''${SIGNATURE}"
+
+    # Exchange JWT for installation token
+    TOKEN=$(curl -sf -X POST \
+      -H "Authorization: Bearer $JWT" \
+      -H "Accept: application/vnd.github+json" \
+      "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" \
+      | grep -oP '"token":\s*"\K[^"]*')
+
+    if [ -z "$TOKEN" ]; then
+      echo "Failed to generate GitHub App token" >&2
+      exit 1
+    fi
+
+    # Cache and output
+    printf '%s' "$TOKEN" > "$TOKEN_FILE"
+    chmod 600 "$TOKEN_FILE"
+    printf '%s' "$TOKEN"
+  '';
+in
 {
   # --- Postgres user/db (shared instance from ./postgresql.nix) ---
   services.postgresql = {
@@ -39,6 +134,12 @@
     sopsFile = ./secrets.yaml;
     owner = "paperclip";
   };
+  # PrêdaCoder GitHub App private key (.pem) — used by git-askpass-github-app for JWT signing
+  sops.secrets.predacoder-app-private-key = {
+    sopsFile = ./secrets.yaml;
+    owner = "paperclip";
+    mode = "0400";
+  };
 
   # --- Service user ---
   users.users.paperclip = {
@@ -53,7 +154,14 @@
     "d /var/lib/paperclip 0750 paperclip paperclip - -"
     "d /var/lib/paperclip/data 0750 paperclip paperclip - -"
     "d /var/lib/paperclip/.npm 0750 paperclip paperclip - -"
+    "d /var/lib/paperclip/.claude 0750 paperclip paperclip - -"
   ];
+
+  # Claude Code settings (MCP servers) — declarative, managed by NixOS.
+  environment.etc."paperclip/claude-settings.json".text = claudeSettings;
+  systemd.tmpfiles.settings."paperclip-claude-settings" = {
+    "/var/lib/paperclip/.claude/settings.json".L.argument = "/etc/paperclip/claude-settings.json";
+  };
 
   # --- One-shot: apply postgres password to the paperclip user from sops ---
   # Runs after postgresql is up, before paperclip starts.
@@ -99,6 +207,7 @@
       pkgs.coreutils
       pkgs.git
       pkgs.gh
+      pkgs.curl
       pkgs.ripgrep
       pkgs.claude-code-bin
       pkgs.codex
@@ -123,11 +232,27 @@
       # Deployment: authenticated multi-user, private (VPN-only)
       PAPERCLIP_DEPLOYMENT_MODE = "authenticated";
       PAPERCLIP_DEPLOYMENT_EXPOSURE = "private";
-      PAPERCLIP_PUBLIC_URL = "http://paperclip.lab";
-      PAPERCLIP_ALLOWED_HOSTNAMES = "paperclip.lab";
+      PAPERCLIP_PUBLIC_URL = "https://paperclip.brunomanoel.ninja";
+      PAPERCLIP_ALLOWED_HOSTNAMES = "paperclip.brunomanoel.ninja,paperclip.lab";
 
       PAPERCLIP_TELEMETRY_DISABLED = "1";
       OPENCODE_ALLOW_ALL_MODELS = "true";
+
+      # --- PrêdaCoder[bot] GitHub App identity ---
+      # Git identity via env vars (no .gitconfig needed for system users)
+      GIT_AUTHOR_NAME = "PrêdaCoder[bot]";
+      GIT_AUTHOR_EMAIL = "281405911+predacoder[bot]@users.noreply.github.com";
+      GIT_COMMITTER_NAME = "PrêdaCoder[bot]";
+      GIT_COMMITTER_EMAIL = "281405911+predacoder[bot]@users.noreply.github.com";
+
+      # GIT_ASKPASS: on-demand GitHub App token generation (JWT dance + 55 min cache)
+      GIT_ASKPASS = "${gitAskpassScript}";
+      GIT_TERMINAL_PROMPT = "0";
+
+      # URL rewrite: embed x-access-token as username so git calls GIT_ASKPASS for password
+      GIT_CONFIG_COUNT = "1";
+      GIT_CONFIG_KEY_0 = "url.https://x-access-token@github.com/.insteadOf";
+      GIT_CONFIG_VALUE_0 = "https://github.com/";
     };
     serviceConfig = {
       Type = "simple";
@@ -153,9 +278,13 @@
     };
   };
 
-  # --- Nginx reverse proxy (VPN only) ---
+  # --- Nginx reverse proxy ---
   # proxyWebsockets = true already sets proxy_http_version 1.1 + Upgrade/Connection headers
-  services.nginx.virtualHosts."paperclip.lab" = {
+
+  # Public HTTPS (internet-facing, ACME cert)
+  services.nginx.virtualHosts."paperclip.brunomanoel.ninja" = {
+    forceSSL = true;
+    enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:3100";
       proxyWebsockets = true;
@@ -163,7 +292,22 @@
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        # Long-lived requests (heartbeats, agent runs)
+        proxy_read_timeout 600s;
+        proxy_send_timeout 600s;
+      '';
+    };
+  };
+
+  # VPN only (WireGuard) — proxy to public vhost so cookies/auth work
+  services.nginx.virtualHosts."paperclip.lab" = {
+    locations."/" = {
+      proxyPass = "https://paperclip.brunomanoel.ninja";
+      proxyWebsockets = true;
+      extraConfig = ''
+        proxy_set_header Host paperclip.brunomanoel.ninja;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_ssl_verify off;
         proxy_read_timeout 600s;
         proxy_send_timeout 600s;
       '';

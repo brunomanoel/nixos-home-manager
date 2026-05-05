@@ -43,9 +43,10 @@
 
   programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
 
-  # gnome-keyring disabled — KeePassXC provides Secret Service (org.freedesktop.secrets)
-  # VS Code auth tokens, Chromium Safe Storage, etc. are served by KeePassXC.
-  services.gnome.gnome-keyring.enable = false;
+  # gnome-keyring provides Secret Service (org.freedesktop.secrets) and auto-unlocks
+  # via PAM on login. KeePassXC handles SSH agent and browser integration only.
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # Disable GNOME's SSH agent — OpenSSH agent is used instead (programs.ssh.startAgent)
   services.gnome.gcr-ssh-agent.enable = false;

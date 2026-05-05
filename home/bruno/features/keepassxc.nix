@@ -36,10 +36,10 @@
         UseOpenSSH = lib.mkIf pkgs.stdenv.isLinux true;
       };
 
+      # FdoSecrets disabled — gnome-keyring handles Secret Service.
+      # KeePassXC handles SSH agent and browser integration only.
       FdoSecrets = lib.mkIf pkgs.stdenv.isLinux {
-        Enabled = true;
-        ShowNotification = true;
-        ConfirmAccessItem = false;
+        Enabled = false;
       };
 
       GUI = {

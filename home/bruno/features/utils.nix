@@ -14,11 +14,6 @@
 
   programs.chromium = {
     enable = true;
-    # IntranetRedirectBehavior=3 forces single-word omnibox inputs to resolve
-    # via DNS instead of being sent to the search engine — required for *.lab.
-    extraOpts = {
-      IntranetRedirectBehavior = 3;
-    };
   };
 
   programs.firefox = {

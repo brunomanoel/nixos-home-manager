@@ -10,23 +10,26 @@
 # npm package: oh-my-opencode (legacy name kept on the npm registry; the
 # opencode.json plugin entry prefers "oh-my-openagent" via compat layer).
 #
-# Single-provider setup (Anthropic OAuth): pin Anthropic on every agent
-# that has it in the fallback chain to avoid wasted attempts against
-# providers that aren't configured.
+# Dual-provider: Anthropic OAuth + OpenAI (Codex subscription).
+# Anthropic primary for orchestration. OpenAI for autonomous deep work.
 #
-# No extended thinking variants — keeps token usage predictable.
-# Hephaestus is disabled (requires GPT-5.4, no Anthropic fallback).
+# No extended thinking / reasoningEffort overrides — keeps token usage predictable.
 
 let
   omoConfig = {
     "$schema" =
       "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/dev/assets/oh-my-opencode.schema.json";
 
-    # Hephaestus disabled: chain is single-entry GPT-5.4 with no fallback.
-    # Invoking it without a GPT subscription would error hard.
-    disabled_agents = [ "hephaestus" ];
+    disabled_agents = [ ];
 
     agents = {
+      # Hephaestus: autonomous deep worker — GPT-native.
+      # Falls back to Opus if OpenAI rate-limits (ChatGPT Plus caps).
+      hephaestus = {
+        model = "openai/gpt-5.5";
+        fallback_models = [ "anthropic/claude-opus-4-7" ];
+      };
+
       # Main orchestrator
       sisyphus = {
         model = "anthropic/claude-opus-4-7";
@@ -76,7 +79,7 @@ let
       };
     };
 
-    # Semantic categories: pinning Anthropic across the board
+    # Semantic categories: Anthropic primary, GPT for logic-heavy autonomous work
     categories = {
       quick = {
         model = "anthropic/claude-haiku-4-5";
@@ -94,10 +97,12 @@ let
         model = "anthropic/claude-opus-4-7";
       };
       deep = {
-        model = "anthropic/claude-opus-4-7";
+        model = "openai/gpt-5.5";
+        fallback_models = [ "anthropic/claude-opus-4-7" ];
       };
       ultrabrain = {
-        model = "anthropic/claude-opus-4-7";
+        model = "openai/gpt-5.5";
+        fallback_models = [ "anthropic/claude-opus-4-7" ];
       };
       artistry = {
         model = "anthropic/claude-opus-4-7";
@@ -108,11 +113,13 @@ let
     background_task = {
       providerConcurrency = {
         anthropic = 2;
+        openai = 2;
       };
       modelConcurrency = {
         "anthropic/claude-opus-4-7" = 2;
         "anthropic/claude-sonnet-4-6" = 3;
         "anthropic/claude-haiku-4-5" = 5;
+        "openai/gpt-5.5" = 2;
       };
     };
 

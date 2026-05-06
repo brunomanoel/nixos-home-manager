@@ -98,6 +98,13 @@ let
     chmod 600 "$TOKEN_FILE"
     printf '%s' "$TOKEN"
   '';
+
+  # gh wrapper: injects GH_TOKEN from the same GitHub App flow used by GIT_ASKPASS.
+  # This lets agents run `gh pr create`, `gh api`, etc. as PrêdaCoder[bot].
+  ghAppToken = pkgs.writeShellScriptBin "gh" ''
+    export GH_TOKEN="$(${gitAskpassScript})"
+    exec ${pkgs.gh}/bin/gh "$@"
+  '';
 in
 {
   # --- Postgres user/db (shared instance from ./postgresql.nix) ---
@@ -208,6 +215,7 @@ in
       pkgs.nodejs_22
       pkgs.coreutils
       pkgs.git
+      ghAppToken
       pkgs.gh
       pkgs.curl
       pkgs.ripgrep

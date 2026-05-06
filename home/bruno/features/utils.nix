@@ -2,14 +2,17 @@
 {
   home.packages = with pkgs; [
     variety
-    discord
+    # discord
     obsidian
-    spotify
+    logseq
+    # spotify
     libgtop
     qalculate-gtk
     krita # painting app
     stremio-linux-shell
     peazip # archive manager GUI (testing for multi-part RAR)
+    qbittorrent
+    gnome-calculator
   ];
 
   programs.chromium = {

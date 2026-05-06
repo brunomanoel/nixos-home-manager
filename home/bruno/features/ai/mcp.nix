@@ -119,8 +119,14 @@ in
         args = [ ];
       };
       playwright = {
-        type = "remote";
-        url = "http://10.100.0.1:8002/mcp";
+        command = "npx";
+        args = [
+          "-y"
+          "@playwright/mcp@latest"
+          "--isolated"
+          "--executable-path"
+          "${pkgs.chromium}/bin/chromium"
+        ];
       };
       chrome-devtools = {
         command = "npx";

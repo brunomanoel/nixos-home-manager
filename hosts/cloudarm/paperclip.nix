@@ -17,6 +17,7 @@ let
         args = [
           "-y"
           "@playwright/mcp@latest"
+          "--isolated"
           "--headless"
           "--executable-path"
           "${pkgs.chromium}/bin/chromium"

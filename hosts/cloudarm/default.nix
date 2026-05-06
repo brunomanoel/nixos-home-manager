@@ -1,5 +1,5 @@
 # Oracle Cloud A1.Flex — 4 ARM cores (Ampere Altra), 24GB RAM, 200GB disk
-# Purpose: remote code RAG server (Ollama + Qdrant + MCP services via supergateway)
+# Purpose: remote code RAG server (Ollama + Qdrant)
 {
   inputs,
   lib,
@@ -124,30 +124,6 @@
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDqEFTEOwUFIpboG2ZNlvLSvVJtnKVGicbJY84+63UArxwPd6t4ErcLp/m6NUN+pANLEcFBEM8veDkGvKGPqUAJZvLX0wdkRo8mvj/8OZ6AbCQmUQ62lYiBUpPa1xGdvEiGyCVNHp+IyFDjm9VvOTUMaOp+Afw3fCx9DwV3+r0CnEn7Scdfhc6iQak0xfLPbXyHRbcQ3762z57hW1qWsYWApNKb6qGy38jzBznfwZu6UIfmsQ9AOsvSTeXysIGKqR5/gck03fpR0CwVpoXRgCQG2b019bK4DDDEvvmnCYjf8z4iq4WXTk66AM/p5oQKR1uspV93cUshHsuaenrO+ySJ cloudarm"
   ];
-
-  # --- Playwright MCP (native SSE transport, headless Chromium) ---
-  # Runs as a systemd service, accessible via WireGuard on port 8002
-  systemd.services.playwright-mcp = {
-    description = "Playwright MCP Server (headless)";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    path = [
-      pkgs.bash
-      pkgs.nodejs_22
-      pkgs.coreutils
-    ];
-    environment = {
-      HOME = "/var/lib/playwright-mcp";
-      NODE_PATH = "${pkgs.nodejs_22}/lib/node_modules";
-    };
-    serviceConfig = {
-      Type = "simple";
-      StateDirectory = "playwright-mcp";
-      ExecStart = "${pkgs.nodejs_22}/bin/npx -y @playwright/mcp@latest --port 8002 --headless --host 0.0.0.0 --allowed-hosts '*' --executable-path ${pkgs.chromium}/bin/chromium --no-sandbox";
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-  };
 
   # --- System packages ---
   environment.systemPackages = with pkgs; [

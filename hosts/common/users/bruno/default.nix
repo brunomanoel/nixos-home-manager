@@ -10,6 +10,8 @@ let
 in
 {
 
+  home-manager.backupFileExtension = "bak";
+
   users.users.bruno = {
     isNormalUser = true;
     shell = pkgs.zsh;

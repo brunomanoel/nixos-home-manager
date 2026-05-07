@@ -6,7 +6,8 @@
 
 let
   memoryInstructions = builtins.readFile ./memory-instructions.md;
-  mcpReferenceDoc = builtins.readFile ./mcp-reference.md;
+  mcpReferenceDoc = builtins.readFile ./rules/mcp-reference.md;
+  gitCoauthorRule = builtins.readFile ./rules/git-coauthor.md;
 
   # Block git push without explicit user authorization.
   # Git commit is allowed — the App identity wrapper handles author/committer.
@@ -142,6 +143,7 @@ in
   };
 
   home.file.".claude/rules/mcp-reference.md".text = mcpReferenceDoc;
+  home.file.".claude/rules/git-coauthor.md".text = gitCoauthorRule;
   home.file.".claude/agents".source = "${pkgs.gsd}/share/claude-code/agents";
   home.file.".claude/skills".source = "${pkgs.gsd}/share/claude-code/skills";
   home.file.".claude/get-shit-done".source = "${pkgs.gsd}/share/claude-code/get-shit-done";

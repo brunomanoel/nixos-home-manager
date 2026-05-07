@@ -34,14 +34,15 @@ Routing table:
 | Regex over non-code files (yaml, md, configs) | `serena.search_for_pattern` |
 | Persistent memory across sessions (decisions, bugs, patterns) | `memory_recall` / `memory_remember` |
 
-Rule of thumb: **start with Memory MCP when you're discovering. Switch to
-Serena when you know the symbol and want to read or edit it.**
+When discovering code by concept → Memory MCP. When you know the symbol
+and want to read or edit it → Serena.
 
 ---
 
-### Recommended workflow for non-trivial tasks
+### When to use the recall → search_code workflow
 
-`recall → search_code → think → act → remember`
+Use this **only** when the task requires understanding or modifying
+project source code you haven't seen yet:
 
 1. `memory_recall(query)` — past decisions, incidents, patterns.
 2. `memory_search_code(query)` — find relevant code by meaning.
@@ -52,8 +53,15 @@ Serena when you know the symbol and want to read or edit it.**
 5. Edit with Serena's symbolic editing tools.
 6. `memory_remember(...)` for anything non-obvious you discovered.
 
-Trivial tasks (e.g. "rename this file", "what time is it", a one-line tweak)
-do not need the full workflow.
+**Skip this entirely when:**
+- The conversation is about configuration, setup, or tooling
+- The user asks a general question or wants web research
+- The task doesn't involve reading/writing project source code
+- You already know the answer from context in the conversation
+- The user asks to search, investigate, or look something up online
+
+Do NOT force recall/search_code on every interaction. These tools exist
+for code discovery, not as a mandatory preamble.
 
 ---
 

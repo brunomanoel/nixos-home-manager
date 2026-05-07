@@ -132,6 +132,7 @@
     htop
     chromium # required by Playwright
     claude-code-bin
+    rtk
   ];
 
   # --- Headless server: no desktop ---

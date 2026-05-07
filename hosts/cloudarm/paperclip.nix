@@ -11,6 +11,19 @@ let
   # Claude Code MCP settings for the paperclip user.
   # Generated declaratively — do not edit /var/lib/paperclip/.claude/settings.json manually.
   claudeSettings = builtins.toJSON {
+    hooks = {
+      PreToolUse = [
+        {
+          matcher = "Bash";
+          hooks = [
+            {
+              type = "command";
+              command = "rtk hook claude";
+            }
+          ];
+        }
+      ];
+    };
     mcpServers = {
       playwright = {
         command = "${pkgs.nodejs_22}/bin/npx";
@@ -222,6 +235,7 @@ in
       pkgs.claude-code-bin
       pkgs.codex
       pkgs.opencode
+      pkgs.rtk
     ];
     environment = {
       HOME = "/var/lib/paperclip";

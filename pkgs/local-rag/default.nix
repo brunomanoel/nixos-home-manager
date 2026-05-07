@@ -1,10 +1,22 @@
-{ stdenv, pnpm_10, pnpmConfigHook, nodejs_22, fetchPnpmDeps, inputs, ... }:
+{
+  stdenv,
+  pnpm_10,
+  pnpmConfigHook,
+  nodejs_22,
+  fetchPnpmDeps,
+  inputs,
+  ...
+}:
 stdenv.mkDerivation (finalAttrs: {
   pname = "local-rag";
   version = (builtins.fromJSON (builtins.readFile "${inputs.local-rag}/package.json")).version;
   src = inputs.local-rag;
 
-  nativeBuildInputs = [ pnpm_10 pnpmConfigHook nodejs_22 ];
+  nativeBuildInputs = [
+    pnpm_10
+    pnpmConfigHook
+    nodejs_22
+  ];
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
@@ -18,6 +30,8 @@ stdenv.mkDerivation (finalAttrs: {
     pnpm build
     substituteInPlace dist/tools/recall.js \
       --replace-fail 'content.slice(0, 200)' 'content'
+    substituteInPlace dist/server.js \
+      --replace-fail 'Semantic search across memory. Use BEFORE every action.' 'Semantic search across memory.'
   '';
 
   dontFixup = true;

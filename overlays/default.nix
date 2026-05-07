@@ -17,5 +17,6 @@
       gsd-src = inputs.gsd;
     };
     local-rag = final.callPackage ../pkgs/local-rag { };
+    rtk = final.callPackage ../pkgs/rtk { };
   };
 }

@@ -11,13 +11,24 @@ let
   # Block git push without explicit user authorization.
   # Git commit is allowed — the App identity wrapper handles author/committer.
   blockGitPush = pkgs.writeShellScript "block-git-push" ''
-    COMMAND=$(jq -r '.tool_input.command')
-    if echo "$COMMAND" | grep -qE 'git\s+push'; then
+    INPUT=$(cat)
+    COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // ""')
+    MESSAGE=$(echo "$INPUT" | jq -r '.tool_input.message // ""')
+    ALL="$COMMAND $MESSAGE"
+    if echo "$ALL" | grep -qE 'git\s+push'; then
       jq -n '{
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
           permissionDecisionReason: "BLOCKED: git push requer autorização explícita do usuário."
+        }
+      }'
+    elif echo "$ALL" | grep -q -- '--author'; then
+      jq -n '{
+        hookSpecificOutput: {
+          hookEventName: "PreToolUse",
+          permissionDecision: "deny",
+          permissionDecisionReason: "BLOCKED: não use --author. A identidade PrêdaCoder[bot] é definida pelo wrapper. Use Co-authored-by no corpo do commit."
         }
       }'
     fi
@@ -77,7 +88,7 @@ in
         ];
         PreToolUse = [
           {
-            matcher = "Bash";
+            matcher = ".*";
             hooks = [
               {
                 type = "command";

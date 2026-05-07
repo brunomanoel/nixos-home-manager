@@ -16,19 +16,6 @@ let
     exec ${pkgs.uv}/bin/uvx --python 3.11 --from serena-agent serena start-mcp-server --context ide-assistant --project-from-cwd "$@"
   '';
 
-  # GitHub MCP token: manually placed at ~/.config/github-mcp/token (chmod 600).
-  # Not managed by sops-nix — this is a session-level secret, not boot infrastructure.
-  # Generate at: https://github.com/settings/tokens
-  githubMcpScript = pkgs.writeShellScript "github-mcp" ''
-    token=$(cat "$HOME/.config/github-mcp/token" 2>/dev/null)
-    if [[ -z "$token" ]]; then
-      echo "github-mcp: token not found at ~/.config/github-mcp/token" >&2
-      exit 1
-    fi
-    export GITHUB_PERSONAL_ACCESS_TOKEN="$token"
-    exec ${pkgs.github-mcp-server}/bin/github-mcp-server stdio
-  '';
-
   localRagScript = pkgs.writeShellScript "local-rag" ''
     PORT=4242
     while (echo >/dev/tcp/localhost/$PORT) 2>/dev/null; do
@@ -114,10 +101,7 @@ in
           "serve"
         ];
       };
-      github = {
-        command = "${githubMcpScript}";
-        args = [ ];
-      };
+
       playwright = {
         command = "npx";
         args = [

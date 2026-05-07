@@ -9,7 +9,7 @@ let
   mcpReferenceDoc = builtins.readFile ./mcp-reference.md;
   themes = import ./opencode-themes.nix;
 
-  # Plugin that blocks git commits without --author="Claude <noreply@anthropic.com>"
+  # Plugin that blocks --author (App wrapper handles identity) and git push without authorization
   blockGitCommitsPlugin = pkgs.writeText "block-git-commits.ts" (
     builtins.readFile ./block-git-commits.ts
   );

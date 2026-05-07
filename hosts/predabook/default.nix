@@ -151,6 +151,14 @@
   # --- Secrets (sops-nix) ---
   sops.secrets.wireguard-private-key.sopsFile = ./secrets.yaml;
 
+  # PrêdaCoder GitHub App private key (.pem) — used by AI tools (opencode, claude-code)
+  # for git push/commit as predacoder[bot] via GIT_ASKPASS JWT token exchange.
+  sops.secrets.predacoder-app-private-key = {
+    sopsFile = ./secrets.yaml;
+    owner = "bruno";
+    mode = "0400";
+  };
+
   # --- WireGuard to cloudarm ---
   networking.wireguard.interfaces.CloudArm = {
     ips = [ "10.100.0.2/24" ];

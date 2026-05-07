@@ -8,6 +8,15 @@
 # Token is generated on-demand by git-askpass-github-app script, cached 55 min.
 { config, pkgs, ... }:
 let
+  # PrêdaCoder[bot] GitHub App identity (shared with predabook via lib/github-app.nix)
+  githubApp = import ../../lib/github-app.nix {
+    inherit pkgs;
+    lib = pkgs.lib;
+    privateKeyPath = config.sops.secrets.predacoder-app-private-key.path;
+    tokenCacheDir = "/var/lib/paperclip";
+  };
+  inherit (githubApp) gitAskpassScript ghAppToken;
+
   # Claude Code MCP settings for the paperclip user.
   # Generated declaratively — do not edit /var/lib/paperclip/.claude/settings.json manually.
   claudeSettings = builtins.toJSON {
@@ -56,68 +65,6 @@ let
       };
     };
   };
-
-  # GIT_ASKPASS script: generates/caches GitHub App installation tokens on-demand.
-  # Called by git every time it needs a password (via URL rewrite with x-access-token).
-  # Uses openssl + curl to do the JWT dance — no external dependencies.
-  gitAskpassScript = pkgs.writeShellScript "git-askpass-github-app" ''
-    export PATH="${
-      pkgs.lib.makeBinPath [
-        pkgs.coreutils
-        pkgs.openssl
-        pkgs.curl
-        pkgs.gnugrep
-      ]
-    }"
-
-    APP_ID="3587738"
-    INSTALLATION_ID="129183080"
-    PRIVATE_KEY_FILE="${config.sops.secrets.predacoder-app-private-key.path}"
-    TOKEN_FILE="/var/lib/paperclip/.github-app-token"
-    TOKEN_TTL=3300  # 55 min (token valid for 60)
-
-    # Return cached token if still fresh
-    if [ -f "$TOKEN_FILE" ]; then
-      token_age=$(( $(date +%s) - $(stat -c %Y "$TOKEN_FILE") ))
-      if [ "$token_age" -lt "$TOKEN_TTL" ]; then
-        cat "$TOKEN_FILE"
-        exit 0
-      fi
-    fi
-
-    # Generate JWT (valid 10 min)
-    NOW=$(date +%s)
-    IAT=$((NOW - 60))
-    EXP=$((NOW + 540))
-    HEADER=$(printf '{"alg":"RS256","typ":"JWT"}' | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
-    PAYLOAD=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' "$IAT" "$EXP" "$APP_ID" | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
-    SIGNATURE=$(printf '%s.%s' "$HEADER" "$PAYLOAD" | openssl dgst -sha256 -sign "$PRIVATE_KEY_FILE" | openssl base64 -e -A | tr '+/' '-_' | tr -d '=')
-    JWT="''${HEADER}.''${PAYLOAD}.''${SIGNATURE}"
-
-    # Exchange JWT for installation token
-    TOKEN=$(curl -sf -X POST \
-      -H "Authorization: Bearer $JWT" \
-      -H "Accept: application/vnd.github+json" \
-      "https://api.github.com/app/installations/$INSTALLATION_ID/access_tokens" \
-      | grep -oP '"token":\s*"\K[^"]*')
-
-    if [ -z "$TOKEN" ]; then
-      echo "Failed to generate GitHub App token" >&2
-      exit 1
-    fi
-
-    # Cache and output
-    printf '%s' "$TOKEN" > "$TOKEN_FILE"
-    chmod 600 "$TOKEN_FILE"
-    printf '%s' "$TOKEN"
-  '';
-
-  # gh wrapper: injects GH_TOKEN from the same GitHub App flow used by GIT_ASKPASS.
-  # This lets agents run `gh pr create`, `gh api`, etc. as PrêdaCoder[bot].
-  ghAppToken = pkgs.writeShellScriptBin "gh" ''
-    export GH_TOKEN="$(${gitAskpassScript})"
-    exec ${pkgs.gh}/bin/gh "$@"
-  '';
 in
 {
   # --- Postgres user/db (shared instance from ./postgresql.nix) ---

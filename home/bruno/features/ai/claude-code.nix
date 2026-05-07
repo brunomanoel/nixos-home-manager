@@ -1,5 +1,6 @@
 {
   pkgs,
+  wrapWithAppIdentity,
   ...
 }:
 
@@ -7,14 +8,16 @@ let
   memoryInstructions = builtins.readFile ./memory-instructions.md;
   mcpReferenceDoc = builtins.readFile ./mcp-reference.md;
 
-  blockGitCommits = pkgs.writeShellScript "block-git-commits" ''
+  # Block git push without explicit user authorization.
+  # Git commit is allowed — the App identity wrapper handles author/committer.
+  blockGitPush = pkgs.writeShellScript "block-git-push" ''
     COMMAND=$(jq -r '.tool_input.command')
-    if echo "$COMMAND" | grep -qE 'git\s+commit' && ! echo "$COMMAND" | grep -q 'noreply@anthropic'; then
+    if echo "$COMMAND" | grep -qE 'git\s+push'; then
       jq -n '{
         hookSpecificOutput: {
           hookEventName: "PreToolUse",
           permissionDecision: "deny",
-          permissionDecisionReason: "BLOCKED: use --author=\"Claude <noreply@anthropic.com>\""
+          permissionDecisionReason: "BLOCKED: git push requer autorização explícita do usuário."
         }
       }'
     fi
@@ -24,7 +27,7 @@ in
   programs.claude-code = {
     enable = true;
     enableMcpIntegration = true;
-    package = pkgs.claude-code-bin;
+    package = wrapWithAppIdentity "claude" pkgs.claude-code-bin;
     context = memoryInstructions;
     settings = {
       statusLine = {
@@ -78,7 +81,7 @@ in
             hooks = [
               {
                 type = "command";
-                command = "${blockGitCommits}";
+                command = "${blockGitPush}";
               }
             ];
           }

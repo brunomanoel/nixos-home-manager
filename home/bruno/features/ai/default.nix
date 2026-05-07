@@ -3,7 +3,16 @@
   pkgs,
   ...
 }:
+let
+  githubApp = import ../../../../lib/github-app.nix {
+    inherit pkgs lib;
+    privateKeyPath = "/run/secrets/predacoder-app-private-key";
+    tokenCacheDir = "\${XDG_RUNTIME_DIR:-/tmp}/github-app-tokens";
+  };
+in
 {
+  _module.args.wrapWithAppIdentity = githubApp.wrapWithAppIdentity;
+
   imports = [
     ./mcp.nix
     ./claude-code.nix

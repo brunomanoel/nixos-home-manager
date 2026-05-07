@@ -1,5 +1,6 @@
 {
   pkgs,
+  wrapWithAppIdentity,
   ...
 }:
 
@@ -32,7 +33,7 @@ in
 {
   programs.opencode = {
     enable = true;
-    package = opencodeWrapped;
+    package = wrapWithAppIdentity "opencode" opencodeWrapped;
     enableMcpIntegration = true;
     context = memoryInstructions;
     tui = {

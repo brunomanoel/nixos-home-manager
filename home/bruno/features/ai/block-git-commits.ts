@@ -37,7 +37,7 @@ export const server: Plugin = async ({ client }) => ({
     }
 
     // Inject Co-authored-by trailer on MCP git_commit
-    if (tool === "mcp__git__git_commit") {
+    if (tool === "git_git_commit") {
       const message: string = output.args?.message ?? "";
       if (!message) return;
 

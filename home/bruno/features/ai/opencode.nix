@@ -44,6 +44,7 @@ in
       plugin = [
         "@ex-machina/opencode-anthropic-auth@1.8.0"
         "file://${blockGitCommitsPlugin}"
+        "github:brunomanoel/opencode-coauthor"
         "@mohak34/opencode-notifier@0.2.4"
       ];
       permission = {

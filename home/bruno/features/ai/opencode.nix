@@ -7,7 +7,6 @@
 let
   memoryInstructions = builtins.readFile ./memory-instructions.md;
   mcpReferenceDoc = builtins.readFile ./rules/mcp-reference.md;
-  gitCoauthorRule = builtins.readFile ./rules/git-coauthor.md;
   themes = import ./opencode-themes.nix;
 
   # Plugin that blocks --author (App wrapper handles identity) and git push without authorization
@@ -58,7 +57,6 @@ in
   };
 
   home.file.".config/opencode/rules/mcp-reference.md".text = mcpReferenceDoc;
-  home.file.".config/opencode/rules/git-coauthor.md".text = gitCoauthorRule;
   home.file.".config/opencode/agents".source = "${pkgs.gsd}/share/opencode/agents";
   home.file.".config/opencode/command".source = "${pkgs.gsd}/share/opencode/command";
   home.file.".config/opencode/get-shit-done".source = "${pkgs.gsd}/share/opencode/get-shit-done";

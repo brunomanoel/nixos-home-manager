@@ -26,23 +26,23 @@ let
       # Hephaestus: autonomous deep worker — GPT-native.
       # Falls back to Opus if OpenAI rate-limits (ChatGPT Plus caps).
       hephaestus = {
-        model = "openai/gpt-5.5";
-        fallback_models = [ "anthropic/claude-opus-4-7" ];
+        model = "openai/gpt-5.4";
+        fallback_models = [ "anthropic/claude-opus-4-6" ];
       };
 
       # Main orchestrator
       sisyphus = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Strategic planner — Opus default
       prometheus = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Gap analyzer — Opus default
       metis = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Plan executor — Sonnet, no extended thinking needed
@@ -57,17 +57,17 @@ let
 
       # Architecture/debug consultant
       oracle = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Plan/code reviewer
       momus = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Multimodal-Looker: vision via Claude (Opus has vision)
       "multimodal-looker" = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
 
       # Explore/Librarian: Haiku is ideal for grep — fast and cheap
@@ -88,24 +88,24 @@ let
         model = "anthropic/claude-sonnet-4-6";
       };
       "unspecified-high" = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
       writing = {
         model = "anthropic/claude-sonnet-4-6";
       };
       "visual-engineering" = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
       deep = {
         model = "openai/gpt-5.5";
-        fallback_models = [ "anthropic/claude-opus-4-7" ];
+        fallback_models = [ "anthropic/claude-opus-4-6" ];
       };
       ultrabrain = {
         model = "openai/gpt-5.5";
-        fallback_models = [ "anthropic/claude-opus-4-7" ];
+        fallback_models = [ "anthropic/claude-opus-4-6" ];
       };
       artistry = {
-        model = "anthropic/claude-opus-4-7";
+        model = "anthropic/claude-opus-4-6";
       };
     };
 
@@ -116,10 +116,10 @@ let
         openai = 2;
       };
       modelConcurrency = {
-        "anthropic/claude-opus-4-7" = 2;
+        "anthropic/claude-opus-4-6" = 1;
         "anthropic/claude-sonnet-4-6" = 3;
         "anthropic/claude-haiku-4-5" = 5;
-        "openai/gpt-5.5" = 2;
+        "openai/gpt-5.4" = 2;
       };
     };
 
@@ -142,7 +142,7 @@ in
   #
   # Bump manually when needed.
   programs.opencode.settings.plugin = lib.mkAfter [
-    "oh-my-openagent@3.17.12"
+    "oh-my-openagent@4.0.0"
   ];
 
   # Declarative OmO config. The loader accepts both

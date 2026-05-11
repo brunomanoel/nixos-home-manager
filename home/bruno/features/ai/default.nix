@@ -19,12 +19,13 @@ in
     ./opencode.nix
     ./oh-my-openagent.nix
     ./rtk.nix
+    ./pi.nix
   ];
 
-  # Ollama + Qdrant + Open WebUI disponíveis como CLI no Mac (serviços são NixOS-only)
   home.packages = [
     pkgs.openclaw
   ]
+  # Ollama + Qdrant + Open WebUI disponíveis como CLI no Mac (serviços são NixOS-only)
   ++ lib.optionals pkgs.stdenv.isDarwin (
     with pkgs;
     [

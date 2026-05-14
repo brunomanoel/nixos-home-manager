@@ -6,5 +6,7 @@ result-*
 .direnv/
 .envrc
 .serena/
+.playwright-mcp/
+.sisyphus/
 docs/yubikey-piv-draft.md
 home/bruno/secrets/

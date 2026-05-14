@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 let
-  # pi chama `npm install -g` para plugins de scope "user", o que tenta
-  # escrever no nix store (read-only). Wrapper redireciona para dir gravável.
+  # pi calls `npm install -g` for user-scoped plugins, which tries to write
+  # to the nix store (read-only). Wrapper redirects to a writable directory.
   piNpm = pkgs.writeShellScript "pi-npm" ''
     export NPM_CONFIG_PREFIX="$HOME/.local/share/pi/npm"
     exec ${pkgs.nodejs}/bin/npm "$@"
@@ -14,7 +14,13 @@ in
   home.file.".pi/agent/settings.json".text = builtins.toJSON {
     packages = [
       "npm:pi-anthropic-oauth"
+      "npm:pi-mcp-adapter"
     ];
     npmCommand = [ "${piNpm}" ];
+    enabledModels = [
+      "claude-sonnet-4-6"
+      "claude-opus-4-6"
+      "gpt-5.4"
+    ];
   };
 }

@@ -79,8 +79,14 @@ in
         args = [ ];
       };
       fetch = {
-        command = "${mkUvxMcp "mcp-fetch"}";
-        args = [ ];
+        command = "npx";
+        args = [
+          "-y"
+          "render-fetch"
+        ];
+        environment = {
+          PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+        };
       };
       sequential-thinking = {
         command = "npx";
@@ -100,6 +106,17 @@ in
           "@neuledge/context"
           "serve"
         ];
+      };
+
+      searxng = {
+        command = "npx";
+        args = [
+          "-y"
+          "mcp-searxng"
+        ];
+        env = {
+          SEARXNG_URL = "http://searx.lab";
+        };
       };
 
       playwright = {

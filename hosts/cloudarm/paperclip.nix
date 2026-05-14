@@ -63,6 +63,17 @@ let
         command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
         args = [ ];
       };
+
+      searxng = {
+        command = "${pkgs.nodejs_22}/bin/npx";
+        args = [
+          "-y"
+          "mcp-searxng"
+        ];
+        env = {
+          SEARXNG_URL = "http://127.0.0.1:8888";
+        };
+      };
     };
   };
 in

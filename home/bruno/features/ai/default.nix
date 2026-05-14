@@ -24,6 +24,7 @@ in
 
   home.packages = [
     pkgs.openclaw
+    pkgs.playwright
   ]
   # Ollama + Qdrant + Open WebUI disponíveis como CLI no Mac (serviços são NixOS-only)
   ++ lib.optionals pkgs.stdenv.isDarwin (

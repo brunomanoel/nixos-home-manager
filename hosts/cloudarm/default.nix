@@ -28,6 +28,7 @@
     ./beszel.nix
     ./paperclip.nix
     ./poc-proxy.nix
+    ./searx.nix
   ];
 
   system.stateVersion = "23.11"; # Set by nixos-infect — do not change

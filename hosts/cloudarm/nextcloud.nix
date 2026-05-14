@@ -124,7 +124,13 @@
       nextcloud-occ config:app:set richdocuments wopi_url --value="https://cloud.brunomanoel.ninja/"
       nextcloud-occ config:app:set richdocuments wopi_allowlist --value="127.0.0.1"
     '';
-    after = [ "nextcloud-setup.service" ];
+    # postgresql.service added explicitly — upstream module lacks this dependency,
+    # causing a race condition on activation when postgres restarts before this service.
+    after = [
+      "nextcloud-setup.service"
+      "postgresql.service"
+    ];
+    requires = [ "postgresql.service" ];
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";

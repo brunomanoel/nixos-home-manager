@@ -86,6 +86,7 @@
         {
           chromium = unstable.chromium;
           claude-code-bin = unstable.claude-code-bin;
+          searxng = unstable.searxng;
         };
     in
     {
